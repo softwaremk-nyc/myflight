@@ -1,4 +1,4 @@
-import round from './util';
+import { round } from './util';
 
 export interface CgData {
   weight: number,
@@ -6,6 +6,13 @@ export interface CgData {
   moment: number,
 }
 
+/**
+ *  Calculate the CG given a list of weights & arms
+ *  This method will fill in the moments for each item in the list
+ *
+ *  @param {CgData[]} cgInputs - list of weights & arms
+ *  @returns {CgData} - calculated CG, along with total weight & moment
+ */
 export function calcCG(
   cgInputs: CgData[],
 ): CgData {
