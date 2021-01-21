@@ -20,9 +20,39 @@ export function c2f(
   return round((c * 9) / 5 + 32, 1);
 }
 
+/**
+ * Converts provided altitude to pressure altitude
+ * @param {number} alt - altitude
+ * @param {number} barometer - barometer setting (std: 29.92)
+ */
 export function pressureAlt(
   alt: number,
   barometer: number,
-) : number {
+): number {
   return round((29.92 - barometer) * 1000 + alt, 1);
+}
+
+function degToRadians(
+  deg: number,
+) : number {
+  return (deg * Math.PI) / 180;
+}
+
+/**
+ * Calculates head wind and cross wind component
+ * Throws if direction is not in 1-360
+ * Throws if rwy is not specified 1-36
+ * @param {number} speed - wind speed
+ * @param {number} direction - wind direction (1 - 360)
+ * @param {number} rwy - rwy heading (1 - 36)
+ */
+export function windComponent(
+  speed: number,
+  direction: number,
+  rwy: number,
+): [number, number] {
+  const degs = (rwy * 10) - direction;
+  const headFactor = Math.cos(degToRadians(degs));
+  const crossFactor = Math.sin(degToRadians(degs));
+  return [round(speed * headFactor, 1), round(speed * crossFactor, 1)];
 }

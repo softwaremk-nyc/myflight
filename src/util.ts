@@ -6,7 +6,8 @@
  */
 export function round(value: number, precision: number): number {
   const multiplier = 10 ** precision;
-  return Math.round(value * multiplier) / multiplier;
+  const res = Math.round(value * multiplier) / multiplier;
+  return Object.is(res, -0) ? 0 : res;
 }
 
 /**

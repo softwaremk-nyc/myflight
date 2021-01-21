@@ -26,6 +26,9 @@ describe('rounding calculation', () => {
     [4.14, 2, 4.14],
     [4.14, 1, 4.1],
     [4.14, 0, 4.0],
+    [-0.9, 0, -1.0],
+    [-0.123, 1, -0.1],
+    [-0.01, 0, 0], // disallow negative 0
   ];
 
   test('expected rounding is occurring', () => {

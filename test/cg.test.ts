@@ -32,4 +32,13 @@ describe('center of gravity calculation', () => {
     ]);
     expect(cgData).toEqual({ weight: 8, arm: 2.8, moment: 22 });
   });
+
+  test('cg ignores zero weights', () => {
+    const cgData = calcCG([
+      { weight: 2, arm: 2, moment: 0 },
+      { weight: 0, arm: 3, moment: 0 },
+      { weight: 1, arm: 2, moment: 0 },
+    ]);
+    expect(cgData).toEqual({ weight: 3, arm: 2, moment: 6 });
+  });
 });
