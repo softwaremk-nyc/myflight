@@ -19,3 +19,10 @@ export function c2f(
 ): number {
   return round((c * 9) / 5 + 32, 1);
 }
+
+export function pressureAlt(
+  alt: number,
+  barometer: number,
+) : number {
+  return round((29.92 - barometer) * 1000 + alt, 1);
+}

@@ -1,6 +1,7 @@
 import {
   f2c,
   c2f,
+  pressureAlt,
 } from '../src/flightcalc';
 
 describe('temperature conversion calculations', () => {
@@ -30,6 +31,24 @@ describe('temperature conversion calculations', () => {
   test('c to 2 calcs', () => {
     tests.forEach((test) => {
       expect(c2f(test[1])).toEqual(test[0]);
+    });
+  });
+});
+
+describe('pressure altitude conversion', () => {
+  test('pressure altitude calcs', () => {
+    //  indicated alt,
+    //  barometer,
+    //  expected pressure
+    const tests = [
+      [100, 29.92, 100],
+      [100, 28.92, 1100],
+      [100, 30.43, -410],
+      [100, 30.92, -900],
+    ];
+
+    tests.forEach((test) => {
+      expect(pressureAlt(test[0], test[1])).toEqual(test[2]);
     });
   });
 });
