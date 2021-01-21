@@ -4,6 +4,7 @@
     "**.js",
     "src/**/*.ts",
     "server/**/*.ts",
+    "perf/**/*.ts",
     "module/**/*.ts",
     "test/**/*.test.ts"
   ]
