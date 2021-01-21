@@ -90,4 +90,14 @@ describe('headwind and crosswind component calculations', () => {
       )).toEqual(test[3]);
     });
   });
+
+  test('throws if wind direction is wrong', () => {
+    expect(() => { windComponent(1, 0, 1); }).toThrow('Invalid wind direction');
+    expect(() => { windComponent(1, 361, 1); }).toThrow('Invalid wind direction');
+  });
+
+  test('throws if rwy is wrong', () => {
+    expect(() => { windComponent(1, 10, 0); }).toThrow('Invalid runway provided');
+    expect(() => { windComponent(1, 10, 37); }).toThrow('Invalid runway provided');
+  });
 });

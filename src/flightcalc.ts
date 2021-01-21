@@ -51,6 +51,12 @@ export function windComponent(
   direction: number,
   rwy: number,
 ): [number, number] {
+  if (direction < 1 || direction > 360) {
+    throw Error(`Invalid wind direction provided ${direction}`);
+  }
+  if (rwy < 1 || rwy > 36) {
+    throw Error(`Invalid runway provided ${rwy}`);
+  }
   const degs = (rwy * 10) - direction;
   const headFactor = Math.cos(degToRadians(degs));
   const crossFactor = Math.sin(degToRadians(degs));
