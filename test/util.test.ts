@@ -1,6 +1,8 @@
 import {
   linterpol,
   round,
+  ndimLinterpol,
+  NestedObject,
 } from '../src/util';
 
 describe('rounding calculation', () => {
@@ -36,11 +38,11 @@ describe('rounding calculation', () => {
 
 describe('linear interpolation calculation', () => {
   test('throws on mismatched lookup value lengths', () => {
-    expect(() => { linterpol(1, [], [1]); }).toThrow('inputs are mismatched');
+    expect(() => { linterpol(1, [], [1]); }).toThrow('input lengths are mismatched');
   });
 
   test('throws on insufficient values', () => {
-    expect(() => { linterpol(1, [2], [2]); }).toThrow('requires at least two lookup elements');
+    expect(() => { linterpol(1, [2], [2]); }).toThrow('requires at least two elements');
   });
 
   test('throws if ascending sort is broken', () => {
@@ -153,5 +155,134 @@ describe('linear interpolation calculation', () => {
     const { val, extrapolation } = linterpol(0.8, xvalsRev, yvals);
     expect(val).toEqual(26);
     expect(extrapolation).toBeTruthy();
+  });
+});
+
+describe('nested object interpolation', () => {
+  const obj: NestedObject = {
+    1: {
+      5: {
+        3: 10,
+        6: 20,
+        9: 30,
+      },
+      10: {
+        3: 40,
+        6: 50,
+        9: 60,
+      },
+      15: {
+        3: 70,
+        6: 80,
+        9: 90,
+      },
+    },
+    2: {
+      5: {
+        3: 100,
+        6: 110,
+        9: 120,
+      },
+      10: {
+        3: 130,
+        6: 140,
+        9: 150,
+      },
+      15: {
+        3: 160,
+        6: 170,
+        9: 180,
+      },
+    },
+    3: {
+      5: {
+        3: 190,
+        6: 200,
+        9: 210,
+      },
+      10: {
+        3: 220,
+        6: 230,
+        9: 240,
+      },
+      15: {
+        3: 250,
+        6: 260,
+        9: 270,
+      },
+    },
+  };
+
+  //  path to check
+  //  extrapolation result
+  //  expected interpolation result
+  const tests = [
+    //  exact matches
+    [[1, 5, 3], false, 10],
+    [[1, 5, 9], false, 30],
+    [[1, 15, 9], false, 90],
+    [[2, 10, 6], false, 140],
+    [[3, 15, 9], false, 270],
+
+    //  interpolate at third dim
+    [[1, 5, 4.5], false, 15],
+    [[1, 10, 4.5], false, 45],
+    [[1, 5, 7.5], false, 25],
+    [[1, 10, 7.5], false, 55],
+    [[2, 5, 4.5], false, 105],
+    [[2, 5, 7.5], false, 115],
+    [[2, 10, 7.5], false, 145],
+    [[2, 15, 7.5], false, 175],
+    [[3, 10, 7.5], false, 235],
+    [[3, 15, 7.5], false, 265],
+
+    //  extrapolate at third dim
+    [[1, 5, 1.5], true, 5],
+    [[1, 5, 10.5], true, 35],
+    [[2, 15, 10.5], true, 185],
+    [[3, 10, 1.5], true, 215],
+
+    //  interpolate at second dim
+    [[1, 7.5, 4.5], false, 30],
+    [[1, 7.5, 7.5], false, 40],
+    [[2, 7.5, 7.5], false, 130],
+    [[2, 12.5, 7.5], false, 160],
+    [[3, 12.5, 7.5], false, 250],
+
+    //  interpolate at first dim
+    [[1.5, 7.5, 7.5], false, 85],
+    [[2.5, 12.5, 7.5], false, 205],
+  ];
+
+  test('nested interpolation - path checks', () => {
+    tests.forEach((test) => {
+      const { val, extrapolation } = ndimLinterpol(
+        0,
+        test[0] as number[],
+        obj,
+      );
+      expect(val).toEqual(test[2]);
+      if (test[1]) {
+        expect(extrapolation).toBeTruthy();
+      } else {
+        expect(extrapolation).toBeFalsy();
+      }
+    });
+  });
+
+  test('throws if requested levels exceeds object nesting levels', () => {
+    expect(() => { ndimLinterpol(0, [1, 5, 3, 10], obj); }).toThrow('Interpolation is not available beyond');
+  });
+
+  test('throws if requested levels ends at an object rather than value', () => {
+    expect(() => { ndimLinterpol(0, [1, 5], obj); }).toThrow('Interpolation is not possible for');
+  });
+
+  test('throws if extrapolation is seen for an object', () => {
+    expect(() => { ndimLinterpol(0, [1, 4], obj); }).toThrow('Extrapolation is not possible for');
+  });
+
+  test('throws if requested levels exceeds what is available in obj', () => {
+    expect(() => { ndimLinterpol(4, [1, 4], obj); }).toThrow('exceeds available dimensions');
   });
 });
