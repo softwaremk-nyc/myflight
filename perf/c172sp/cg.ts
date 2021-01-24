@@ -1,7 +1,7 @@
 import {
   CgDataEntry,
   basicEmptyLabel,
-} from './perfCommon';
+} from '../perfCommon';
 
 const base172sp: CgDataEntry[] = [
   {
