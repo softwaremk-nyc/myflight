@@ -1,4 +1,4 @@
-import { calcCG } from '../src/cg';
+import { calcCG } from '../../src/cg';
 
 describe('center of gravity calculation', () => {
   test('empty CgData provided', () => {

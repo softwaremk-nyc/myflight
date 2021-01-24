@@ -3,7 +3,7 @@ import {
   round,
   ndimLinterpol,
   NestedObject,
-} from '../src/util';
+} from '../../src/util';
 
 describe('rounding calculation', () => {
   test('no rounding needed', () => {

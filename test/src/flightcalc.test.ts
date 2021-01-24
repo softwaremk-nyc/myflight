@@ -3,7 +3,7 @@ import {
   c2f,
   pressureAlt,
   windComponent,
-} from '../src/flightcalc';
+} from '../../src/flightcalc';
 
 describe('temperature conversion calculations', () => {
   //  fahrenheit
