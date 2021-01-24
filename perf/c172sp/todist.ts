@@ -6,8 +6,9 @@ export const toNotes = [
   'Paved, level, dry runway',
   'Liftoff 51, 48, 44 at (2550|2400|2200)',
   'Mixture leaned above 3000ft for max RPM',
-  'Decrease distance 10% for each 9kts head wind. Increase distance 10% for each 2kts tail wind',
-  'For dry grass runway, increase ground roll distance by 15%',
+  'Decrease distance 10% for each 9kts head wind. Increase distance 10% for each 2kts tail wind (*)',
+  'For dry grass runway, increase ground roll distance by 15% (*)',
+  '(*) applied to this calculation',
 ];
 
 //  a/c weight

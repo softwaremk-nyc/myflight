@@ -3,9 +3,10 @@ import { NestedObject } from '../../src/util';
 export const climbNotes = [
   'Table 5.7 - At 2550 lbs',
   'Flaps Up, Full Throttle, Standard Temp',
-  'Add 1.4 gals for start, taxi, takeoff allowance',
+  'Add 1.4 gals for start, taxi, takeoff allowance (*)',
   'Mixture leaned above 3000ft for max RPM',
-  'Increase time, fuel, distance by 10% for each 10c above standard',
+  'Increase time, fuel, distance by 10% for each 10c above standard (*)',
+  '(*) applied to this calculation',
 ];
 
 export const climb: NestedObject = {

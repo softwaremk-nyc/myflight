@@ -34,7 +34,7 @@ export function pressureAlt(
 
 function degToRadians(
   deg: number,
-) : number {
+): number {
   return (deg * Math.PI) / 180;
 }
 
@@ -61,4 +61,17 @@ export function windComponent(
   const headFactor = Math.cos(degToRadians(degs));
   const crossFactor = Math.sin(degToRadians(degs));
   return [round(speed * headFactor, 1), round(speed * crossFactor, 1)];
+}
+
+/**
+ *  Returns std temp in c for a given pressure altitude
+ *  @param {number} pAlt - pressure altitude
+ */
+export function stdTemp(
+  pAlt: number,
+): number {
+  return round(
+    15 - (2 * (pAlt / 1000)),
+    1,
+  );
 }
