@@ -1,4 +1,4 @@
-const resolvers = {
+module.exports = {
   Query: {
     metar: (_: any, { icaoId }: any, { dataSources }: any) => dataSources.avwxApi.getMetarById(
       { icaoId },
@@ -8,5 +8,3 @@ const resolvers = {
     ),
   },
 };
-
-export default resolvers;

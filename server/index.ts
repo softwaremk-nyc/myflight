@@ -1,8 +1,9 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import typeDefs from './gql/schema';
-import resolvers from './gql/resolvers';
 import AvwxApi from './gql/datasources/avwx';
+
+const resolvers = require('./gql/resolvers');
 
 const app = express();
 const port = 3000;
