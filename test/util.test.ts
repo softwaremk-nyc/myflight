@@ -247,7 +247,7 @@ describe('nested numeric object interpolation', () => {
     tests.forEach((test) => {
       const { val, extrapolation } = ndimLinterpol(
         0,
-        test[0] as number[],
+        test[0] as (number | string)[],
         obj,
       );
       expect(val).toEqual(test[2]);
@@ -271,11 +271,86 @@ describe('nested numeric object interpolation', () => {
     expect(() => { ndimLinterpol(0, [1], obj2); }).toThrow('Interpolation on an array is not');
   });
 
-  test('throws if requested levels exceeds object nesting levels', () => {
+  test('throws if requested levels exceeds object nesting levels (only 3 avail in obj)', () => {
     expect(() => { ndimLinterpol(0, [1, 5, 3, 10], obj); }).toThrow('Interpolation is not available beyond');
   });
 
-  test('throws if requested levels exceeds what is available in obj', () => {
+  test('throws if requested levels (4) exceeds what is available in obj', () => {
     expect(() => { ndimLinterpol(4, [1, 4], obj); }).toThrow('exceeds available levels');
+  });
+});
+
+describe('nested string object interpolation', () => {
+  const obj: NestedObject = {
+    '-1.1': {
+      a: [5, 10, 15],
+      b: [10, 20, 30],
+    },
+    0: {
+      a: [5, 10, 15],
+      b: [40, 50, 60],
+    },
+    1.1: {
+      a: [5, 10, 15],
+      b: [70, 80, 90],
+    },
+  };
+
+  //  path to check
+  //  extrapolation result
+  //  expected interpolation result
+  const tests = [
+    //  exact matches
+    [[-1.1, 'a|b|10'], false, 20],
+    [[0, 'a|b|15'], false, 60],
+    [[1.1, 'a|b|5'], false, 70],
+
+    //  interpolate on second dimension
+    [[-1.1, 'a|b|12.5'], false, 25],
+    [[0, 'a|b|7.5'], false, 45],
+    [[1.1, 'a|b|7.5'], false, 75],
+
+    //  extrapolate on second dimension
+    [[-1.1, 'a|b|2.5'], true, 5],
+    [[0, 'a|b|20'], true, 70],
+    [[1.1, 'a|b|17.5'], true, 95],
+
+    //  extrapolate on first dimension
+    [[-2.2, 'a|b|2.5'], true, -25],
+    [[-0.55, 'a|b|17.5'], true, 50],
+    [[0.55, 'a|b|17.5'], true, 80],
+    [[2.2, 'a|b|2.5'], true, 95],
+  ];
+
+  test('nested interpolation - path checks', () => {
+    tests.forEach((test) => {
+      const { val, extrapolation } = ndimLinterpol(
+        0,
+        test[0] as (number | string)[],
+        obj,
+      );
+      expect(val).toEqual(test[2]);
+      if (test[1]) {
+        expect(extrapolation).toBeTruthy();
+      } else {
+        expect(extrapolation).toBeFalsy();
+      }
+    });
+  });
+
+  test('throws if key is invalid and does not have 3 parts', () => {
+    expect(() => { ndimLinterpol(0, [1.1, 'a|b'], obj); }).toThrow('Invalid key');
+  });
+
+  test('throws if key is unrecognized (c)', () => {
+    expect(() => { ndimLinterpol(0, [1.1, 'a|c|8'], obj); }).toThrow('Unrecognized key');
+  });
+
+  test('throws if key does not resolve to an array of values', () => {
+    const obj2 = {
+      1: { a: 1, b: 2 },
+      2: { a: 3, b: 4 },
+    };
+    expect(() => { ndimLinterpol(0, [1.1, 'a|b|8'], obj2); }).toThrow('requires array');
   });
 });

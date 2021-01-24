@@ -189,7 +189,7 @@ ndimLinterpolKeyNumber = (
   nPath: (number | string)[],
   obj: NestedObject,
 ): LinterpolRes => {
-  const keys: number[] = Object.keys(obj).map((x) => parseFloat(x));
+  const keys: number[] = Object.keys(obj).map((x) => parseFloat(x)).sort((a, b) => a - b);
   const [i, extrapolation] = locateUpperBoundIndex(currKey, keys);
 
   const x1 = keys[i];
@@ -262,17 +262,17 @@ ndimLinterpolKeyString = (
 ): LinterpolRes => {
   const keys = currKey.split('|');
   if (keys.length !== 3) {
-    throw Error(`Invalid key received '${currKey}' in ${nPath}`);
+    throw Error(`Invalid key received '${currKey}' in ${nPath} for ${JSON.stringify(obj)}`);
   }
   const xVals = obj[keys[0]];
   const yVals = obj[keys[1]];
 
   if (!xVals || !yVals) {
-    throw Error(`Unrecognized key '${currKey}' in ${nPath}`);
+    throw Error(`Unrecognized key '${currKey}' in ${nPath} for ${JSON.stringify(obj)}`);
   }
 
   if (!Array.isArray(xVals) || !Array.isArray(yVals)) {
-    throw Error(`Interpolation requires array values for key '${currKey}' in ${nPath}`);
+    throw Error(`Interpolation requires array values for key '${currKey}' in ${nPath} for ${JSON.stringify(obj)}`);
   }
 
   //  for a string key, we should be at last element in nPath
