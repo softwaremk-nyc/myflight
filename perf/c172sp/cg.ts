@@ -104,9 +104,11 @@ const n5491j: CgDataEntry[] = [
   },
 ];
 
-export const c172sp: CgDataEntry[][] = [
+const c172sp: CgDataEntry[][] = [
   n5255r,
   n2461p,
   n316as,
   n5491j,
 ];
+
+export default c172sp;
