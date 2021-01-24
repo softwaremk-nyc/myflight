@@ -105,55 +105,120 @@ export function linterpol(
 }
 
 export interface NestedObject {
-  [index: number]: number | NestedObject;
+  [index: string]: number | number[] | NestedObject;
 }
 
 /**
- *  Performs interpolation on n-nested object keyed by a number.
- *  Since Object.keys is used, implication is numerically ascending keys only
+ *  Throw if not at the last element in nPath as specified by dim
+ *  @param {number|string} currKey - for reporting
+ *  @param {number} dim - current dimension into nPath
+ *  @param {(number|string)[]} nPath - keys to lookup for each nesting layer in obj
+ *  @param {NestedObject} obj - n-nested object to traverse for interpolation
+ */
+function throwIfNotAtLast(
+  currKey: (number | string),
+  dim: number,
+  nPath: (number | string)[],
+  obj: NestedObject,
+) {
+  if (dim !== nPath.length - 1) {
+    throw Error(`Interpolation is not available beyond '${currKey}' in '${nPath}' for ${JSON.stringify(obj)}`);
+  }
+}
+
+//  forward declare for recursion call ...
+let ndimLinterpolKeyNumber: any;
+let ndimLinterpolKeyString: any;
+
+/**
+ *  Example obj = { 1: {3:6, 4:8}, 2: {5:10, 6:12}, 3: {a: [7,9], b:[11,13]} }
+ *  Performs interpolation on n-nested object keyed by a number or string
+ *  If key is string, schema is a|b|8 to get x_vals [7,9] and y_vals[11,13] and interpolate at 8
+ *  If key is number, it locates bounds for interpolation, eg: 1.5 uses x_vals[1,2]
  *  Throws if dim exceeds nPath levels provided
- *  Throws if dim exceeds nesting levels available in obj
+ *  Throws if an unexpected key type is received
  *  @param {number} dim - 0 based level into nPath
- *  @param {string[]} nPath - the number lookup for each nesting layer to search in obj
+ *  @param {(string|number)[]} nPath - the key to lookup for each nesting layer to search in obj
  *  @param {NestedObject} obj - n-nested object to traverse for interpolation
  */
 export function ndimLinterpol(
   dim: number,
-  nPath: number[],
+  nPath: (number | string)[],
   obj: NestedObject,
 ): LinterpolRes {
   if (dim >= nPath.length) {
-    throw Error(`Interpolation in '${nPath}' exceeds available dimensions in ${JSON.stringify(obj)}`);
+    throw Error(`Interpolation in '${nPath}' exceeds available levels in ${JSON.stringify(obj)}`);
   }
 
-  const keys: number[] = Object.keys(obj).map((x) => parseInt(x, 10));
-  const [i, extrapolation] = locateUpperBoundIndex(nPath[dim], keys);
+  const currKey = nPath[dim];
+
+  if (typeof currKey === 'number') {
+    return ndimLinterpolKeyNumber(
+      currKey,
+      dim,
+      nPath,
+      obj,
+    );
+  }
+
+  if (typeof currKey === 'string') {
+    return ndimLinterpolKeyString(
+      currKey,
+      dim,
+      nPath,
+      obj,
+    );
+  }
+
+  throw Error(`Unknown key type '${typeof currKey}' received in '${nPath}'`);
+}
+
+/**
+ *  Interpolation when key is a number
+ *  Throws if obj[key1] or obj[key2] yields an array
+ *  Throws if path for interpolation ends on an object
+ *  Throws if rhs is a value but path suggests further traversal
+ *  @param {string} currKey - current key for the lookup (number)
+ *  @param {number} dim - 0 based level into nPath
+ *  @param {(string|number)[]} nPath - the key to lookup for each nesting layer to search in obj
+ *  @param {NestedObject} obj - n-nested object to traverse for interpolation
+ */
+ndimLinterpolKeyNumber = (
+  currKey: number,
+  dim: number,
+  nPath: (number | string)[],
+  obj: NestedObject,
+): LinterpolRes => {
+  const keys: number[] = Object.keys(obj).map((x) => parseFloat(x));
+  const [i, extrapolation] = locateUpperBoundIndex(currKey, keys);
 
   const x1 = keys[i];
   const x0 = keys[i - 1];
   const y1 = obj[x1];
   const y0 = obj[x0];
 
-  const recursionHelper = (currObj: number | NestedObject): LinterpolRes => {
+  const recursionHelper = (rhs: number | number[] | NestedObject): LinterpolRes => {
     let res: LinterpolRes;
-    if (typeof currObj === 'object') {
-      //  extrapolation is not possible on objects
-      if (extrapolation) {
-        throw Error(`Extrapolation is not possible for '${nPath[dim]}' in '${nPath}' for ${JSON.stringify(obj)}`);
-      }
-      //  error if we end on an object
+    if (Array.isArray(rhs)) {
+      throw Error(`Interpolation on an array is not possible '${currKey}' in '${nPath}' for ${JSON.stringify(obj)}`);
+    }
+    if (typeof rhs === 'object') {
       if (dim === nPath.length - 1) {
-        throw Error(`Interpolation is not possible for '${nPath[dim]}' in '${nPath}' for ${JSON.stringify(obj)}`);
+        throw Error(`Interpolation is not possible for '${currKey}' in '${nPath}' for ${JSON.stringify(obj)}`);
       }
       //  recurse object
-      res = ndimLinterpol(dim + 1, nPath, currObj);
+      res = ndimLinterpol(dim + 1, nPath, rhs);
     } else {
       //  this terminates the recursion - by implication, we should also be at the end of the path
-      if (dim !== nPath.length - 1) {
-        throw Error(`Interpolation is not available beyond '${nPath[dim]}' in '${nPath}' for ${JSON.stringify(obj)}`);
-      }
+      throwIfNotAtLast(
+        currKey,
+        dim,
+        nPath,
+        obj,
+      );
+
       res = {
-        val: currObj,
+        val: rhs,
         extrapolation,
       };
     }
@@ -164,7 +229,7 @@ export function ndimLinterpol(
   const resy0 = recursionHelper(y0);
 
   const res = linterpol(
-    nPath[dim],
+    currKey,
     [x0, x1],
     [resy0.val, resy1.val],
   );
@@ -176,4 +241,51 @@ export function ndimLinterpol(
     || extrapolation;
 
   return res;
-}
+};
+
+/**
+ *  Interpolation when key is a string
+ *  Throws if key is not in form a|b|8 (string|string|number)
+ *  Throws if a and b are not present in obj
+ *  Throws if obj[a] and obj[b] are not arrays
+ *  Throws if this is not the end of the path
+ *  @param {string} currKey - current key for the lookup (string)
+ *  @param {number} dim - 0 based level into nPath
+ *  @param {(string|number)[]} nPath - the key to lookup for each nesting layer to search in obj
+ *  @param {NestedObject} obj - n-nested object to traverse for interpolation
+ */
+ndimLinterpolKeyString = (
+  currKey: string,
+  dim: number,
+  nPath: (number | string)[],
+  obj: NestedObject,
+): LinterpolRes => {
+  const keys = currKey.split('|');
+  if (keys.length !== 3) {
+    throw Error(`Invalid key received '${currKey}' in ${nPath}`);
+  }
+  const xVals = obj[keys[0]];
+  const yVals = obj[keys[1]];
+
+  if (!xVals || !yVals) {
+    throw Error(`Unrecognized key '${currKey}' in ${nPath}`);
+  }
+
+  if (!Array.isArray(xVals) || !Array.isArray(yVals)) {
+    throw Error(`Interpolation requires array values for key '${currKey}' in ${nPath}`);
+  }
+
+  //  for a string key, we should be at last element in nPath
+  throwIfNotAtLast(
+    currKey,
+    dim,
+    nPath,
+    obj,
+  );
+
+  return linterpol(
+    parseFloat(keys[2]),
+    xVals,
+    yVals,
+  );
+};

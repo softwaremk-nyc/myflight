@@ -161,7 +161,7 @@ describe('linear interpolation calculation', () => {
   });
 });
 
-describe('nested object interpolation', () => {
+describe('nested numeric object interpolation', () => {
   const obj: NestedObject = {
     1: {
       5: {
@@ -197,23 +197,6 @@ describe('nested object interpolation', () => {
         9: 180,
       },
     },
-    3: {
-      5: {
-        3: 190,
-        6: 200,
-        9: 210,
-      },
-      10: {
-        3: 220,
-        6: 230,
-        9: 240,
-      },
-      15: {
-        3: 250,
-        6: 260,
-        9: 270,
-      },
-    },
   };
 
   //  path to check
@@ -225,7 +208,7 @@ describe('nested object interpolation', () => {
     [[1, 5, 9], false, 30],
     [[1, 15, 9], false, 90],
     [[2, 10, 6], false, 140],
-    [[3, 15, 9], false, 270],
+    [[2, 15, 9], false, 180],
 
     //  interpolate at third dim
     [[1, 5, 4.5], false, 15],
@@ -236,25 +219,28 @@ describe('nested object interpolation', () => {
     [[2, 5, 7.5], false, 115],
     [[2, 10, 7.5], false, 145],
     [[2, 15, 7.5], false, 175],
-    [[3, 10, 7.5], false, 235],
-    [[3, 15, 7.5], false, 265],
 
     //  extrapolate at third dim
     [[1, 5, 1.5], true, 5],
     [[1, 5, 10.5], true, 35],
     [[2, 15, 10.5], true, 185],
-    [[3, 10, 1.5], true, 215],
 
     //  interpolate at second dim
     [[1, 7.5, 4.5], false, 30],
     [[1, 7.5, 7.5], false, 40],
     [[2, 7.5, 7.5], false, 130],
     [[2, 12.5, 7.5], false, 160],
-    [[3, 12.5, 7.5], false, 250],
+
+    //  extrapolate at second dim
+    [[1, 2.5, 4.5], true, 0],
+    [[1, 2.5, 7.5], true, 10],
+    [[2, 17.5, 7.5], true, 190],
 
     //  interpolate at first dim
     [[1.5, 7.5, 7.5], false, 85],
-    [[2.5, 12.5, 7.5], false, 205],
+
+    //  extrapolate at first dim
+    [[2.5, 12.5, 7.5], true, 205],
   ];
 
   test('nested interpolation - path checks', () => {
@@ -273,19 +259,23 @@ describe('nested object interpolation', () => {
     });
   });
 
-  test('throws if requested levels exceeds object nesting levels', () => {
-    expect(() => { ndimLinterpol(0, [1, 5, 3, 10], obj); }).toThrow('Interpolation is not available beyond');
-  });
-
   test('throws if requested levels ends at an object rather than value', () => {
     expect(() => { ndimLinterpol(0, [1, 5], obj); }).toThrow('Interpolation is not possible for');
   });
 
-  test('throws if extrapolation is seen for an object', () => {
-    expect(() => { ndimLinterpol(0, [1, 4], obj); }).toThrow('Extrapolation is not possible for');
+  test('throws if requested levels ends at an array rather than value', () => {
+    const obj2 = {
+      1: [1, 2, 3],
+      2: [4, 5, 6],
+    };
+    expect(() => { ndimLinterpol(0, [1], obj2); }).toThrow('Interpolation on an array is not');
+  });
+
+  test('throws if requested levels exceeds object nesting levels', () => {
+    expect(() => { ndimLinterpol(0, [1, 5, 3, 10], obj); }).toThrow('Interpolation is not available beyond');
   });
 
   test('throws if requested levels exceeds what is available in obj', () => {
-    expect(() => { ndimLinterpol(4, [1, 4], obj); }).toThrow('exceeds available dimensions');
+    expect(() => { ndimLinterpol(4, [1, 4], obj); }).toThrow('exceeds available levels');
   });
 });
