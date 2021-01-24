@@ -1,5 +1,10 @@
 import { NestedObject } from '../../src/util';
 
+export const cruiseNotes = [
+  'Table 5.8 - At 2550 lbs',
+  'Mixture leaned at all altitudes',
+];
+
 //  pressure altitude
 //  -20, 0, +20 difference from std
 //  bhp|rpm|ktas|gph

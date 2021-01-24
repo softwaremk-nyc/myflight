@@ -1,5 +1,18 @@
 import { NestedObject } from '../../src/util';
 
+export const ldgNotes = [
+  'Table 5.11 - At 2550 lbs',
+  'Flaps 30, Power off, Max braking',
+  'Paved, level, dry runway',
+  'Speed at 50 FT 61',
+  'Mixture leaned above 3000ft for max RPM',
+  'Decrease distance 10% for each 9kts head wind. Increase distance 10% for each 2kts tail wind',
+  'For dry grass runway, increase ground roll distance by 45%',
+  'For flaps up, add 9kts to approach speed and increase ground roll distance by 35%',
+];
+
+//  pressure altitude
+//  temp|dist
 export const ldgdist: NestedObject = {
   0: {
     temp: [0, 10, 20, 30, 40],
@@ -39,6 +52,8 @@ export const ldgdist: NestedObject = {
   },
 };
 
+//  pressure altitude
+//  temp|dist
 export const ldgdist50: NestedObject = {
   0: {
     temp: [0, 10, 20, 30, 40],

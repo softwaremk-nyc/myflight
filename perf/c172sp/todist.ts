@@ -1,5 +1,18 @@
 import { NestedObject } from '../../src/util';
 
+export const toNotes = [
+  'Table 5.5',
+  'Flaps 10, Full Throttle prior to brake release',
+  'Paved, level, dry runway',
+  'Liftoff 51, 48, 44 at (2550|2400|2200)',
+  'Mixture leaned above 3000ft for max RPM',
+  'Decrease distance 10% for each 9kts head wind. Increase distance 10% for each 2kts tail wind',
+  'For dry grass runway, increase ground roll distance by 15%',
+];
+
+//  a/c weight
+//  pressure altitude
+//  temp|dist
 export const todist: NestedObject = {
   2550: {
     0: {
@@ -117,6 +130,9 @@ export const todist: NestedObject = {
   },
 };
 
+//  a/c weight
+//  pressure altitude
+//  temp|dist
 export const todist50: NestedObject = {
   2550: {
     0: {
