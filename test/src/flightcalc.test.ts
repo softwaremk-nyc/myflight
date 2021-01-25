@@ -1,6 +1,7 @@
 import {
   f2c,
   c2f,
+  stdTemp,
   pressureAlt,
   windComponent,
 } from '../../src/flightcalc';
@@ -99,5 +100,26 @@ describe('headwind and crosswind component calculations', () => {
   test('throws if rwy is wrong', () => {
     expect(() => { windComponent(1, 10, 0); }).toThrow('Invalid runway provided');
     expect(() => { windComponent(1, 10, 37); }).toThrow('Invalid runway provided');
+  });
+});
+
+describe('standard temp calcs', () => {
+  it('should calculate std temps', () => {
+    const tests = [
+      [0, 15],
+      [500, 14],
+      [750, 13.5],
+      [1000, 13],
+      [2000, 11],
+      [3000, 9],
+      [7500, 0],
+      [8000, -1],
+      [8250, -1.5],
+      [8500, -2],
+    ];
+
+    tests.forEach((test) => {
+      expect(stdTemp(test[0])).toEqual(test[1]);
+    });
   });
 });

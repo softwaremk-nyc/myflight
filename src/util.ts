@@ -71,6 +71,36 @@ export interface LinterpolRes {
 }
 
 /**
+ *  Add two LinterpolRes objects (y + x)
+ * @param {LinterpolRes} x
+ * @param {LinterpolRes} y
+ */
+export function addLinterpolRes(
+  x: LinterpolRes,
+  y: LinterpolRes,
+): LinterpolRes {
+  return {
+    val: y.val + x.val,
+    extrapolation: y.extrapolation || x.extrapolation,
+  };
+}
+
+/**
+ *  Subtract two LinterpolRes objects (y - x)
+ * @param {LinterpolRes} x
+ * @param {LinterpolRes} y
+ */
+export function subtractLinterpolRes(
+  x: LinterpolRes,
+  y: LinterpolRes,
+): LinterpolRes {
+  return {
+    val: y.val - x.val,
+    extrapolation: y.extrapolation || x.extrapolation,
+  };
+}
+
+/**
  *  linear interpolation method
  *  throws if x_vals and y_vals are mismatched
  *  @param {number} x to interpolate a y
