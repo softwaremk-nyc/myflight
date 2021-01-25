@@ -1,5 +1,11 @@
 import { NestedObject } from '../../src/util';
 
+export const toNotes = [
+  'Table 5-15',
+  'Flaps 27',
+  'Approach at 90mph',
+];
+
 //  landing triple interpolation
 //  temp is F
 export const ldgdistA: NestedObject = {
