@@ -3,7 +3,7 @@ import {
   calcCGForWeights,
   CgDataEntry,
 } from '../../src/cg';
-import c172sp from '../../perf/c172SP/cg';
+import c172sp from '../../perf/c172sp/cg';
 
 describe('center of gravity calculation', () => {
   test('empty CgData provided', () => {

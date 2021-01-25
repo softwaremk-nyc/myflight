@@ -2,7 +2,7 @@ import {
   distAdjustmentForWind,
   anyAdjustmentForTemp,
   perf172,
-} from '../../../perf/c172SP/perf';
+} from '../../../perf/c172sp/perf';
 
 describe('distance adjustment for wind', () => {
   it('offsets distance for head or tail wind', () => {
