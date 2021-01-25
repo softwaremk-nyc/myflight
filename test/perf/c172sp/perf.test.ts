@@ -68,5 +68,18 @@ test('sample c172sp calc from POH', () => {
     8000,
     3.2,
   );
-  console.log(res);
+
+  //  there is no extrapolation for the above
+  Object.values(res).forEach((obj) => expect(obj.extrapolation).toBeFalsy());
+  expect(res.climbTime.val).toEqual(12.8);
+  expect(res.climbFuel.val).toEqual(4);
+  expect(res.climbDist.val).toEqual(17.4);
+  expect(res.cruiseRpm.val).toEqual(2588.6);
+  expect(res.cruiseKtas.val).toEqual(116.6);
+  expect(res.cruiseGph.val).toEqual(8.9);
+  expect(res.toDist.val).toEqual(1113.7);
+  expect(res.toDist50.val).toEqual(1898);
+  expect(res.ldgDist.val).toEqual(650);
+  expect(res.ldgDist50.val).toEqual(1455);
+  expect(res.totalFuel.val).toEqual(39.2);
 });

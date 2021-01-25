@@ -1,4 +1,9 @@
-import { calcCG } from '../../src/cg';
+import {
+  calcCG,
+  calcCGForWeights,
+  CgDataEntry,
+} from '../../src/cg';
+import c172sp from '../../perf/c172SP/cg';
 
 describe('center of gravity calculation', () => {
   test('empty CgData provided', () => {
@@ -40,5 +45,197 @@ describe('center of gravity calculation', () => {
       { weight: 1, arm: 2, moment: 0 },
     ]);
     expect(cgData).toEqual({ weight: 3, arm: 2, moment: 6 });
+  });
+});
+
+describe('calculate overall a/c cg and check overweight warnings', () => {
+  let base: CgDataEntry[];
+  let noMaxWComp: CgDataEntry[];
+  let maxWComp: CgDataEntry[];
+  beforeEach(() => {
+    base = [
+      {
+        name: 'Top',
+        cgData: { weight: 0, arm: 1, moment: 0 },
+        maxW: null,
+        comps: null,
+        notes: null,
+      },
+    ];
+
+    noMaxWComp = [
+      {
+        name: 'CompNoMaxW',
+        cgData: { weight: 0, arm: 10, moment: 0 },
+        maxW: null,
+        comps: [
+          {
+            name: 'Sub1',
+            cgData: { weight: 0, arm: 2, moment: 0 },
+            maxW: 1,
+            comps: null,
+            notes: null,
+          },
+          {
+            name: 'Sub3',
+            cgData: { weight: 0, arm: 3, moment: 0 },
+            maxW: 3,
+            comps: null,
+            notes: null,
+          },
+        ],
+        notes: null,
+      },
+    ];
+
+    maxWComp = [
+      {
+        name: 'CompMaxW',
+        cgData: null,
+        maxW: 5,
+        comps: [
+          {
+            name: 'Sub4',
+            cgData: { weight: 0, arm: 4, moment: 0 },
+            maxW: 4,
+            comps: null,
+            notes: null,
+          },
+          {
+            name: 'Sub5',
+            cgData: { weight: 0, arm: 5, moment: 0 },
+            maxW: 5,
+            comps: null,
+            notes: null,
+          },
+        ],
+        notes: null,
+      },
+    ];
+  });
+
+  test('fills in the max single weight', () => {
+    expect(base[0].cgData?.weight).toEqual(0);
+    const [, , warnings] = calcCGForWeights(
+      'ac',
+      [1],
+      base,
+    );
+    expect(base[0].cgData?.weight).toEqual(1);
+    expect(warnings.length).toEqual(0);
+  });
+
+  test('recursive fill in weights and register sub-component overweight warning', () => {
+    base[0].comps = noMaxWComp;
+    const [, , warnings] = calcCGForWeights(
+      'ac',
+      [1, 2, 3, 4],
+      base,
+    );
+
+    expect(warnings[0].indexOf('\'Sub1\' weight at 3 exceeds maximum') !== -1).toBeTruthy();
+    expect(warnings[1].indexOf('\'Sub3\' weight at 4 exceeds maximum') !== -1).toBeTruthy();
+    expect(warnings.length).toEqual(2);
+  });
+
+  test('recursive fill in weights and register parent/sub-component overweight warning', () => {
+    base[0].comps = maxWComp;
+    const [, , warnings] = calcCGForWeights(
+      'ac',
+      [1, 5, 6],
+      base,
+    );
+
+    expect(warnings[0].indexOf('\'Sub4\' weight at 5 exceeds maximum') !== -1).toBeTruthy();
+    expect(warnings[1].indexOf('\'Sub5\' weight at 6 exceeds maximum') !== -1).toBeTruthy();
+    expect(warnings[2].indexOf('\'CompMaxW\' weight at 11 exceeds maximum') !== -1).toBeTruthy(); // 5+6
+    expect(warnings.length).toEqual(3);
+  });
+
+  test('nested recursive fill in weights and register parent/sub-component overweight warning', () => {
+    //  silence linter
+    if (maxWComp[0].comps) {
+      maxWComp[0].comps[1].comps = noMaxWComp;
+    }
+    base[0].comps = maxWComp;
+    const [, , warnings] = calcCGForWeights(
+      'ac',
+      [1, 3, 2, 4, 5],
+      base,
+    );
+
+    expect(warnings.length).toEqual(3);
+    expect(warnings[0].indexOf('\'Sub1\' weight at 5 exceeds maximum') !== -1).toBeTruthy();
+    expect(warnings[1].indexOf('\'Sub5\' weight at 11 exceeds maximum') !== -1).toBeTruthy(); // 2+5+4
+    expect(warnings[2].indexOf('\'CompMaxW\' weight at 14 exceeds maximum') !== -1).toBeTruthy(); // 3+[11]
+  });
+});
+
+test('sample c172sp cg calculation', () => {
+  const testPlane = c172sp.N5255R;
+  //  weights
+  //  total weight
+  //  expected error message
+  const tests = [
+    [
+      //  normal cg calc
+      [-1, 150, 110, 110, 15, 30, 20, 318],
+      { weight: 2465.1, arm: 45, moment: 110988.3 },
+      [],
+    ],
+    [
+      //  fuel overweight
+      [-1, 150, 110, 110, 15, 30, 20, 319],
+      { weight: 2466.1, arm: 45, moment: 111036.3 },
+      ['\'Fuel\' weight at 319 exceeds maximum weight'],
+    ],
+    [
+      //  baggage 1 overweight
+      [-1, 150, 110, 110, 15, 121, 0, 318],
+      { weight: 2536.1, arm: 46.2, moment: 117173.3 },
+      [
+        '\'Baggage Compartment 1\' weight at 121',
+        '\'Baggage Compartment Total\' weight at 121',
+      ],
+    ],
+    [
+      //  baggage 2 overweight
+      [-1, 150, 110, 110, 15, 0, 80, 318],
+      { weight: 2495.1, arm: 46.3, moment: 115518.3 },
+      [
+        '\'Baggage Compartment 2\' weight at 80',
+      ],
+    ],
+    [
+      //  overall aircraft
+      [-1, 150, 210, 110, 15, 70, 50, 318],
+      { weight: 2635.1, arm: 46.4, moment: 122178.3 },
+      [
+        '\'N5255R\' weight at 2635.1 exceeds maximum weight',
+      ],
+    ],
+  ];
+
+  tests.forEach((test) => {
+    //  [cgCalc, flat, warnings]
+    const [cgCalc, , warnings] = calcCGForWeights(
+      testPlane[0].name,
+      test[0] as number[],
+      testPlane,
+    );
+
+    expect(cgCalc).toEqual(test[1] as object);
+    expect(warnings.length).toEqual((test[2] as string[]).length);
+
+    let w = 0;
+    (test[2] as string[]).forEach((err) => {
+      expect(warnings[w].indexOf(err) !== -1).toBeTruthy();
+      w += 1;
+    });
+
+    // console.log(flattenCgDataEntries(testPlane));
+    // console.log(cgCalc);
+    // console.log(flat);
+    // console.log(warnings);
   });
 });
