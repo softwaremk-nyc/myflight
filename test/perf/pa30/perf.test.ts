@@ -24,7 +24,6 @@ test('sample pa30 calc from POH', () => {
     true,
   );
 
-  console.log(res);
   //  there is no extrapolation for the above
   Object.values(res).forEach((obj) => {
     if (obj) {
