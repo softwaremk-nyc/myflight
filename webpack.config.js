@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const dist = path.resolve(__dirname, './dist/client');
 console.log('webpack location: ', dist);
@@ -36,6 +37,14 @@ module.exports = {
     ],
   },
   plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: 'assets/',
+          to: 'assets/',
+        },
+      ],
+    }),
     new HtmlWebpackPlugin({
       title: 'Application title',
       template: './client/index.tmpl.html',
