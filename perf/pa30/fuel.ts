@@ -1,6 +1,6 @@
 import { NestedObject } from '../../src/util';
 
-export const cruiseNotes = [
+export const fuelNotes = [
   'Table 5-3 - Part Throttle Fuel Consumption',
   'Table 5-4 - Altitude Performance',
   'Best Power - 100F ROP Peak EGT',

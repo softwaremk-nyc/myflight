@@ -32,6 +32,7 @@ import {
   stdTemp,
   ktsToMph,
 } from '../../src/flightcalc';
+import { cruise } from './cruise';
 import { accelstopdist, accelstopdistA, accelstopdistB } from './accelstop';
 
 /**
@@ -123,12 +124,18 @@ export default function perfPa30(
     extrapolation: bhp.extrapolation,
   };
 
+  const cruiseKtas = ndimLinterpol(
+    0,
+    [bhppct.val, `pAlt|ktas|${pAltCruise}`],
+    cruise,
+  );
+
   return {
     climbTime: null,
     climbFuel: null,
     climbDist: null,
     cruiseRpm: null,
-    cruiseKtas: null,
+    cruiseKtas,
     cruiseGph,
     //  at actual takeoff weight
     toDist: calcDist(todistA, todistB, todist, toWeight, start),

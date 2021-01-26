@@ -35,7 +35,7 @@ test('sample pa30 calc from POH', () => {
   expect(res.climbFuel?.val).not.toBeDefined();
   expect(res.climbDist?.val).not.toBeDefined();
   expect(res.cruiseRpm?.val).not.toBeDefined();
-  // expect(res.cruiseKtas?.val).toEqual(116.6);
+  expect(res.cruiseKtas?.val).toEqual(180.2);
   expect(res.cruiseGph?.val).toEqual(15.2);
   expect(res.toDist?.val).toEqual(1352.1);
   expect(res.toDist50?.val).toEqual(2174.4);
