@@ -7,6 +7,7 @@ export const toNotes = [
 ];
 
 //  takeoff triple interpolation
+//  pAlt
 //  temp is F
 export const todistA: NestedObject = {
   0: {

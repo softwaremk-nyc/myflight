@@ -7,6 +7,9 @@ export const cruiseNotes = [
   'Best Economy - Peak EGT',
 ];
 
+//  rpm
+//  manifold pressure
+//  bhp at sea-level
 export const bhpSeaLevel: NestedObject = {
   1800: {
     mp: [22, 25],

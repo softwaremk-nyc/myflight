@@ -7,6 +7,7 @@ export const toNotes = [
 ];
 
 //  landing triple interpolation
+//  pAlt
 //  temp is F
 export const ldgdistA: NestedObject = {
   0: {

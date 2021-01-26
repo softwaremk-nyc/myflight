@@ -1,6 +1,16 @@
 import { round } from './util';
 
 /**
+ *  convert knots to mph
+ *  @param k - knots val to convert
+ */
+export function ktsToMph(
+  k: number,
+): number {
+  return (k * 6076) / 5280;
+}
+
+/**
  *  Fahrenheit to Celcius
  *  @param {number} f - fahrenheit to convert
  */
