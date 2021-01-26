@@ -145,10 +145,15 @@ export function perf172(
     cruiseRpm,
     cruiseKtas,
     cruiseGph,
+    //  at actual takeoff weight
     toDist: calcTakeOffDist(todist),
     toDist50: calcTakeOffDist(todist50),
+    //  at max weight only per POH
     ldgDist: calcLandingDist(ldgdist),
     ldgDist50: calcLandingDist(ldgdist50),
     totalFuel,
+    accelStop: null,
+    bhp: null,
+    bhppct: null,
   };
 }

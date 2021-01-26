@@ -4,6 +4,7 @@ import {
   CgDataEntry,
 } from '../../src/cg';
 import c172sp from '../../perf/c172sp/cg';
+import pa30 from '../../perf/pa30/cg';
 
 describe('center of gravity calculation', () => {
   test('empty CgData provided', () => {
@@ -213,6 +214,62 @@ test('sample c172sp cg calculation', () => {
       [
         '\'N5255R\' weight at 2635.1 exceeds maximum weight',
       ],
+    ],
+  ];
+
+  tests.forEach((test) => {
+    //  [cgCalc, flat, warnings]
+    const [cgCalc, , warnings] = calcCGForWeights(
+      testPlane[0].name,
+      test[0] as number[],
+      testPlane,
+    );
+
+    expect(cgCalc).toEqual(test[1] as object);
+    expect(warnings.length).toEqual((test[2] as string[]).length);
+
+    let w = 0;
+    (test[2] as string[]).forEach((err) => {
+      expect(warnings[w].indexOf(err) !== -1).toBeTruthy();
+      w += 1;
+    });
+
+    // console.log(flattenCgDataEntries(testPlane));
+    // console.log(cgCalc);
+    // console.log(flat);
+    // console.log(warnings);
+  });
+});
+
+test('sample pa30 cg calculation', () => {
+  const testPlane = pa30.N7943Y;
+  //  weights
+  //  total weight
+  //  expected error message
+  const tests = [
+    [
+      //  normal cg calc
+      [-1, 150, 150, 10, 0, 0, 324, 180],
+      { weight: 3394, arm: 85, moment: 288546.4 },
+      [],
+    ],
+    [
+      //  main fuel overweight
+      [-1, 150, 150, 10, 0, 0, 325, 180],
+      { weight: 3395, arm: 85, moment: 288636.4 },
+      ['\'Fuel\' weight at 325 exceeds maximum weight'],
+    ],
+    [
+      //  aux fuel overweight
+      [-1, 150, 150, 10, 0, 0, 324, 181],
+      { weight: 3395, arm: 85, moment: 288641.4 },
+      ['\'Fuel - Aux\' weight at 181 exceeds maximum weight'],
+    ],
+    [
+      //  overall aircraft
+      [-1, 150, 200, 10, 0, 200, 324, 180],
+      { weight: 3644, arm: 88.1, moment: 321186.4 },
+      ['\'N7943Y\' weight at 3644 exceeds maximum weight'],
     ],
   ];
 
