@@ -35,7 +35,7 @@ it('hides label that info is not available', () => {
   expect(screen.queryByText(/information is not available/)).toBeNull();
 });
 
-it('invokes cb if input text is changed', () => {
+it('invokes cb if input text is changed - returns uppercase', () => {
   const fn = jest.fn();
   render(
     <AirportComp
@@ -48,5 +48,5 @@ it('invokes cb if input text is changed', () => {
     target: { value: 'myAirport' },
   })
   expect(fn.mock.calls.length).toEqual(1);
-  expect(fn.mock.calls[0][0]).toEqual('myAirport');
+  expect(fn.mock.calls[0][0]).toEqual('MYAIRPORT');
 });
