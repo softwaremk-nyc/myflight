@@ -34,8 +34,6 @@ it('invokes cb with 0 if empty string is in input', () => {
   fireEvent.change(input, {
     target: { value: '1.2' },
   });
-  // userEvent.type(input, '1.3');
-  // userEvent.type(input, '{del}');
 
   fireEvent.change(input, {
     target: { value: '' },

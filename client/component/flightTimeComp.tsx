@@ -7,7 +7,7 @@ export interface FlightTimeCompProp {
 export const FlightTimeComp = ({
   flightTimeCb,
 }: FlightTimeCompProp) => <div>
-    <table className='table table-responsive-sm'>
+    <table className='table table-responsive-sm table-borderless'>
       <tbody className='align-middle'>
         <tr>
           <td>
