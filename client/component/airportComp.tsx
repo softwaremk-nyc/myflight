@@ -1,15 +1,17 @@
 import React from 'react';
 
 export interface AirportCompProp {
-  float: String;
+  id: string;
+  float: string;
   airportCb: (code: string) => void;
   noInfo: boolean;
 }
 
 export const AirportComp = ({
+  id,
   float,
-  airportCb,
   noInfo,
+  airportCb,
 }: AirportCompProp) => {
   const [airportCode, setAirportCode] = React.useState('');
   const noInfoLabel = noInfo
@@ -20,7 +22,7 @@ export const AirportComp = ({
       <div className='form-floating mb-2 mx-2'>
         <input
           type='text'
-          id="floatingInput"
+          id={`floatingInput_${id}`}
           maxLength={4}
           className='form-control'
           placeholder='Airport'

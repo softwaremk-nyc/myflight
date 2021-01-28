@@ -27,14 +27,16 @@ ReactDOM.render(
     </div>
     <div className='input-group mb-2 flex-nowrap'>
       <AirportComp
+        id='1'
         float='From'
-        airportCb={airportCb}
         noInfo={false}
+        airportCb={airportCb}
       />
       <AirportComp
+        id='2'
         float='To'
-        airportCb={airportCb}
         noInfo={true}
+        airportCb={airportCb}
       />
     </div>
   </div>,

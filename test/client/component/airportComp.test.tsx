@@ -13,9 +13,10 @@ it('displays label that info is not available', () => {
   const fn = jest.fn();
   render(
     <AirportComp
+      id='1'
       float='testPrefix'
-      airportCb={fn}
       noInfo={true}
+      airportCb={fn}
     />
   );
   expect(fn.mock.calls.length).toEqual(0);
@@ -26,9 +27,10 @@ it('hides label that info is not available', () => {
   const fn = jest.fn();
   render(
     <AirportComp
+      id='1'
       float='testPrefix'
-      airportCb={fn}
       noInfo={false}
+      airportCb={fn}
     />
   );
   expect(fn.mock.calls.length).toEqual(0);
@@ -39,9 +41,10 @@ it('invokes cb if input text is changed - returns uppercase', () => {
   const fn = jest.fn();
   render(
     <AirportComp
+      id='1'
       float='testPrefix'
-      airportCb={fn}
       noInfo={false}
+      airportCb={fn}
     />
   );
   fireEvent.change(screen.getByPlaceholderText(/Airport/i), {
