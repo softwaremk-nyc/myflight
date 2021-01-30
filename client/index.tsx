@@ -9,10 +9,10 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 import { Provider } from 'react-redux';
-import { AirportComp } from './component/airportComp';
 import { FlightTimeComp } from './component/flightTimeComp';
+import AirportComp from './component/airportComp';
 import PlaneSelector from './component/planeSelector';
-import reducer from './redux/planeSlice';
+import reducer from './redux/rootReducer';
 
 const client = new ApolloClient({
   uri: 'graphql/',
@@ -27,10 +27,6 @@ function flightTimeCb(time: number) {
   console.log(time);
 }
 
-function airportCb(airport: string) {
-  console.log(airport);
-}
-
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
@@ -38,20 +34,7 @@ ReactDOM.render(
         <div className='input-group mb-2'>
           <FlightTimeComp flightTimeCb={flightTimeCb} />
         </div>
-        <div className='input-group mb-2 flex-nowrap'>
-          <AirportComp
-            id='1'
-            float='From'
-            noInfo={false}
-            airportCb={airportCb}
-          />
-          <AirportComp
-            id='2'
-            float='To'
-            noInfo={true}
-            airportCb={airportCb}
-          />
-        </div>
+          <AirportComp />
       </div>
     </Provider>
   </ApolloProvider>,

@@ -7,13 +7,19 @@ import {
   PlaneSelectionState,
 } from '../redux/planeSlice';
 import planeIdsSelector from '../selector/planeIdsSelector';
+import { RootState } from '../redux/rootReducer';
 
-const mapState = (state: PlaneSelectionState) => ({
-  planeTypes: state.planeTypes,
-  planeIds: planeIdsSelector(planes)(state),
-  planeType: state.planeType,
-  planeId: state.planeId,
-});
+const mapState = (state: RootState) => {
+  const planeState: PlaneSelectionState = state.plane;
+  const { planeTypes, planeType, planeId } = planeState;
+
+  return {
+    planeTypes,
+    planeIds: planeIdsSelector(planes)(state.plane),
+    planeType,
+    planeId,
+  };
+};
 
 const connector = connect(mapState, { changeType, changeId });
 type PlaneSelectorProp = ConnectedProps<typeof connector>;

@@ -9,47 +9,32 @@ import { AirportComp } from '../../../client/component/airportComp';
 
 afterEach(cleanup);
 
-it('displays label that info is not available', () => {
-  const fn = jest.fn();
+it('invokes cb if input text is changed - returns uppercase', async () => {
+  const changeIcaoId = jest.fn();
+  const testProp: any = {
+    airportInfo: [
+      { icaoId: '', label: '1', info: null },
+      { icaoId: '', label: '2', info: null },
+    ],
+    changeIcaoId,
+  }
   render(
-    <AirportComp
-      id='1'
-      float='testPrefix'
-      noInfo={true}
-      airportCb={fn}
-    />
+    <AirportComp {...testProp} />
   );
-  expect(fn.mock.calls.length).toEqual(0);
-  expect(screen.queryByText(/information is not available/)).not.toBeNull();
-});
 
-it('hides label that info is not available', () => {
-  const fn = jest.fn();
-  render(
-    <AirportComp
-      id='1'
-      float='testPrefix'
-      noInfo={false}
-      airportCb={fn}
-    />
-  );
-  expect(fn.mock.calls.length).toEqual(0);
-  expect(screen.queryByText(/information is not available/)).toBeNull();
-});
+  const inputs = screen.getAllByPlaceholderText(/Airport/i);
+  expect(inputs.length).toEqual(2);
 
-it('invokes cb if input text is changed - returns uppercase', () => {
-  const fn = jest.fn();
-  render(
-    <AirportComp
-      id='1'
-      float='testPrefix'
-      noInfo={false}
-      airportCb={fn}
-    />
-  );
-  fireEvent.change(screen.getByPlaceholderText(/Airport/i), {
-    target: { value: 'myAirport' },
+  fireEvent.change(inputs[0], {
+    target: { id: 0, value: 'myAirport' },
   })
-  expect(fn.mock.calls.length).toEqual(1);
-  expect(fn.mock.calls[0][0]).toEqual('MYAIRPORT');
+
+  //  debounced - initially no call
+  expect(changeIcaoId.mock.calls.length).toEqual(0);
+
+  //  then a call
+  await (setTimeout(() => {
+    expect(changeIcaoId.mock.calls.length).toEqual(1);
+    expect(changeIcaoId.mock.calls[0][0]).toEqual('MYAIRPORT');
+  }, 2500));
 });
