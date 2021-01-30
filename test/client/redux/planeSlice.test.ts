@@ -10,40 +10,36 @@ beforeEach(() => {
   state = {
     planeTypes: ['aa', 'bb'],
     planeType: 'aa',
-    planeIds: ['cc', 'dd'],
     planeId: 'cc',
-    getIdsForType: (type: string) => { return ['ee', 'ff'] },
   };
 });
 
-it('changing id affects only id', () => {
+it('changing id', () => {
   expect(reducer(
     state,
     {
       type: changeId.type,
       payload: 'dd1',
-    }))
+    },
+  ))
     .toEqual({
       planeTypes: ['aa', 'bb'],
       planeType: 'aa',
-      planeIds: ['cc', 'dd'],
       planeId: 'dd1',
-      getIdsForType: state.getIdsForType,
     });
 });
 
-it('changing type resets ids and sets id to first entry', () => {
+it('changing type', () => {
   expect(reducer(
     state,
     {
       type: changeType.type,
       payload: 'bb1',
-    }))
+    },
+  ))
     .toEqual({
       planeTypes: ['aa', 'bb'],
       planeType: 'bb1',
-      planeIds: ['ee', 'ff'],
-      planeId: 'ee',
-      getIdsForType: state.getIdsForType,
+      planeId: 'cc',
     });
 });

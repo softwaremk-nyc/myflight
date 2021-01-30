@@ -3,12 +3,14 @@ import { connect, ConnectedProps } from 'react-redux';
 import {
   changeType,
   changeId,
+  planes,
   PlaneSelectionState,
 } from '../redux/planeSlice';
+import planeIdsSelector from '../selector/planeIdsSelector';
 
 const mapState = (state: PlaneSelectionState) => ({
   planeTypes: state.planeTypes,
-  planeIds: state.planeIds,
+  planeIds: planeIdsSelector(planes)(state),
   planeType: state.planeType,
   planeId: state.planeId,
 });

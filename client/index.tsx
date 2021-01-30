@@ -21,9 +21,6 @@ const client = new ApolloClient({
 
 const store = configureStore({
   reducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-    serializableCheck: false,
-  }),
 });
 
 function flightTimeCb(time: number) {

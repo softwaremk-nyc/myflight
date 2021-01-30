@@ -14,6 +14,14 @@ export interface CgDataEntry {
   notes: string | null,
 }
 
+export interface CgDataEntries {
+  [name: string]: CgDataEntry[];
+}
+
+export interface CgDataEntriesList {
+  [name: string]: CgDataEntries;
+}
+
 export function flattenCgDataEntries(
   entries: CgDataEntry[],
 ): CgData[] {

@@ -3,6 +3,7 @@ import {
 } from '../perfCommon';
 import {
   CgDataEntry,
+  CgDataEntries,
 } from '../../src/cg';
 
 const basePa30: CgDataEntry[] = [
@@ -79,7 +80,7 @@ const n8444y: CgDataEntry[] = [
   },
 ];
 
-const pa30: { [name: string]: CgDataEntry[] } = {
+const pa30: CgDataEntries = {
   [n7943y[0].name]: n7943y,
   [n8444y[0].name]: n8444y,
 };
