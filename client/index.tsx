@@ -3,14 +3,27 @@ import ReactDOM from 'react-dom';
 import {
   configureStore,
 } from '@reduxjs/toolkit';
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+} from '@apollo/client';
 import { Provider } from 'react-redux';
 import { AirportComp } from './component/airportComp';
 import { FlightTimeComp } from './component/flightTimeComp';
 import PlaneSelector from './component/planeSelector';
 import reducer from './redux/planeSlice';
 
+const client = new ApolloClient({
+  uri: 'graphql/',
+  cache: new InMemoryCache(),
+});
+
 const store = configureStore({
   reducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 });
 
 function flightTimeCb(time: number) {
@@ -22,25 +35,29 @@ function airportCb(airport: string) {
 }
 
 ReactDOM.render(
-  <div>
-    <div className='input-group mb-2'>
-      <FlightTimeComp flightTimeCb={flightTimeCb} />
-    </div>
-    <div className='input-group mb-2 flex-nowrap'>
-      <AirportComp
-        id='1'
-        float='From'
-        noInfo={false}
-        airportCb={airportCb}
-      />
-      <AirportComp
-        id='2'
-        float='To'
-        noInfo={true}
-        airportCb={airportCb}
-      />
-    </div>
-  </div>,
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <div>
+        <div className='input-group mb-2'>
+          <FlightTimeComp flightTimeCb={flightTimeCb} />
+        </div>
+        <div className='input-group mb-2 flex-nowrap'>
+          <AirportComp
+            id='1'
+            float='From'
+            noInfo={false}
+            airportCb={airportCb}
+          />
+          <AirportComp
+            id='2'
+            float='To'
+            noInfo={true}
+            airportCb={airportCb}
+          />
+        </div>
+      </div>
+    </Provider>
+  </ApolloProvider>,
   document.getElementById('root'),
 );
 

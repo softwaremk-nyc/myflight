@@ -18,6 +18,11 @@ module.exports = {
     // filename: '[name].[hash].js'
   },
   devtool: 'source-map',
+  devServer: {
+    proxy: {
+      '/graphql': 'http://localhost:3000',
+    },
+  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
