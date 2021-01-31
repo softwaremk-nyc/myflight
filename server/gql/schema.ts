@@ -10,7 +10,9 @@ const typeDefs = gql`
   type Weather {
     icaoId: String,
     updated: String,
+    tempDecimal: Float,
     temp: Int,
+    altimeter: Float,
     wind: Wind,
   }
 
