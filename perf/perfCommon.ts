@@ -17,7 +17,7 @@ export interface AirportInfo2 extends AirportInfo {
   runways: {
     ident1: string,
     ident2: string,
-  } [],
+  }[],
   updated: string,
   wind: {
     direction: number | null,

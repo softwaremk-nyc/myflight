@@ -7,7 +7,7 @@ export interface AirportInfoState {
   info: AirportInfo2 | null,
 }
 
-const info = {
+export const defaultAirportInfo = {
   pAlt: 0,
   temp: 15,
   stdTempCorrection: 0,
@@ -28,16 +28,26 @@ const info = {
   },
 };
 
+export function copyAirportInfoFromState(state: AirportInfoState) {
+  return state.info
+    ? {
+      ...state.info,
+      wind: { ...state.info.wind },
+      runways: [...state.info.runways],
+    }
+    : defaultAirportInfo;
+}
+
 const initialFromState: AirportInfoState = {
   icaoId: '',
   label: 'From',
-  info,
+  info: defaultAirportInfo,
 };
 
 const initialToState: AirportInfoState = {
   icaoId: '',
   label: 'To',
-  info,
+  info: defaultAirportInfo,
 };
 
 const airportInfoSlice = createSlice({
@@ -51,9 +61,12 @@ const airportInfoSlice = createSlice({
     changeIcaoId: (state, action) => {
       state[action.payload.id].icaoId = action.payload.icaoId;
     },
+    changeInfo: (state, action) => {
+      state[action.payload.id].info = action.payload.info;
+    },
   },
   /* eslint-enable no-param-reassign */
 });
 
-export const { changeIcaoId } = airportInfoSlice.actions;
+export const { changeIcaoId, changeInfo } = airportInfoSlice.actions;
 export default airportInfoSlice.reducer;

@@ -34,7 +34,7 @@ ReactDOM.render(
         <div className='input-group mb-2'>
           <FlightTimeComp flightTimeCb={flightTimeCb} />
         </div>
-          <AirportComp />
+        <AirportComp />
       </div>
     </Provider>
   </ApolloProvider>,

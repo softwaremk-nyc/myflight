@@ -3,6 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { DebounceInput } from 'react-debounce-input';
 import { RootState } from '../redux/rootReducer';
 import { changeIcaoId } from '../redux/airportInfoSlice';
+import AirportInfoComp from './airportInfoComp';
 
 const mapState = (state: RootState) => ({
   airportInfo: state.airportInfo,
@@ -35,6 +36,7 @@ export const AirportComp = (props: AirportCompProp) => <div
         }}
       />
       <label htmlFor={`label_${index}`}>{info.label}</label>
+      <AirportInfoComp key={`key_${index}`} id={index}/>
     </div>
     ))
   }

@@ -30,7 +30,7 @@ export const PlaneSelector = (props: PlaneSelectorProp) => <table className='tab
     <tr>
       <td>
         Type:
-          </td>
+      </td>
       <td>
         <select
           data-testid='planeType'
