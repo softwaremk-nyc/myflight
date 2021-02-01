@@ -39,8 +39,7 @@ it('invokes cb if input text is changed - returns uppercase', async () => {
   expect(changeIcaoId.mock.calls.length).toEqual(0);
 
   //  then a call
-  await (setTimeout(() => {
-    expect(changeIcaoId.mock.calls.length).toEqual(1);
-    expect(changeIcaoId.mock.calls[0][0]).toEqual('MYAIRPORT');
-  }, 2500));
+  await new Promise(r => setTimeout(r, 2001));
+  expect(changeIcaoId.mock.calls.length).toEqual(1);
+  expect(changeIcaoId.mock.calls[0][0]).toEqual({ id: 0, icaoId: 'MYAIRPORT' });
 });

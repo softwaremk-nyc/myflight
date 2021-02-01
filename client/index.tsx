@@ -6,7 +6,7 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 import { Provider } from 'react-redux';
-import { FlightTimeComp } from './component/flightTimeComp';
+import FlightTimeComp from './component/flightTimeComp';
 import AirportComp from './component/airportComp';
 import PlaneSelector from './component/planeSelector';
 import store from './redux/rootReducer';
@@ -16,16 +16,12 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-function flightTimeCb(time: number) {
-  console.log(time);
-}
-
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
       <div>
         <div className='input-group mb-2'>
-          <FlightTimeComp flightTimeCb={flightTimeCb} />
+          <FlightTimeComp />
         </div>
         <AirportComp />
       </div>

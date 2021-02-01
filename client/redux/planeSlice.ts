@@ -16,6 +16,7 @@ export interface PlaneSelectionState {
   planeTypes: string[];
   planeType: string,
   planeId: string,
+  flightTime?: number,
 }
 
 const planeTypes = Object.keys(planes);
@@ -24,6 +25,7 @@ const initialState: PlaneSelectionState = {
   planeTypes,
   planeType: planeTypes[0],
   planeId: '',
+  flightTime: 1,
 };
 
 const planeSlice = createSlice({
@@ -37,9 +39,16 @@ const planeSlice = createSlice({
     changeId: (state, action) => {
       state.planeId = action.payload;
     },
+    changeFlightTime: (state, action) => {
+      state.flightTime = action.payload;
+    },
   },
   /* eslint-enable no-param-reassign */
 });
 
-export const { changeType, changeId } = planeSlice.actions;
+export const {
+  changeType,
+  changeId,
+  changeFlightTime,
+} = planeSlice.actions;
 export default planeSlice.reducer;

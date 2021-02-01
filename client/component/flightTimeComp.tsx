@@ -1,12 +1,17 @@
 import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { DebounceInput } from 'react-debounce-input';
+import { RootState } from '../redux/rootReducer';
+import { changeFlightTime } from '../redux/planeSlice';
 
-export interface FlightTimeCompProp {
-  flightTimeCb: (time: number) => void;
-}
+const mapState = (state: RootState) => ({
+  flightTime: state.plane.flightTime,
+});
 
-export const FlightTimeComp = ({
-  flightTimeCb,
-}: FlightTimeCompProp) => <div>
+const connector = connect(mapState, { changeFlightTime });
+type FlightTimeCompProp = ConnectedProps<typeof connector>;
+
+export const FlightTimeComp = (props: FlightTimeCompProp) => <div>
     <table className='table table-responsive-sm table-borderless'>
       <tbody className='align-middle'>
         <tr>
@@ -15,14 +20,18 @@ export const FlightTimeComp = ({
           </td>
           <td>
             <div className='input-group'>
-              <input
+            <DebounceInput
                 type='number'
-                className='form-control'
+                debounceTimeout={500}
+                className='form-control form-control-sm'
                 placeholder='Time'
                 aria-label='Cruise Time (hours)'
+                value={props.flightTime}
                 onChange={(event) => {
-                  const val = parseFloat(event.target.value);
-                  flightTimeCb(Number.isNaN(val) ? 0 : val);
+                  const info = Number.isNaN(event.target.valueAsNumber)
+                    ? 0
+                    : event.target.valueAsNumber;
+                  props.changeFlightTime(info);
                 }}
               />
               <span className='input-group-text'>Hours</span>
@@ -32,3 +41,5 @@ export const FlightTimeComp = ({
       </tbody>
     </table>
   </div>;
+
+export default connector(FlightTimeComp);
