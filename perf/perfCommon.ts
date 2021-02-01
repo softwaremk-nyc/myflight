@@ -12,20 +12,6 @@ export interface AirportInfo {
   isPaved: boolean,
 }
 
-export interface AirportInfo2 extends AirportInfo {
-  elevation: number,
-  runways: {
-    ident1: string,
-    ident2: string,
-  }[],
-  updated: string,
-  wind: {
-    direction: number | null,
-    speed: number | null,
-    gust: number | null,
-  }
-}
-
 export interface PerfResult {
   climbTime: LinterpolRes | null,
   climbFuel: LinterpolRes | null,

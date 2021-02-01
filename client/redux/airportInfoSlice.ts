@@ -1,53 +1,57 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AirportInfo2 } from '../../perf/perfCommon';
+
+export interface AirportApiData {
+  elevation: number,
+  temp: number,
+  altimeter: number,
+  runways: {
+    ident1: string,
+    ident2: string,
+    isPaved: boolean,
+  }[],
+  wind: {
+    direction: number | null,
+    speed: number | null,
+    gust: number | null,
+  },
+  updated: string,
+}
 
 export interface AirportInfoState {
   icaoId: string,
   label: string,
-  info: AirportInfo2 | null,
+  info: AirportApiData,
 }
 
-export const defaultAirportInfo = {
-  pAlt: 0,
-  temp: 15,
-  stdTempCorrection: 0,
-  headWind: 0,
-  isPaved: true,
+export const defaultAirportData: AirportApiData = {
   elevation: 0,
+  temp: 15,
+  altimeter: 29.92,
   runways: [
     {
       ident1: '36',
       ident2: '18',
+      isPaved: true,
     },
   ],
-  updated: '2021-01-30T03:53:00Z',
   wind: {
     direction: null,
     speed: null,
     gust: null,
   },
+  updated: new Date().toISOString(),
 };
-
-export function copyAirportInfoFromState(state: AirportInfoState) {
-  return state.info
-    ? {
-      ...state.info,
-      wind: { ...state.info.wind },
-      runways: [...state.info.runways],
-    }
-    : defaultAirportInfo;
-}
 
 const initialFromState: AirportInfoState = {
   icaoId: '',
   label: 'From',
-  info: defaultAirportInfo,
+  info: defaultAirportData,
 };
 
 const initialToState: AirportInfoState = {
   icaoId: '',
   label: 'To',
-  info: defaultAirportInfo,
+  info: defaultAirportData,
 };
 
 const airportInfoSlice = createSlice({
@@ -61,12 +65,39 @@ const airportInfoSlice = createSlice({
     changeIcaoId: (state, action) => {
       state[action.payload.id].icaoId = action.payload.icaoId;
     },
-    changeInfo: (state, action) => {
-      state[action.payload.id].info = action.payload.info;
+    changeElevation: (state, action) => {
+      state[action.payload.id].info.elevation = action.payload.elevation;
+    },
+    changeTemp: (state, action) => {
+      state[action.payload.id].info.temp = action.payload.temp;
+    },
+    changeAltimeter: (state, action) => {
+      state[action.payload.id].info.altimeter = action.payload.altimeter;
+    },
+    changeRunways: (state, action) => {
+      state[action.payload.id].info.runways = action.payload.runways;
+    },
+    changeWindDirection: (state, action) => {
+      state[action.payload.id].info.wind.direction = action.payload.windDirection;
+    },
+    changeWindSpeed: (state, action) => {
+      state[action.payload.id].info.wind.speed = action.payload.windSpeed;
+    },
+    changeWindGust: (state, action) => {
+      state[action.payload.id].info.wind.gust = action.payload.windGust;
     },
   },
   /* eslint-enable no-param-reassign */
 });
 
-export const { changeIcaoId, changeInfo } = airportInfoSlice.actions;
+export const {
+  changeIcaoId,
+  changeElevation,
+  changeTemp,
+  changeAltimeter,
+  changeRunways,
+  changeWindDirection,
+  changeWindSpeed,
+  changeWindGust,
+} = airportInfoSlice.actions;
 export default airportInfoSlice.reducer;

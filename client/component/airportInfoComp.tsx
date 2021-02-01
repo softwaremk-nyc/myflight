@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, batch } from 'react-redux';
 import {
   useQuery,
   gql,
@@ -7,15 +7,16 @@ import {
 import { DebounceInput } from 'react-debounce-input';
 import { RootState } from '../redux/rootReducer';
 import {
-  changeInfo,
-  copyAirportInfoFromState,
+  changeElevation,
+  changeTemp,
+  changeAltimeter,
+  changeRunways,
+  changeWindDirection,
+  changeWindSpeed,
+  changeWindGust,
 } from '../redux/airportInfoSlice';
-// import {
-//   pressureAlt,
-//   stdTemp,
-// } from '../../src/flightcalc';
 
-const STATION_INFO = gql`
+export const STATION_INFO = gql`
   query ($icaoId: String!) {
     station(icaoId: $icaoId) {
       icaoId
@@ -31,7 +32,9 @@ const STATION_INFO = gql`
     metar(icaoId: $icaoId) {
       icaoId
       updated
+      tempDecimal
       temp
+      altimeter
       wind {
         direction
         speed
@@ -46,7 +49,15 @@ const mapState = (state: RootState, ownProps: { id: number }) => ({
   id: ownProps.id,
 });
 
-const connector = connect(mapState, { changeInfo });
+const connector = connect(mapState, {
+  changeElevation,
+  changeTemp,
+  changeAltimeter,
+  changeRunways,
+  changeWindDirection,
+  changeWindSpeed,
+  changeWindGust,
+});
 type AirportInfoCompProp = ConnectedProps<typeof connector>;
 
 //  export directly for unit-tests
@@ -56,7 +67,7 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
 
   let p: any = null;
   if (icaoId.length < 3) {
-    p = <p>Please enter airport id</p>;
+    p = <p className='text-muted'>Please enter airport id</p>;
   } else {
     const { error, loading, data } = useQuery(STATION_INFO, {
       variables: {
@@ -66,141 +77,138 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
 
     useEffect(() => {
       if (data) {
-        const info = copyAirportInfoFromState(airportInfo);
-        if (info) {
-          info.temp = data.metar.temp;
-          info.elevation = data.station.elevation;
-          info.runways = data.station.runways;
-          info.wind.direction = data.metar.wind.direction;
-          info.wind.speed = data.metar.wind.speed;
-          info.wind.gust = data.metar.wind.gust;
-          props.changeInfo({
+        batch(() => {
+          props.changeElevation({
             id,
-            info,
+            elevation: data.station.elevation,
           });
-        }
+          props.changeTemp({
+            id,
+            temp: data.metar.tempDecimal || data.metar.temp,
+          });
+          props.changeAltimeter({
+            id,
+            altimeter: data.metar.altimeter,
+          });
+          props.changeRunways({
+            id,
+            runways: data.station.runways,
+          });
+          props.changeWindDirection({
+            id,
+            windDirection: data.metar.wind.direction,
+          });
+          props.changeWindSpeed({
+            id,
+            windSpeed: data.metar.wind.speed,
+          });
+          props.changeWindGust({
+            id,
+            windGust: data.metar.wind.gust,
+          });
+        });
       }
     }, [data]);
 
     if (loading) {
-      p = <p>Loading {icaoId} ...</p>;
+      p = <p className='text-warning'>Loading {icaoId} ...</p>;
     } else if (error) {
-      p = <p>No info for {icaoId}</p>;
+      p = <p className='text-danger'>No info for {icaoId}</p>;
     } else if (data) {
-      p = <p>Loaded {icaoId}</p>;
+      p = <p className='text-success'>Loaded {icaoId}</p>;
     }
   }
 
   const debounceTime = 1000;
-
+  const config = [
+    {
+      label: 'Elevation (ft)',
+      allowEdit: true,
+      onChange: props.changeElevation,
+      value: props.airportInfo.info.elevation,
+      prop: 'elevation',
+      maxLen: 5,
+    },
+    {
+      label: 'Temp (c)',
+      allowEdit: true,
+      onChange: props.changeTemp,
+      value: props.airportInfo.info.temp,
+      prop: 'temp',
+      maxLen: 4,
+    },
+    {
+      label: 'Altimeter',
+      allowEdit: true,
+      onChange: props.changeAltimeter,
+      value: props.airportInfo.info.altimeter,
+      prop: 'altimeter',
+      maxLen: 5,
+    },
+    {
+      label: 'Direction',
+      allowEdit: false,
+      onChange: props.changeWindDirection,
+      value: props.airportInfo.info.wind.direction ?? 0,
+      prop: 'windDirection',
+      maxLen: 4,
+    },
+    {
+      label: 'Speed (kts)',
+      allowEdit: false,
+      onChange: props.changeWindSpeed,
+      value: props.airportInfo.info.wind.speed ?? 0,
+      prop: 'windSpeed',
+      maxLen: 4,
+    },
+    {
+      label: 'Gust (kts)',
+      allowEdit: false,
+      onChange: props.changeWindGust,
+      value: props.airportInfo.info.wind.gust ?? 0,
+      prop: 'windGust',
+      maxLen: 4,
+    },
+  ];
   return <div>
     <div className='my-2'>
       {p}
     </div>
-    <table className='table table-responsive-sm table-borderless'>
+    <table className='table table-responsive-sm'>
       <tbody>
-        <tr>
-          <td>
-            Elevation (ft)
-        </td>
-          <td>
-            <DebounceInput
-              type='number'
-              id={`elevation_${id}`}
-              maxLength={4}
-              debounceTimeout={debounceTime}
-              className='form-control form-control-sm'
-              placeholder='Elevation (ft)'
-              aria-label='Elevation (ft)'
-              value={airportInfo.info?.elevation}
-              onChange={(event) => {
-                const info = copyAirportInfoFromState(airportInfo);
-                info.elevation = Number.isNaN(event.target.valueAsNumber)
-                  ? 0
-                  : event.target.valueAsNumber;
-                props.changeInfo({
-                  id,
-                  info,
-                });
-              }}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Temp (c)
-        </td>
-          <td>
-            <DebounceInput
-              type='number'
-              id={`temp_${id}`}
-              maxLength={4}
-              debounceTimeout={debounceTime}
-              className='form-control form-control-sm'
-              placeholder='Temp (c)'
-              aria-label='Temp (c)'
-              value={airportInfo.info?.temp}
-              onChange={(event) => {
-                const info = copyAirportInfoFromState(airportInfo);
-                info.temp = Number.isNaN(event.target.valueAsNumber)
-                  ? 0
-                  : event.target.valueAsNumber;
-                props.changeInfo({
-                  id,
-                  info,
-                });
-              }}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Wind Dir
-        </td>
-          <td>
-            {airportInfo.info?.wind?.direction ?? 0}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Speed (kts)
-        </td>
-          <td>
-            {airportInfo.info?.wind?.speed ?? 0}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Gust (kts)
-        </td>
-          <td>
-            {airportInfo.info?.wind?.gust ?? 0}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            PAltitude (ft)
-          </td>
-          <td>
-            {airportInfo.info?.pAlt}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Std Temp Chg (c)
-          </td>
-          <td>
-            {airportInfo.info?.stdTempCorrection}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Calc Head Wind (kts)
-          </td>
-          <td>
-            {airportInfo.info?.headWind}
-          </td>
-        </tr>
+        {
+          config.map((c, index) => {
+            const input = c.allowEdit === false
+              ? <p>{c.value}</p>
+              : <DebounceInput
+                type='number'
+                id={`${c.prop}_${id}`}
+                maxLength={c.maxLen}
+                debounceTimeout={debounceTime}
+                className='form-control form-control-sm'
+                placeholder={`${c.label}`}
+                aria-label={`${c.label}`}
+                value={c.value}
+                onChange={(event) => {
+                  const info = Number.isNaN(event.target.valueAsNumber)
+                    ? 0
+                    : event.target.valueAsNumber;
+                  c.onChange({
+                    id,
+                    [c.prop]: info,
+                  });
+                }}
+              />;
+            return <tr key={`${index}`}>
+              <td>
+                {c.label}
+              </td>
+              <td>
+                {input}
+              </td>
+            </tr>;
+          })
+        }
       </tbody>
     </table>
   </div>;
