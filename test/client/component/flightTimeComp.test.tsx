@@ -16,7 +16,7 @@ it('invokes cb with number value if input text is changed', () => {
       flightTimeCb={fn}
     />
   );
-  fireEvent.change(screen.getByPlaceholderText(/Time/i), {
+  fireEvent.change(screen.getByPlaceholderText(/Time/), {
     target: { value: '1.2' },
   })
   expect(fn.mock.calls.length).toEqual(1);
@@ -30,7 +30,7 @@ it('invokes cb with 0 if empty string is in input', () => {
       flightTimeCb={fn}
     />
   );
-  const input = screen.getByPlaceholderText(/Time/i);
+  const input = screen.getByPlaceholderText(/Time/);
   fireEvent.change(input, {
     target: { value: '1.2' },
   });

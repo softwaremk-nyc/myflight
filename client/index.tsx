@@ -1,9 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  configureStore,
-} from '@reduxjs/toolkit';
-import {
   ApolloClient,
   ApolloProvider,
   InMemoryCache,
@@ -12,15 +9,11 @@ import { Provider } from 'react-redux';
 import { FlightTimeComp } from './component/flightTimeComp';
 import AirportComp from './component/airportComp';
 import PlaneSelector from './component/planeSelector';
-import reducer from './redux/rootReducer';
+import store from './redux/rootReducer';
 
 const client = new ApolloClient({
   uri: 'graphql/',
   cache: new InMemoryCache(),
-});
-
-const store = configureStore({
-  reducer,
 });
 
 function flightTimeCb(time: number) {
