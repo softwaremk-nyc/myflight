@@ -2,6 +2,8 @@ import {
   calcCG,
   calcCGForWeights,
   CgDataEntry,
+  flattenCgDataEntries,
+  flattenCgDataEntriesByName,
 } from '../../src/cg';
 import c172sp from '../../perf/c172sp/cg';
 import pa30 from '../../perf/pa30/cg';
@@ -169,6 +171,31 @@ describe('calculate overall a/c cg and check overweight warnings', () => {
     expect(warnings[0].indexOf('\'Sub1\' weight at 5 exceeds maximum') !== -1).toBeTruthy();
     expect(warnings[1].indexOf('\'Sub5\' weight at 11 exceeds maximum') !== -1).toBeTruthy(); // 2+5+4
     expect(warnings[2].indexOf('\'CompMaxW\' weight at 14 exceeds maximum') !== -1).toBeTruthy(); // 3+[11]
+  });
+
+  test('flatten test', () => {
+    base[0].comps = noMaxWComp;
+    const resultByName = flattenCgDataEntriesByName(base);
+    const result = flattenCgDataEntries(base);
+
+    expect(resultByName.length).toEqual(result.length);
+
+    expect(resultByName).toEqual(
+      [
+        { name: 'Top', cgData: { weight: 0, arm: 1, moment: 0 } },
+        { name: 'CompNoMaxW', cgData: { weight: 0, arm: 10, moment: 0 } },
+        { name: 'Sub1', cgData: { weight: 0, arm: 2, moment: 0 } },
+        { name: 'Sub3', cgData: { weight: 0, arm: 3, moment: 0 } },
+      ],
+    );
+    expect(result).toEqual(
+      [
+        { weight: 0, arm: 1, moment: 0 },
+        { weight: 0, arm: 10, moment: 0 },
+        { weight: 0, arm: 2, moment: 0 },
+        { weight: 0, arm: 3, moment: 0 },
+      ],
+    );
   });
 });
 

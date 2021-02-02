@@ -22,19 +22,28 @@ export interface CgDataEntriesList {
   [name: string]: CgDataEntries;
 }
 
+export interface CGDisplay { name: string; cgData: CgData; }
+
+export function flattenCgDataEntriesByName(
+  entries: CgDataEntry[],
+): CGDisplay[] {
+  let result: CGDisplay[] = [];
+  entries.forEach((entry) => {
+    if (entry.cgData) {
+      result.push({ name: entry.name, cgData: entry.cgData });
+    }
+    if (entry.comps) {
+      result = result.concat(flattenCgDataEntriesByName(entry.comps));
+    }
+  });
+  return result.filter((x) => x.cgData !== null);
+}
+
 export function flattenCgDataEntries(
   entries: CgDataEntry[],
 ): CgData[] {
-  let result: CgData[] = [];
-  entries.forEach((entry) => {
-    if (entry.cgData) {
-      result.push(entry.cgData);
-    }
-    if (entry.comps) {
-      result = result.concat(flattenCgDataEntries(entry.comps));
-    }
-  });
-  return result.filter((x): x is CgData => x !== null);
+  const result = flattenCgDataEntriesByName(entries);
+  return result.map((x) => x.cgData);
 }
 
 /**
