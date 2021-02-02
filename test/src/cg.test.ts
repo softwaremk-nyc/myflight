@@ -215,15 +215,15 @@ test('sample c172sp cg calculation', () => {
       //  fuel overweight
       [-1, 150, 110, 110, 15, 30, 20, 319],
       { weight: 2466.1, arm: 45, moment: 111036.3 },
-      ['\'Fuel\' weight at 319 exceeds maximum weight'],
+      ['\'Fuel (gals)\' weight at 319 exceeds maximum weight'],
     ],
     [
       //  baggage 1 overweight
       [-1, 150, 110, 110, 15, 121, 0, 318],
       { weight: 2536.1, arm: 46.2, moment: 117173.3 },
       [
-        '\'Baggage Compartment 1\' weight at 121',
-        '\'Baggage Compartment Total\' weight at 121',
+        '\'Baggage 1\' weight at 121',
+        '\'Baggage Total\' weight at 121',
       ],
     ],
     [
@@ -231,7 +231,7 @@ test('sample c172sp cg calculation', () => {
       [-1, 150, 110, 110, 15, 0, 80, 318],
       { weight: 2495.1, arm: 46.3, moment: 115518.3 },
       [
-        '\'Baggage Compartment 2\' weight at 80',
+        '\'Baggage 2\' weight at 80',
       ],
     ],
     [
@@ -284,13 +284,13 @@ test('sample pa30 cg calculation', () => {
       //  main fuel overweight
       [-1, 150, 150, 10, 0, 0, 325, 180],
       { weight: 3395, arm: 85, moment: 288636.4 },
-      ['\'Fuel\' weight at 325 exceeds maximum weight'],
+      ['\'Fuel (gals)\' weight at 325 exceeds maximum weight'],
     ],
     [
       //  aux fuel overweight
       [-1, 150, 150, 10, 0, 0, 324, 181],
       { weight: 3395, arm: 85, moment: 288641.4 },
-      ['\'Fuel - Aux\' weight at 181 exceeds maximum weight'],
+      ['\'Fuel Aux (gals)\' weight at 181 exceeds maximum weight'],
     ],
     [
       //  overall aircraft
@@ -322,4 +322,35 @@ test('sample pa30 cg calculation', () => {
     // console.log(flat);
     // console.log(warnings);
   });
+});
+
+test('sample c172sp cg - extra weights are ignored', () => {
+  const testPlane = c172sp.N5255R;
+  const [cgCalc, ,] = calcCGForWeights(
+    testPlane[0].name,
+    [-1, 150, 110, 110, 15, 30, 20, 318, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    testPlane,
+  );
+
+  expect(cgCalc).toEqual({ weight: 2465.1, arm: 45, moment: 110988.3 });
+});
+
+test('sample c172sp cg - for insufficient weights, zeros are used ', () => {
+  const testPlane = c172sp.N5255R;
+  let [cgCalc, ,] = calcCGForWeights(
+    testPlane[0].name,
+    [-1, 150, 110, 110, 15, 30, 20, 318],
+    testPlane,
+  );
+
+  expect(cgCalc).toEqual({ weight: 2465.1, arm: 45, moment: 110988.3 });
+
+  //  the 20 and 318 from above should be zero'd out
+  [cgCalc, ,] = calcCGForWeights(
+    testPlane[0].name,
+    [-1, 150, 110, 110, 15, 30],
+    testPlane,
+  );
+
+  expect(cgCalc).toEqual({ weight: 2127.1, arm: 43.8, moment: 93264.3 });
 });
