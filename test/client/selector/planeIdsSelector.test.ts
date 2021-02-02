@@ -1,4 +1,7 @@
-import planeIdsSelector from '../../../client/selector/planeIdsSelector';
+import {
+  planeIdsSelector,
+  planeIdSelector,
+} from '../../../client/selector/planeIdsSelector';
 import { CgDataEntriesList } from '../../../src/cg';
 
 const p: CgDataEntriesList = {
@@ -69,4 +72,22 @@ it('return ids for k', () => {
     planeType: 'k',
     planeId: '??',
   })).toEqual(['l', 'o']);
+});
+
+it('return id if set in state', () => {
+  const sel = planeIdSelector(p);
+  expect(sel({
+    planeTypes: ['?', '?'],
+    planeType: 'k',
+    planeId: '??',
+  })).toEqual('??');
+});
+
+it('return default id if not set in state', () => {
+  const sel = planeIdSelector(p);
+  expect(sel({
+    planeTypes: ['?', '?'],
+    planeType: 'k',
+    planeId: '',
+  })).toEqual('l');
 });

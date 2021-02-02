@@ -6,7 +6,7 @@ import {
   planes,
   PlaneSelectionState,
 } from '../redux/planeSlice';
-import planeIdsSelector from '../selector/planeIdsSelector';
+import { planeIdsSelector } from '../selector/planeIdsSelector';
 import { RootState } from '../redux/rootReducer';
 
 const mapState = (state: RootState) => {

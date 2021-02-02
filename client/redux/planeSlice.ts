@@ -20,10 +20,12 @@ export interface PlaneSelectionState {
 }
 
 const planeTypes = Object.keys(planes);
+const defaultType = planeTypes[0];
 
 const initialState: PlaneSelectionState = {
   planeTypes,
-  planeType: planeTypes[0],
+  planeType: defaultType,
+  //  blank causes the default to be returned by selector
   planeId: '',
   flightTime: 1,
 };
@@ -35,6 +37,8 @@ const planeSlice = createSlice({
   reducers: {
     changeType: (state, action) => {
       state.planeType = action.payload;
+      //  new plane type so reset id as well
+      state.planeId = '';
     },
     changeId: (state, action) => {
       state.planeId = action.payload;

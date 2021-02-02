@@ -29,7 +29,7 @@ it('changing id', () => {
     });
 });
 
-it('changing type', () => {
+it('changing type - resets id', () => {
   expect(reducer(
     state,
     {
@@ -40,6 +40,6 @@ it('changing type', () => {
     .toEqual({
       planeTypes: ['aa', 'bb'],
       planeType: 'bb1',
-      planeId: 'cc',
+      planeId: '',
     });
 });
