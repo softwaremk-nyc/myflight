@@ -175,12 +175,12 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
       {p}
     </div>
     <table className='table table-responsive-sm'>
-      <tbody>
+      <tbody className='align-middle'>
         {
           config.map((c, index) => {
             const input = c.allowEdit === false
-              ? <p>{c.value}</p>
-              : <DebounceInput
+              ? <td>{c.value}</td>
+              : <td><DebounceInput
                 type='number'
                 id={`${c.prop}_${id}`}
                 maxLength={c.maxLen}
@@ -198,14 +198,14 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
                     [c.prop]: info,
                   });
                 }}
-              />;
+              />
+              </td>;
+
             return <tr key={`${index}`}>
               <td>
                 {c.label}
               </td>
-              <td>
-                {input}
-              </td>
+              {input}
             </tr>;
           })
         }

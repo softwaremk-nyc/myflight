@@ -3,6 +3,7 @@ import {
   render,
   screen,
   waitFor,
+  cleanup,
 } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import {
@@ -12,6 +13,8 @@ import {
 import {
   defaultAirportData,
 } from '../../../client/redux/airportInfoSlice';
+
+afterEach(cleanup);
 
 //  responds with all data
 const mocks = [

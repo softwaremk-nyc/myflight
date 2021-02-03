@@ -62,6 +62,7 @@ it('return ids for a', () => {
     planeTypes: ['?', '?'],
     planeType: 'a',
     planeId: '??',
+    weights: [],
   })).toEqual(['b', 'e', 'h']);
 });
 
@@ -71,6 +72,7 @@ it('return ids for k', () => {
     planeTypes: ['?', '?'],
     planeType: 'k',
     planeId: '??',
+    weights: [],
   })).toEqual(['l', 'o']);
 });
 
@@ -80,6 +82,7 @@ it('return id if set in state', () => {
     planeTypes: ['?', '?'],
     planeType: 'k',
     planeId: '??',
+    weights: [],
   })).toEqual('??');
 });
 
@@ -89,5 +92,6 @@ it('return default id if not set in state', () => {
     planeTypes: ['?', '?'],
     planeType: 'k',
     planeId: '',
+    weights: [],
   })).toEqual('l');
 });

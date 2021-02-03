@@ -17,6 +17,7 @@ export interface PlaneSelectionState {
   planeType: string,
   planeId: string,
   flightTime?: number,
+  weights: number[],
 }
 
 const planeTypes = Object.keys(planes);
@@ -28,6 +29,8 @@ const initialState: PlaneSelectionState = {
   //  blank causes the default to be returned by selector
   planeId: '',
   flightTime: 1,
+  //  first element is plane weight and should remain unmodified at -1
+  weights: [-1],
 };
 
 const planeSlice = createSlice({
@@ -46,6 +49,13 @@ const planeSlice = createSlice({
     changeFlightTime: (state, action) => {
       state.flightTime = action.payload;
     },
+    changeWeight: (state, action) => {
+      const minLength = action.payload.id + 1;
+      while (state.weights.length < minLength) {
+        state.weights.push(0);
+      }
+      state.weights[action.payload.id] = action.payload.weight;
+    },
   },
   /* eslint-enable no-param-reassign */
 });
@@ -54,5 +64,6 @@ export const {
   changeType,
   changeId,
   changeFlightTime,
+  changeWeight,
 } = planeSlice.actions;
 export default planeSlice.reducer;

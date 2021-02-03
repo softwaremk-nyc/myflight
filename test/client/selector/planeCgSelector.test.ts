@@ -43,26 +43,40 @@ const p: CgDataEntriesList = {
   },
 };
 
-it('should select by type and id', () => {
+it('should select by type and id and return name', () => {
   const sel = cgSelectorByName(p);
   expect(sel({
     planeTypes: ['?', '?'],
     planeType: 'a',
     planeId: 'b',
+    weights: [],
   })).toEqual([
     { name: 'c', cgData: { weight: 10, arm: 5, moment: 1 } },
     { name: 'd', cgData: { weight: 20, arm: 50, moment: 10 } },
   ]);
 });
 
-it('should select by type and id', () => {
+it('should select by type and id and return cg data only', () => {
   const sel = cgSelector(p);
   expect(sel({
     planeTypes: ['?', '?'],
     planeType: 'a',
     planeId: 'b',
+    weights: [],
   })).toEqual([
-    { weight: 10, arm: 5, moment: 1 },
-    { weight: 20, arm: 50, moment: 10 },
+    {
+      name: 'c',
+      cgData: { weight: 10, arm: 5, moment: 1 },
+      maxW: null,
+      comps: null,
+      notes: null,
+    },
+    {
+      name: 'd',
+      cgData: { weight: 20, arm: 50, moment: 10 },
+      maxW: null,
+      comps: null,
+      notes: null,
+    },
   ]);
 });
