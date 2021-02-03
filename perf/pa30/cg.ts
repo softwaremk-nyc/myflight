@@ -3,6 +3,7 @@ import {
 } from '../perfCommon';
 import {
   CgDataEntry,
+  CgDataEntries,
 } from '../../src/cg';
 
 const basePa30: CgDataEntry[] = [
@@ -21,35 +22,35 @@ const basePa30: CgDataEntry[] = [
     notes: null,
   },
   {
-    name: 'Rear Passenger 1',
+    name: 'Rear PX 1',
     cgData: { weight: 0, arm: 120.5, moment: 0 },
     maxW: null,
     comps: null,
     notes: null,
   },
   {
-    name: 'Rear Passenger 2',
+    name: 'Rear PX 2',
     cgData: { weight: 0, arm: 120.5, moment: 0 },
     maxW: null,
     comps: null,
     notes: null,
   },
   {
-    name: 'Baggage Compartment',
+    name: 'Baggage',
     cgData: { weight: 0, arm: 142, moment: 0 },
     maxW: 250,
     comps: null,
     notes: 'Maximum Total Baggage Weight: 250 lbs',
   },
   {
-    name: 'Fuel',
+    name: 'Fuel (gals)',
     cgData: { weight: 0, arm: 90, moment: 0 },
     maxW: lbsPerGallonFuel * 54,
     comps: null,
     notes: 'Maximum Useable Fuel: 54 gals (60)',
   },
   {
-    name: 'Fuel - Aux',
+    name: 'Fuel Aux (gals)',
     cgData: { weight: 0, arm: 95, moment: 0 },
     maxW: lbsPerGallonFuel * 30,
     comps: null,
@@ -79,7 +80,7 @@ const n8444y: CgDataEntry[] = [
   },
 ];
 
-const pa30: { [name: string]: CgDataEntry[] } = {
+const pa30: CgDataEntries = {
   [n7943y[0].name]: n7943y,
   [n8444y[0].name]: n8444y,
 };

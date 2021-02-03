@@ -3,6 +3,7 @@ import {
 } from '../perfCommon';
 import {
   CgDataEntry,
+  CgDataEntries,
 } from '../../src/cg';
 
 const base172sp: CgDataEntry[] = [
@@ -21,43 +22,43 @@ const base172sp: CgDataEntry[] = [
     notes: null,
   },
   {
-    name: 'Rear Passenger 1',
+    name: 'Rear PX 1',
     cgData: { weight: 0, arm: 73, moment: 0 },
     maxW: null,
     comps: null,
     notes: null,
   },
   {
-    name: 'Rear Passenger 2',
+    name: 'Rear PX 2',
     cgData: { weight: 0, arm: 73, moment: 0 },
     maxW: null,
     comps: null,
     notes: null,
   },
   {
-    name: 'Baggage Compartment Total',
+    name: 'Baggage Total',
     cgData: null,
     maxW: 120,
     comps: [
       {
-        name: 'Baggage Compartment 1',
+        name: 'Baggage 1',
         cgData: { weight: 0, arm: 95, moment: 0 },
         maxW: 120,
         comps: null,
-        notes: 'Maximum Baggage Weight: 120 lbs - subject to total compartment restriction',
+        notes: 'Maximum Baggage Weight: 120 lbs - subject to combined restriction',
       },
       {
-        name: 'Baggage Compartment 2',
+        name: 'Baggage 2',
         cgData: { weight: 0, arm: 123, moment: 0 },
         maxW: 50,
         comps: null,
-        notes: 'Maximum Baggage Weight: 50 lbs - subject to total compartment restriction',
+        notes: 'Maximum Baggage Weight: 50 lbs - subject to combined restriction',
       },
     ],
     notes: 'Maximum Total Baggage Weight: 120 lbs',
   },
   {
-    name: 'Fuel',
+    name: 'Fuel (gals)',
     cgData: { weight: 0, arm: 48, moment: 0 },
     maxW: lbsPerGallonFuel * 53,
     comps: null,
@@ -106,7 +107,7 @@ const n5491j: CgDataEntry[] = [
   },
 ];
 
-const c172sp: { [name: string]: CgDataEntry[] } = {
+const c172sp: CgDataEntries = {
   [n5255r[0].name]: n5255r,
   [n2461p[0].name]: n2461p,
   [n316as[0].name]: n316as,

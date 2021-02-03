@@ -5,51 +5,41 @@ import {
   screen,
   fireEvent,
 } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { AirportComp } from '../../../client/component/airportComp';
+import store from '../../../client/redux/rootReducer';
 
 afterEach(cleanup);
 
-it('displays label that info is not available', () => {
-  const fn = jest.fn();
-  render(
-    <AirportComp
-      id='1'
-      float='testPrefix'
-      noInfo={true}
-      airportCb={fn}
-    />
-  );
-  expect(fn.mock.calls.length).toEqual(0);
-  expect(screen.queryByText(/information is not available/)).not.toBeNull();
-});
+it('invokes cb if input text is changed - returns uppercase', async () => {
+  const changeIcaoId = jest.fn();
+  const testProp: any = {
+    airportInfo: [
+      { icaoId: '', label: '1', info: null },
+      { icaoId: '', label: '2', info: null },
+    ],
+    changeIcaoId,
+  }
 
-it('hides label that info is not available', () => {
-  const fn = jest.fn();
+  //  provider for any nested components not under test
   render(
-    <AirportComp
-      id='1'
-      float='testPrefix'
-      noInfo={false}
-      airportCb={fn}
-    />
+    <Provider store={store}>
+      <AirportComp {...testProp} />
+    </Provider>
   );
-  expect(fn.mock.calls.length).toEqual(0);
-  expect(screen.queryByText(/information is not available/)).toBeNull();
-});
 
-it('invokes cb if input text is changed - returns uppercase', () => {
-  const fn = jest.fn();
-  render(
-    <AirportComp
-      id='1'
-      float='testPrefix'
-      noInfo={false}
-      airportCb={fn}
-    />
-  );
-  fireEvent.change(screen.getByPlaceholderText(/Airport/i), {
-    target: { value: 'myAirport' },
+  const inputs = screen.getAllByPlaceholderText(/Airport/i);
+  expect(inputs.length).toEqual(2);
+
+  fireEvent.change(inputs[0], {
+    target: { id: 0, value: 'myAirport' },
   })
-  expect(fn.mock.calls.length).toEqual(1);
-  expect(fn.mock.calls[0][0]).toEqual('MYAIRPORT');
+
+  //  debounced - initially no call
+  expect(changeIcaoId.mock.calls.length).toEqual(0);
+
+  //  then a call
+  await new Promise(r => setTimeout(r, 2001));
+  expect(changeIcaoId.mock.calls.length).toEqual(1);
+  expect(changeIcaoId.mock.calls[0][0]).toEqual({ id: 0, icaoId: 'MYAIRPORT' });
 });

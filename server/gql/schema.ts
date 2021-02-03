@@ -10,6 +10,9 @@ const typeDefs = gql`
   type Weather {
     icaoId: String,
     updated: String,
+    tempDecimal: Float,
+    temp: Int,
+    altimeter: Float,
     wind: Wind,
   }
 
@@ -23,6 +26,7 @@ const typeDefs = gql`
   type Station {
     icaoId: String,
     name: String,
+    elevation: Int,
     runways: [Runway],
   }
 

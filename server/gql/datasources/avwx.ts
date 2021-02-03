@@ -4,6 +4,9 @@ function metarReducer(metar: any) {
   return {
     icaoId: metar?.station,
     updated: metar?.time?.dt,
+    tempDecimal: metar?.remarks_info?.temperature_decimal?.value,
+    temp: metar?.temperature?.value,
+    altimeter: metar?.altimeter.value,
     wind: {
       direction: metar?.wind_direction?.value,
       speed: metar?.wind_speed?.value,
@@ -16,6 +19,7 @@ function stationReducer(station: any) {
   return {
     icaoId: station?.icao,
     name: station?.name,
+    elevation: station?.elevation_ft,
     runways: station?.runways,
   };
 }

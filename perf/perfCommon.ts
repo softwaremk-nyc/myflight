@@ -6,9 +6,9 @@ export const nightAndIfrReserve = 0.75;
 
 export interface AirportInfo {
   pAlt: number,
-  temp: number,
-  stdTempCorrection: number,
-  headWind: number,
+  temp: number
+  stdTempCorrection: number;
+  headWind: number;
   isPaved: boolean,
 }
 

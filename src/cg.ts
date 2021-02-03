@@ -14,19 +14,36 @@ export interface CgDataEntry {
   notes: string | null,
 }
 
+export interface CgDataEntries {
+  [name: string]: CgDataEntry[];
+}
+
+export interface CgDataEntriesList {
+  [name: string]: CgDataEntries;
+}
+
+export interface CGDisplay { name: string; cgData: CgData; }
+
+export function flattenCgDataEntriesByName(
+  entries: CgDataEntry[],
+): CGDisplay[] {
+  let result: CGDisplay[] = [];
+  entries.forEach((entry) => {
+    if (entry.cgData) {
+      result.push({ name: entry.name, cgData: entry.cgData });
+    }
+    if (entry.comps) {
+      result = result.concat(flattenCgDataEntriesByName(entry.comps));
+    }
+  });
+  return result.filter((x) => x.cgData !== null);
+}
+
 export function flattenCgDataEntries(
   entries: CgDataEntry[],
 ): CgData[] {
-  let result: CgData[] = [];
-  entries.forEach((entry) => {
-    if (entry.cgData) {
-      result.push(entry.cgData);
-    }
-    if (entry.comps) {
-      result = result.concat(flattenCgDataEntries(entry.comps));
-    }
-  });
-  return result.filter((x): x is CgData => x !== null);
+  const result = flattenCgDataEntriesByName(entries);
+  return result.map((x) => x.cgData);
 }
 
 /**
@@ -62,7 +79,8 @@ export function calcCG(
 
 /**
  *  Calculates the CG using the provided weights
- *  Throws if there is a mismatch with the provided weights vs. current aircraft requirement
+ *  Excess provided weights are ignored if not needed by a/c configuration
+ *  For insufficient weights, remaining entries in a/c configuration are zeroed
  *  @param {string} acName - aircraft name
  *  @param {number[]} weights - weights for each cgData point (-1 to ignore data point)
  *  @param {CgDataEntry[]} cgData - data for current aircraft
@@ -123,6 +141,14 @@ export function calcCGForWeights(
     i += 1;
     if (i >= cgDataEntries.length) {
       break;
+    }
+  }
+
+  //  zero out remaining entries (if inusufficient weights were provided)
+  for (; i < cgDataEntries.length; i += 1) {
+    const currCgData = cgDataEntries[i];
+    if (currCgData.cgData) {
+      currCgData.cgData.weight = 0;
     }
   }
 

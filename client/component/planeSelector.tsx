@@ -3,15 +3,23 @@ import { connect, ConnectedProps } from 'react-redux';
 import {
   changeType,
   changeId,
+  planes,
   PlaneSelectionState,
 } from '../redux/planeSlice';
+import { planeIdsSelector } from '../selector/planeIdsSelector';
+import { RootState } from '../redux/rootReducer';
 
-const mapState = (state: PlaneSelectionState) => ({
-  planeTypes: state.planeTypes,
-  planeIds: state.planeIds,
-  planeType: state.planeType,
-  planeId: state.planeId,
-});
+const mapState = (state: RootState) => {
+  const planeState: PlaneSelectionState = state.plane;
+  const { planeTypes, planeType, planeId } = planeState;
+
+  return {
+    planeTypes,
+    planeIds: planeIdsSelector(planes)(state.plane),
+    planeType,
+    planeId,
+  };
+};
 
 const connector = connect(mapState, { changeType, changeId });
 type PlaneSelectorProp = ConnectedProps<typeof connector>;
@@ -22,7 +30,7 @@ export const PlaneSelector = (props: PlaneSelectorProp) => <table className='tab
     <tr>
       <td>
         Type:
-          </td>
+      </td>
       <td>
         <select
           data-testid='planeType'

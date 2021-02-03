@@ -1,40 +1,45 @@
 import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { DebounceInput } from 'react-debounce-input';
+import { RootState } from '../redux/rootReducer';
+import { changeIcaoId } from '../redux/airportInfoSlice';
+import AirportInfoComp from './airportInfoComp';
 
-export interface AirportCompProp {
-  id: string;
-  float: string;
-  airportCb: (code: string) => void;
-  noInfo: boolean;
-}
+const mapState = (state: RootState) => ({
+  airportInfo: state.airportInfo,
+});
 
-export const AirportComp = ({
-  id,
-  float,
-  noInfo,
-  airportCb,
-}: AirportCompProp) => {
-  const [airportCode, setAirportCode] = React.useState('');
-  const noInfoLabel = noInfo
-    ? <label className='mx-2'>{airportCode} information is not available</label>
-    : <label />;
-  return (
-    <div>
-      <div className='form-floating mb-2 mx-2'>
-        <input
-          type='text'
-          id={`floatingInput_${id}`}
-          maxLength={4}
-          className='form-control'
-          placeholder='Airport'
-          aria-label='Airport'
-          onChange={(event) => {
-            setAirportCode(event.target.value.toUpperCase());
-            airportCb(event.target.value.toUpperCase());
-          }}
-        />
-        <label htmlFor='floatingInput'>{float}</label>
-      </div>
-      {noInfoLabel}
+const connector = connect(mapState, { changeIcaoId });
+type AirportCompProp = ConnectedProps<typeof connector>;
+
+//  export directly for unit tests
+export const AirportComp = (props: AirportCompProp) => <div
+  className='input-group mb-2 flex-nowrap'>
+  {
+    props.airportInfo.map((info, index) => (<div
+      key={`key_${index}`}
+      className='form-floating mb-2 mx-2'>
+      <DebounceInput
+        type='text'
+        id={`label_${index}`}
+        minLength={3}
+        maxLength={4}
+        debounceTimeout={2000}
+        className='form-control'
+        placeholder='Airport'
+        aria-label='Airport'
+        onChange={(event) => {
+          props.changeIcaoId({
+            id: index,
+            icaoId: event.target.value.toUpperCase(),
+          });
+        }}
+      />
+      <label htmlFor={`label_${index}`}>{info.label}</label>
+      <AirportInfoComp key={`key_${index}`} id={index}/>
     </div>
-  );
-};
+    ))
+  }
+</div>;
+
+export default connector(AirportComp);
