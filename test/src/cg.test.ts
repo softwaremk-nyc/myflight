@@ -215,7 +215,7 @@ test('sample c172sp cg calculation', () => {
       //  fuel overweight
       [-1, 150, 110, 110, 15, 30, 20, 319],
       { weight: 2466.1, arm: 45, moment: 111036.3 },
-      ['\'Fuel (gals)\' weight at 319 exceeds maximum weight'],
+      ['\'Fuel Main\' weight at 319 exceeds maximum weight'],
     ],
     [
       //  baggage 1 overweight
@@ -284,13 +284,13 @@ test('sample pa30 cg calculation', () => {
       //  main fuel overweight
       [-1, 150, 150, 10, 0, 0, 325, 180],
       { weight: 3395, arm: 85, moment: 288636.4 },
-      ['\'Fuel (gals)\' weight at 325 exceeds maximum weight'],
+      ['\'Fuel Main\' weight at 325 exceeds maximum weight'],
     ],
     [
       //  aux fuel overweight
       [-1, 150, 150, 10, 0, 0, 324, 181],
       { weight: 3395, arm: 85, moment: 288641.4 },
-      ['\'Fuel Aux (gals)\' weight at 181 exceeds maximum weight'],
+      ['\'Fuel Aux\' weight at 181 exceeds maximum weight'],
     ],
     [
       //  overall aircraft
