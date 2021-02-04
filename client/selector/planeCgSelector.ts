@@ -4,6 +4,7 @@ import {
   CgDataEntriesList,
   flattenCgDataForDisplay,
   calcCGForWeights,
+  CGDisplay,
 } from '../../src/cg';
 import { PlaneSelectionState } from '../redux/planeSlice';
 import { planeIdSelector } from './planeIdsSelector';
@@ -31,10 +32,28 @@ const cgSelectorForDisplay = (planes: CgDataEntriesList) => createSelector(
 );
 
 /**
+ * Return fuel entries for a given a/c
+ * @returns {[number, CgDisplay][]} - tuples of display info and
+ * index into aircraft CgDataEntry[]
+ */
+const fuelSelectorForDisplay = (planes: CgDataEntriesList) => createSelector(
+  cgSelectorForDisplay(planes),
+  (cgDisplay: CGDisplay[]) => {
+    const res: [number, CGDisplay][] = [];
+    cgDisplay.forEach((x, index) => {
+      if (x.name.indexOf('Fuel') !== -1) {
+        res.push([index, x]);
+      }
+    });
+    return res;
+  },
+);
+
+/**
  *
  * @param {CgDataEntriesList} planes - all type info
  * @returns {CgDataEntry[]} for given id (N-registration)
- * First level (unflattened and used for cg calcs)
+ * FIRST LEVEL (unflattened and typically used for cg calcs)
  */
 const cgSelector = (planes: CgDataEntriesList) => createSelector(
   typeIdSelector(planes),
@@ -61,4 +80,5 @@ export {
   cgSelector,
   cgSelectorForDisplay,
   cgCalcSelector,
+  fuelSelectorForDisplay,
 };
