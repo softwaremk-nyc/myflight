@@ -89,7 +89,7 @@ it('sets a weight and expands array', () => {
       planeType: 'aa',
       planeId: 'cc',
       weights: [0, 0, 0, 100],
-      gals: [],
+      gals: [0, 0, 0, 0],
     });
 
   s1 = reducer(
@@ -109,7 +109,7 @@ it('sets a weight and expands array', () => {
       planeType: 'aa',
       planeId: 'cc',
       weights: [0, 50, 0, 100],
-      gals: [],
+      gals: [0, 0, 0, 0],
     });
 });
 
@@ -120,7 +120,7 @@ it('sets gallons and expands array', () => {
       type: changeGals.type,
       payload: {
         id: 2,
-        gals: 10,
+        gal: 10,
       },
     },
   );
@@ -130,7 +130,7 @@ it('sets gallons and expands array', () => {
       planeTypes: ['aa', 'bb'],
       planeType: 'aa',
       planeId: 'cc',
-      weights: [],
+      weights: [0, 0, 0],
       gals: [0, 0, 10],
     });
 
@@ -140,7 +140,7 @@ it('sets gallons and expands array', () => {
       type: changeGals.type,
       payload: {
         id: 1,
-        gals: 5,
+        gal: 5,
       },
     },
   );
@@ -150,7 +150,7 @@ it('sets gallons and expands array', () => {
       planeTypes: ['aa', 'bb'],
       planeType: 'aa',
       planeId: 'cc',
-      weights: [],
+      weights: [0, 0, 0],
       gals: [0, 5, 10],
     });
 });

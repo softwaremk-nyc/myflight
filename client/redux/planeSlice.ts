@@ -35,6 +35,24 @@ const initialState: PlaneSelectionState = {
   gals: [],
 };
 
+const extendArr = (
+  arr: number[],
+  minLength: number,
+) => {
+  while (arr.length < minLength) {
+    arr.push(0);
+  }
+};
+
+const extendArrs = (
+  arr1: number[],
+  arr2: number[],
+  minLength: number,
+) => {
+  extendArr(arr1, minLength);
+  extendArr(arr2, minLength);
+};
+
 const planeSlice = createSlice({
   name: 'plane',
   initialState,
@@ -52,18 +70,20 @@ const planeSlice = createSlice({
       state.flightTime = action.payload;
     },
     changeWeight: (state, action) => {
-      const minLength = action.payload.id + 1;
-      while (state.weights.length < minLength) {
-        state.weights.push(0);
-      }
+      extendArrs(
+        state.weights,
+        state.gals,
+        action.payload.id + 1,
+      );
       state.weights[action.payload.id] = action.payload.weight;
     },
     changeGals: (state, action) => {
-      const minLength = action.payload.id + 1;
-      while (state.gals.length < minLength) {
-        state.gals.push(0);
-      }
-      state.gals[action.payload.id] = action.payload.gals;
+      extendArrs(
+        state.weights,
+        state.gals,
+        action.payload.id + 1,
+      );
+      state.gals[action.payload.id] = action.payload.gal;
     },
   },
   /* eslint-enable no-param-reassign */
