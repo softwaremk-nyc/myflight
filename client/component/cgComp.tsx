@@ -33,7 +33,7 @@ export const CgComp = (props: CgCompProp) => <div>
     <tbody className='align-middle'>
       {
         props.cgData.map((p, index) => {
-          const input = index === 0
+          const input = index === 0 || p.name.indexOf('Fuel') !== -1
             ? <td>{p.cgData.weight}</td>
             : <td><DebounceInput
               type='number'
