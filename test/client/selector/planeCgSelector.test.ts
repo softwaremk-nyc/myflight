@@ -50,6 +50,7 @@ it('should select by type and id and return name', () => {
     planeType: 'a',
     planeId: 'b',
     weights: [],
+    gals: [],
   })).toEqual([
     { name: 'c', cgData: { weight: 10, arm: 5, moment: 1 } },
     { name: 'd', cgData: { weight: 20, arm: 50, moment: 10 } },
@@ -63,6 +64,7 @@ it('should select by type and id and return cg data only', () => {
     planeType: 'a',
     planeId: 'b',
     weights: [],
+    gals: [],
   })).toEqual([
     {
       name: 'c',

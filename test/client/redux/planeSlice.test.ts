@@ -14,6 +14,7 @@ beforeEach(() => {
     planeType: 'aa',
     planeId: 'cc',
     weights: [],
+    gals: [],
   };
 });
 
@@ -30,6 +31,7 @@ it('changing id', () => {
       planeType: 'aa',
       planeId: 'dd1',
       weights: [],
+      gals: [],
     });
 });
 
@@ -46,6 +48,7 @@ it('changing type - resets id', () => {
       planeType: 'bb1',
       planeId: '',
       weights: [],
+      gals: [],
     });
 });
 
@@ -63,6 +66,7 @@ it('sets a flight time if one is not present', () => {
       planeId: 'cc',
       flightTime: 1.5,
       weights: [],
+      gals: [],
     });
 });
 
@@ -84,6 +88,7 @@ it('sets a weight and expands array', () => {
       planeType: 'aa',
       planeId: 'cc',
       weights: [0, 0, 0, 100],
+      gals: [],
     });
 
   s1 = reducer(
@@ -103,5 +108,6 @@ it('sets a weight and expands array', () => {
       planeType: 'aa',
       planeId: 'cc',
       weights: [0, 50, 0, 100],
+      gals: [],
     });
 });

@@ -18,6 +18,7 @@ export interface PlaneSelectionState {
   planeId: string,
   flightTime?: number,
   weights: number[],
+  gals: number[],
 }
 
 const planeTypes = Object.keys(planes);
@@ -31,6 +32,7 @@ const initialState: PlaneSelectionState = {
   flightTime: 1,
   //  first element is plane weight and should remain unmodified at -1
   weights: [-1],
+  gals: [],
 };
 
 const planeSlice = createSlice({
