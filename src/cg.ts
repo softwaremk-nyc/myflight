@@ -1,11 +1,17 @@
 import { round } from './util';
 
+/**
+ * cg info for a single component (eg: passenger)
+ */
 export interface CgData {
   weight: number,
   arm: number,
   moment: number,
 }
 
+/**
+ * cg info with metadata (eg: component name, max weight, nested components it contains, etc.)
+ */
 export interface CgDataEntry {
   name: string;
   cgData: CgData | null,
@@ -14,14 +20,23 @@ export interface CgDataEntry {
   notes: string | null,
 }
 
+/**
+ * cg info list per aircraft keyed by id (eg: N-registration)
+ */
 export interface CgDataEntries {
   [name: string]: CgDataEntry[];
 }
 
+/**
+ * cg info list of all aircraft keyed by type (eg: C172)
+ */
 export interface CgDataEntriesList {
   [name: string]: CgDataEntries;
 }
 
+/**
+ * Filtered CgDataEntry with just the name and cgData
+ */
 export interface CGDisplay { name: string; cgData: CgData; }
 
 export function flattenCgDataEntriesByName(
@@ -83,8 +98,8 @@ export function calcCG(
  *  For insufficient weights, remaining entries in a/c configuration are zeroed
  *  @param {string} acName - aircraft name
  *  @param {number[]} weights - weights for each cgData point (-1 to ignore data point)
- *  @param {CgDataEntry[]} cgData - data for current aircraft
- *  @returns - calculated cg, array of CgData inputs used for calc, overweight warnings, w
+ *  @param {CgDataEntry[]} cgData - current aircraft - first level (nested CgDataEntry.comps remain)
+ *  @returns - calculated cg, input cgData flattend for calc, calc warnings, w - recursion counter
  */
 export function calcCGForWeights(
   acName: string,
