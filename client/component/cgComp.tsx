@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { DebounceInput } from 'react-debounce-input';
 import { RootState } from '../redux/rootReducer';
 import {
-  cgSelectorByName,
+  cgSelectorForDisplay,
   cgCalcSelector,
 } from '../selector/planeCgSelector';
 import {
@@ -12,7 +12,7 @@ import {
 } from '../redux/planeSlice';
 
 const mapState = (state: RootState) => ({
-  cgData: cgSelectorByName(planes)(state.plane),
+  cgData: cgSelectorForDisplay(planes)(state.plane),
   cgCalc: cgCalcSelector(planes)(state.plane),
 });
 
@@ -33,7 +33,7 @@ export const CgComp = (props: CgCompProp) => <div>
     <tbody className='align-middle'>
       {
         props.cgData.map((p, index) => {
-          const input = index === 0
+          const input = index === 0 || p.name.indexOf('Fuel') !== -1
             ? <td>{p.cgData.weight}</td>
             : <td><DebounceInput
               type='number'
@@ -85,6 +85,13 @@ export const CgComp = (props: CgCompProp) => <div>
       }
     </tbody>
   </table>
+  {
+    props.cgCalc[2].map((p, index) => <p
+      className='text-danger'
+      key={index}>
+      {p}
+    </p>)
+  }
 </div>;
 
 export default connector(CgComp);

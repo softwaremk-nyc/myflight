@@ -2,8 +2,8 @@ import {
   calcCG,
   calcCGForWeights,
   CgDataEntry,
-  flattenCgDataEntries,
-  flattenCgDataEntriesByName,
+  flattenCgData,
+  flattenCgDataForDisplay,
 } from '../../src/cg';
 import c172sp from '../../perf/c172sp/cg';
 import pa30 from '../../perf/pa30/cg';
@@ -175,17 +175,17 @@ describe('calculate overall a/c cg and check overweight warnings', () => {
 
   test('flatten test', () => {
     base[0].comps = noMaxWComp;
-    const resultByName = flattenCgDataEntriesByName(base);
-    const result = flattenCgDataEntries(base);
+    const resultByName = flattenCgDataForDisplay(base);
+    const result = flattenCgData(base);
 
     expect(resultByName.length).toEqual(result.length);
 
     expect(resultByName).toEqual(
       [
-        { name: 'Top', cgData: { weight: 0, arm: 1, moment: 0 } },
-        { name: 'CompNoMaxW', cgData: { weight: 0, arm: 10, moment: 0 } },
-        { name: 'Sub1', cgData: { weight: 0, arm: 2, moment: 0 } },
-        { name: 'Sub3', cgData: { weight: 0, arm: 3, moment: 0 } },
+        { name: 'Top', cgData: { weight: 0, arm: 1, moment: 0 }, maxW: null },
+        { name: 'CompNoMaxW', cgData: { weight: 0, arm: 10, moment: 0 }, maxW: null },
+        { name: 'Sub1', cgData: { weight: 0, arm: 2, moment: 0 }, maxW: 1 },
+        { name: 'Sub3', cgData: { weight: 0, arm: 3, moment: 0 }, maxW: 3 },
       ],
     );
     expect(result).toEqual(
@@ -215,7 +215,7 @@ test('sample c172sp cg calculation', () => {
       //  fuel overweight
       [-1, 150, 110, 110, 15, 30, 20, 319],
       { weight: 2466.1, arm: 45, moment: 111036.3 },
-      ['\'Fuel (gals)\' weight at 319 exceeds maximum weight'],
+      ['\'Fuel Main\' weight at 319 exceeds maximum weight'],
     ],
     [
       //  baggage 1 overweight
@@ -284,13 +284,13 @@ test('sample pa30 cg calculation', () => {
       //  main fuel overweight
       [-1, 150, 150, 10, 0, 0, 325, 180],
       { weight: 3395, arm: 85, moment: 288636.4 },
-      ['\'Fuel (gals)\' weight at 325 exceeds maximum weight'],
+      ['\'Fuel Main\' weight at 325 exceeds maximum weight'],
     ],
     [
       //  aux fuel overweight
       [-1, 150, 150, 10, 0, 0, 324, 181],
       { weight: 3395, arm: 85, moment: 288641.4 },
-      ['\'Fuel Aux (gals)\' weight at 181 exceeds maximum weight'],
+      ['\'Fuel Aux\' weight at 181 exceeds maximum weight'],
     ],
     [
       //  overall aircraft

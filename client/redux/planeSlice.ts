@@ -18,6 +18,7 @@ export interface PlaneSelectionState {
   planeId: string,
   flightTime?: number,
   weights: number[],
+  gals: number[],
 }
 
 const planeTypes = Object.keys(planes);
@@ -31,6 +32,25 @@ const initialState: PlaneSelectionState = {
   flightTime: 1,
   //  first element is plane weight and should remain unmodified at -1
   weights: [-1],
+  gals: [],
+};
+
+const extendArr = (
+  arr: number[],
+  minLength: number,
+) => {
+  while (arr.length < minLength) {
+    arr.push(0);
+  }
+};
+
+const extendArrs = (
+  arr1: number[],
+  arr2: number[],
+  minLength: number,
+) => {
+  extendArr(arr1, minLength);
+  extendArr(arr2, minLength);
 };
 
 const planeSlice = createSlice({
@@ -50,11 +70,20 @@ const planeSlice = createSlice({
       state.flightTime = action.payload;
     },
     changeWeight: (state, action) => {
-      const minLength = action.payload.id + 1;
-      while (state.weights.length < minLength) {
-        state.weights.push(0);
-      }
+      extendArrs(
+        state.weights,
+        state.gals,
+        action.payload.id + 1,
+      );
       state.weights[action.payload.id] = action.payload.weight;
+    },
+    changeGals: (state, action) => {
+      extendArrs(
+        state.weights,
+        state.gals,
+        action.payload.id + 1,
+      );
+      state.gals[action.payload.id] = action.payload.gal;
     },
   },
   /* eslint-enable no-param-reassign */
@@ -65,5 +94,6 @@ export const {
   changeId,
   changeFlightTime,
   changeWeight,
+  changeGals,
 } = planeSlice.actions;
 export default planeSlice.reducer;

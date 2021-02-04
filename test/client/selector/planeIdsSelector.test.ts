@@ -63,6 +63,7 @@ it('return ids for a', () => {
     planeType: 'a',
     planeId: '??',
     weights: [],
+    gals: [],
   })).toEqual(['b', 'e', 'h']);
 });
 
@@ -73,6 +74,7 @@ it('return ids for k', () => {
     planeType: 'k',
     planeId: '??',
     weights: [],
+    gals: [],
   })).toEqual(['l', 'o']);
 });
 
@@ -83,6 +85,7 @@ it('return id if set in state', () => {
     planeType: 'k',
     planeId: '??',
     weights: [],
+    gals: [],
   })).toEqual('??');
 });
 
@@ -93,5 +96,6 @@ it('return default id if not set in state', () => {
     planeType: 'k',
     planeId: '',
     weights: [],
+    gals: [],
   })).toEqual('l');
 });

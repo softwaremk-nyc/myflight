@@ -3,6 +3,7 @@ import reducer, {
   changeId,
   changeFlightTime,
   changeWeight,
+  changeGals,
   PlaneSelectionState,
 } from '../../../client/redux/planeSlice';
 
@@ -14,6 +15,7 @@ beforeEach(() => {
     planeType: 'aa',
     planeId: 'cc',
     weights: [],
+    gals: [],
   };
 });
 
@@ -30,6 +32,7 @@ it('changing id', () => {
       planeType: 'aa',
       planeId: 'dd1',
       weights: [],
+      gals: [],
     });
 });
 
@@ -46,6 +49,7 @@ it('changing type - resets id', () => {
       planeType: 'bb1',
       planeId: '',
       weights: [],
+      gals: [],
     });
 });
 
@@ -63,6 +67,7 @@ it('sets a flight time if one is not present', () => {
       planeId: 'cc',
       flightTime: 1.5,
       weights: [],
+      gals: [],
     });
 });
 
@@ -84,6 +89,7 @@ it('sets a weight and expands array', () => {
       planeType: 'aa',
       planeId: 'cc',
       weights: [0, 0, 0, 100],
+      gals: [0, 0, 0, 0],
     });
 
   s1 = reducer(
@@ -103,5 +109,48 @@ it('sets a weight and expands array', () => {
       planeType: 'aa',
       planeId: 'cc',
       weights: [0, 50, 0, 100],
+      gals: [0, 0, 0, 0],
+    });
+});
+
+it('sets gallons and expands array', () => {
+  let s1 = reducer(
+    state,
+    {
+      type: changeGals.type,
+      payload: {
+        id: 2,
+        gal: 10,
+      },
+    },
+  );
+
+  expect(s1)
+    .toEqual({
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [0, 0, 0],
+      gals: [0, 0, 10],
+    });
+
+  s1 = reducer(
+    s1,
+    {
+      type: changeGals.type,
+      payload: {
+        id: 1,
+        gal: 5,
+      },
+    },
+  );
+
+  expect(s1)
+    .toEqual({
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [0, 0, 0],
+      gals: [0, 5, 10],
     });
 });

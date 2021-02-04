@@ -1,11 +1,17 @@
 import { round } from './util';
 
+/**
+ * cg info for a single component (eg: passenger)
+ */
 export interface CgData {
   weight: number,
   arm: number,
   moment: number,
 }
 
+/**
+ * cg info with metadata (eg: component name, max weight, nested components it contains, etc.)
+ */
 export interface CgDataEntry {
   name: string;
   cgData: CgData | null,
@@ -14,35 +20,48 @@ export interface CgDataEntry {
   notes: string | null,
 }
 
+/**
+ * cg info list per aircraft keyed by id (eg: N-registration)
+ */
 export interface CgDataEntries {
   [name: string]: CgDataEntry[];
 }
 
+/**
+ * cg info list of all aircraft keyed by type (eg: C172)
+ */
 export interface CgDataEntriesList {
   [name: string]: CgDataEntries;
 }
 
-export interface CGDisplay { name: string; cgData: CgData; }
+/**
+ * Filtered CgDataEntry with just the name, cgData, and maxW
+ */
+export interface CGDisplay {
+  name: string;
+  cgData: CgData;
+  maxW: number | null;
+}
 
-export function flattenCgDataEntriesByName(
+export function flattenCgDataForDisplay(
   entries: CgDataEntry[],
 ): CGDisplay[] {
   let result: CGDisplay[] = [];
   entries.forEach((entry) => {
     if (entry.cgData) {
-      result.push({ name: entry.name, cgData: entry.cgData });
+      result.push({ name: entry.name, cgData: entry.cgData, maxW: entry.maxW });
     }
     if (entry.comps) {
-      result = result.concat(flattenCgDataEntriesByName(entry.comps));
+      result = result.concat(flattenCgDataForDisplay(entry.comps));
     }
   });
   return result.filter((x) => x.cgData !== null);
 }
 
-export function flattenCgDataEntries(
+export function flattenCgData(
   entries: CgDataEntry[],
 ): CgData[] {
-  const result = flattenCgDataEntriesByName(entries);
+  const result = flattenCgDataForDisplay(entries);
   return result.map((x) => x.cgData);
 }
 
@@ -83,8 +102,8 @@ export function calcCG(
  *  For insufficient weights, remaining entries in a/c configuration are zeroed
  *  @param {string} acName - aircraft name
  *  @param {number[]} weights - weights for each cgData point (-1 to ignore data point)
- *  @param {CgDataEntry[]} cgData - data for current aircraft
- *  @returns - calculated cg, array of CgData inputs used for calc, overweight warnings, w
+ *  @param {CgDataEntry[]} cgData - current aircraft - first level (nested CgDataEntry.comps remain)
+ *  @returns - calculated cg, input cgData flattend for calc, calc warnings, w - recursion counter
  */
 export function calcCGForWeights(
   acName: string,
@@ -152,7 +171,7 @@ export function calcCGForWeights(
     }
   }
 
-  const flat = flattenCgDataEntries(cgDataEntries);
+  const flat = flattenCgData(cgDataEntries);
 
   return [
     calcCG(flat),

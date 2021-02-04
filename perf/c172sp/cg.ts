@@ -58,7 +58,7 @@ const base172sp: CgDataEntry[] = [
     notes: 'Maximum Total Baggage Weight: 120 lbs',
   },
   {
-    name: 'Fuel (gals)',
+    name: 'Fuel Main',
     cgData: { weight: 0, arm: 48, moment: 0 },
     maxW: lbsPerGallonFuel * 53,
     comps: null,

@@ -43,14 +43,14 @@ const basePa30: CgDataEntry[] = [
     notes: 'Maximum Total Baggage Weight: 250 lbs',
   },
   {
-    name: 'Fuel (gals)',
+    name: 'Fuel Main',
     cgData: { weight: 0, arm: 90, moment: 0 },
     maxW: lbsPerGallonFuel * 54,
     comps: null,
     notes: 'Maximum Useable Fuel: 54 gals (60)',
   },
   {
-    name: 'Fuel Aux (gals)',
+    name: 'Fuel Aux',
     cgData: { weight: 0, arm: 95, moment: 0 },
     maxW: lbsPerGallonFuel * 30,
     comps: null,
