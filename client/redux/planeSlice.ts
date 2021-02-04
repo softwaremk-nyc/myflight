@@ -58,6 +58,13 @@ const planeSlice = createSlice({
       }
       state.weights[action.payload.id] = action.payload.weight;
     },
+    changeGals: (state, action) => {
+      const minLength = action.payload.id + 1;
+      while (state.gals.length < minLength) {
+        state.gals.push(0);
+      }
+      state.gals[action.payload.id] = action.payload.gals;
+    },
   },
   /* eslint-enable no-param-reassign */
 });
@@ -67,5 +74,6 @@ export const {
   changeId,
   changeFlightTime,
   changeWeight,
+  changeGals,
 } = planeSlice.actions;
 export default planeSlice.reducer;

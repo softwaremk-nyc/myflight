@@ -3,6 +3,7 @@ import reducer, {
   changeId,
   changeFlightTime,
   changeWeight,
+  changeGals,
   PlaneSelectionState,
 } from '../../../client/redux/planeSlice';
 
@@ -109,5 +110,47 @@ it('sets a weight and expands array', () => {
       planeId: 'cc',
       weights: [0, 50, 0, 100],
       gals: [],
+    });
+});
+
+it('sets gallons and expands array', () => {
+  let s1 = reducer(
+    state,
+    {
+      type: changeGals.type,
+      payload: {
+        id: 2,
+        gals: 10,
+      },
+    },
+  );
+
+  expect(s1)
+    .toEqual({
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [],
+      gals: [0, 0, 10],
+    });
+
+  s1 = reducer(
+    s1,
+    {
+      type: changeGals.type,
+      payload: {
+        id: 1,
+        gals: 5,
+      },
+    },
+  );
+
+  expect(s1)
+    .toEqual({
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [],
+      gals: [0, 5, 10],
     });
 });

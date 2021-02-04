@@ -10,6 +10,7 @@ import FlightTimeComp from './component/flightTimeComp';
 import AirportComp from './component/airportComp';
 import PlaneSelector from './component/planeSelector';
 import CgComp from './component/cgComp';
+import FuelComp from './component/fuelComp';
 import store from './redux/rootReducer';
 
 const client = new ApolloClient({
@@ -33,8 +34,11 @@ ReactDOM.render(
 
 ReactDOM.render(
   <Provider store={store}>
-    <div className='input-group mb-2'>
-      <PlaneSelector />
+    <div>
+      <div className='input-group mb-2'>
+        <PlaneSelector />
+      </div>
+      <FuelComp />
       <CgComp />
     </div>
   </Provider>,
