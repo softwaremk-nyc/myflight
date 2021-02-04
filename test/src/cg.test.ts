@@ -182,10 +182,10 @@ describe('calculate overall a/c cg and check overweight warnings', () => {
 
     expect(resultByName).toEqual(
       [
-        { name: 'Top', cgData: { weight: 0, arm: 1, moment: 0 } },
-        { name: 'CompNoMaxW', cgData: { weight: 0, arm: 10, moment: 0 } },
-        { name: 'Sub1', cgData: { weight: 0, arm: 2, moment: 0 } },
-        { name: 'Sub3', cgData: { weight: 0, arm: 3, moment: 0 } },
+        { name: 'Top', cgData: { weight: 0, arm: 1, moment: 0 }, maxW: null },
+        { name: 'CompNoMaxW', cgData: { weight: 0, arm: 10, moment: 0 }, maxW: null },
+        { name: 'Sub1', cgData: { weight: 0, arm: 2, moment: 0 }, maxW: 1 },
+        { name: 'Sub3', cgData: { weight: 0, arm: 3, moment: 0 }, maxW: 3 },
       ],
     );
     expect(result).toEqual(

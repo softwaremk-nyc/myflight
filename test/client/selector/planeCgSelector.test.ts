@@ -52,7 +52,7 @@ const p: CgDataEntriesList = {
       {
         name: 'Fuel',
         cgData: { weight: 120, arm: 15, moment: 12 },
-        maxW: null,
+        maxW: 32,
         comps: null,
         notes: null,
       },
@@ -69,9 +69,9 @@ it('should select by type and id and return CGDisplay (flattened)', () => {
     weights: [],
     gals: [],
   })).toEqual([
-    { name: 'c', cgData: { weight: 10, arm: 5, moment: 1 } },
-    { name: 'q', cgData: { weight: 25, arm: 55, moment: 15 } },
-    { name: 'd', cgData: { weight: 20, arm: 50, moment: 10 } },
+    { name: 'c', cgData: { weight: 10, arm: 5, moment: 1 }, maxW: null },
+    { name: 'q', cgData: { weight: 25, arm: 55, moment: 15 }, maxW: null },
+    { name: 'd', cgData: { weight: 20, arm: 50, moment: 10 }, maxW: null },
   ]);
 });
 
@@ -131,7 +131,7 @@ it('should return results for fuel info only', () => {
   })).toEqual([
     {
       id: 1,
-      cgDisplay: { name: 'Fuel', cgData: { weight: 120, arm: 15, moment: 12 } },
+      cgDisplay: { name: 'Fuel', cgData: { weight: 120, arm: 15, moment: 12 }, maxW: 32 },
     },
   ]);
 });

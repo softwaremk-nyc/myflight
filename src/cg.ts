@@ -35,9 +35,13 @@ export interface CgDataEntriesList {
 }
 
 /**
- * Filtered CgDataEntry with just the name and cgData
+ * Filtered CgDataEntry with just the name, cgData, and maxW
  */
-export interface CGDisplay { name: string; cgData: CgData; }
+export interface CGDisplay {
+  name: string;
+  cgData: CgData;
+  maxW: number | null;
+}
 
 export function flattenCgDataForDisplay(
   entries: CgDataEntry[],
@@ -45,7 +49,7 @@ export function flattenCgDataForDisplay(
   let result: CGDisplay[] = [];
   entries.forEach((entry) => {
     if (entry.cgData) {
-      result.push({ name: entry.name, cgData: entry.cgData });
+      result.push({ name: entry.name, cgData: entry.cgData, maxW: entry.maxW });
     }
     if (entry.comps) {
       result = result.concat(flattenCgDataForDisplay(entry.comps));
