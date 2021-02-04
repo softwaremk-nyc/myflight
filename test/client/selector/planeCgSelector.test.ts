@@ -2,6 +2,7 @@ import {
   cgSelector,
   cgSelectorForDisplay,
   fuelSelectorForDisplay,
+  weightSelector,
 } from '../../../client/selector/planeCgSelector';
 import { CgDataEntriesList } from '../../../src/cg';
 
@@ -128,9 +129,51 @@ it('should return results for fuel info only', () => {
     weights: [],
     gals: [],
   })).toEqual([
-    [
-      1,
-      { name: 'Fuel', cgData: { weight: 120, arm: 15, moment: 12 } },
-    ],
+    {
+      id: 1,
+      cgDisplay: { name: 'Fuel', cgData: { weight: 120, arm: 15, moment: 12 } },
+    },
   ]);
+});
+
+it('should return weights unadjusted if there are no gals info', () => {
+  const sel = weightSelector(p);
+
+  expect(sel({
+    planeTypes: ['?', '?'],
+    planeType: 'a',
+    planeId: 'h',
+    weights: [10, 20, 30],
+    gals: [0, 0, 0],
+  })).toEqual(
+    [10, 20, 30],
+  );
+});
+
+it('should return weights correctly adjusted if there is gals info', () => {
+  const sel = weightSelector(p);
+
+  expect(sel({
+    planeTypes: ['?', '?'],
+    planeType: 'a',
+    planeId: 'h',
+    weights: [10, 20, 30],
+    gals: [0, 10, 0],
+  })).toEqual(
+    [10, 60, 30],
+  );
+});
+
+it('should return ignore gals info if it is not a fuel position', () => {
+  const sel = weightSelector(p);
+
+  expect(sel({
+    planeTypes: ['?', '?'],
+    planeType: 'a',
+    planeId: 'h',
+    weights: [10, 20, 30],
+    gals: [100, 0, 0],
+  })).toEqual(
+    [10, 20, 30],
+  );
 });

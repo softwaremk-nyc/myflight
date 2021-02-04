@@ -6,6 +6,7 @@ import {
   calcCGForWeights,
   CGDisplay,
 } from '../../src/cg';
+import { lbsPerGallonFuel } from '../../perf/perfCommon';
 import { PlaneSelectionState } from '../redux/planeSlice';
 import { planeIdSelector } from './planeIdsSelector';
 
@@ -39,13 +40,53 @@ const cgSelectorForDisplay = (planes: CgDataEntriesList) => createSelector(
 const fuelSelectorForDisplay = (planes: CgDataEntriesList) => createSelector(
   cgSelectorForDisplay(planes),
   (cgDisplay: CGDisplay[]) => {
-    const res: [number, CGDisplay][] = [];
+    const res: { id: number, cgDisplay: CGDisplay }[] = [];
     cgDisplay.forEach((x, index) => {
       if (x.name.indexOf('Fuel') !== -1) {
-        res.push([index, x]);
+        res.push({ id: index, cgDisplay: x });
       }
     });
     return res;
+  },
+);
+
+/**
+ * Adjusted weight selector
+ * Most weights are in state and user entered. However,
+ * fuel weights are derived from gallon entries. Copy and calc ...
+ * @param {CgDataEntriesList} planes - all type info
+ */
+const weightSelector = (planes: CgDataEntriesList) => createSelector(
+  [
+    fuelSelectorForDisplay(planes),
+    (state: PlaneSelectionState) => state.weights,
+    (state: PlaneSelectionState) => state.gals,
+  ],
+  (
+    fuelDisplayEntries: { id: number, cgDisplay: CGDisplay }[],
+    weights: number[],
+    gals: number[],
+  ) => {
+    //  if there are derives weights needed, copy and calc
+    let derivedWeightNeeded = false;
+    for (let i = 0; i < fuelDisplayEntries.length; i += 1) {
+      if (gals[fuelDisplayEntries[i].id]) {
+        derivedWeightNeeded = true;
+        break;
+      }
+    }
+
+    const weightsC = derivedWeightNeeded
+      ? [...weights]
+      : weights;
+
+    if (derivedWeightNeeded) {
+      fuelDisplayEntries.forEach((f) => {
+        weightsC[f.id] = gals[f.id] * lbsPerGallonFuel;
+      });
+    }
+
+    return weightsC;
   },
 );
 
@@ -67,9 +108,12 @@ const cgSelector = (planes: CgDataEntriesList) => createSelector(
 const cgCalcSelector = (planes: CgDataEntriesList) => createSelector(
   [
     cgSelector(planes),
-    (state: PlaneSelectionState) => state.weights,
+    weightSelector(planes),
   ],
-  (cgDataEntries: CgDataEntry[], weights: number[]) => calcCGForWeights(
+  (
+    cgDataEntries: CgDataEntry[],
+    weights: number[],
+  ) => calcCGForWeights(
     cgDataEntries[0].name,
     weights,
     cgDataEntries,
@@ -81,4 +125,5 @@ export {
   cgSelectorForDisplay,
   cgCalcSelector,
   fuelSelectorForDisplay,
+  weightSelector,
 };
