@@ -4,11 +4,22 @@ import {
   PlaneSelectionState,
 } from '../redux/planeSlice';
 
+/**
+ * With planes closure, returns all plane ids for current selected type
+ * @param {CgDataEntriesList} planes - all type info
+ * @returns {string[]} - plane ids
+ */
 const planeIdsSelector = (planes: CgDataEntriesList) => createSelector(
   (state: PlaneSelectionState) => state.planeType,
   (planeType: string) => Object.keys(planes[planeType]),
 );
 
+/**
+ * With planes closure, returns selected plane id or default one for type
+ * if none is selected
+ * @param {CgDataEntriesList} planes - all type info
+ * @returns {string} - current planen id
+ */
 const planeIdSelector = (planes: CgDataEntriesList) => createSelector(
   [
     (state: PlaneSelectionState) => state.planeType,

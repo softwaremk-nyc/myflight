@@ -2,8 +2,8 @@ import {
   calcCG,
   calcCGForWeights,
   CgDataEntry,
-  flattenCgDataEntries,
-  flattenCgDataEntriesByName,
+  flattenCgData,
+  flattenCgDataForDisplay,
 } from '../../src/cg';
 import c172sp from '../../perf/c172sp/cg';
 import pa30 from '../../perf/pa30/cg';
@@ -175,8 +175,8 @@ describe('calculate overall a/c cg and check overweight warnings', () => {
 
   test('flatten test', () => {
     base[0].comps = noMaxWComp;
-    const resultByName = flattenCgDataEntriesByName(base);
-    const result = flattenCgDataEntries(base);
+    const resultByName = flattenCgDataForDisplay(base);
+    const result = flattenCgData(base);
 
     expect(resultByName.length).toEqual(result.length);
 

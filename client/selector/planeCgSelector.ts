@@ -2,31 +2,49 @@ import { createSelector } from '@reduxjs/toolkit';
 import {
   CgDataEntry,
   CgDataEntriesList,
-  flattenCgDataEntriesByName,
+  flattenCgDataForDisplay,
   calcCGForWeights,
 } from '../../src/cg';
 import { PlaneSelectionState } from '../redux/planeSlice';
 import { planeIdSelector } from './planeIdsSelector';
 
-//  returns type and id (or default id) from state
+/**
+ *
+ * @param {CgDataEntriesList} planes - all type info
+ * @returns {string, string} - (planeType and planeId) - or default if not selected
+ */
 const typeIdSelector = (planes: CgDataEntriesList) => [
   (state: PlaneSelectionState) => state.planeType,
-  //  returns default id if one isn't set
   planeIdSelector(planes),
 ];
 
+/**
+ *
+ * @param {CgDataEntriesList} planes - all type info
+ * @returns {CgDisplay[]} - flattened cgdata for display
+ */
 const cgSelectorByName = (planes: CgDataEntriesList) => createSelector(
   typeIdSelector(planes),
-  (planeType: string, planeId: string) => flattenCgDataEntriesByName(
+  (planeType: string, planeId: string) => flattenCgDataForDisplay(
     planes[planeType][planeId],
   ),
 );
 
+/**
+ *
+ * @param {CgDataEntriesList} planes - all type info
+ * @returns {CgDataEntry[]} for given id (N-registration)
+ * First level (unflattened and used for cg calcs)
+ */
 const cgSelector = (planes: CgDataEntriesList) => createSelector(
   typeIdSelector(planes),
   (planeType: string, planeId: string) => planes[planeType][planeId],
 );
 
+/**
+ * Runs cg calculation
+ * @param {CgDataEntriesList} planes - all type info
+ */
 const cgCalcSelector = (planes: CgDataEntriesList) => createSelector(
   [
     cgSelector(planes),

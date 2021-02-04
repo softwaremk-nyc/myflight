@@ -39,7 +39,7 @@ export interface CgDataEntriesList {
  */
 export interface CGDisplay { name: string; cgData: CgData; }
 
-export function flattenCgDataEntriesByName(
+export function flattenCgDataForDisplay(
   entries: CgDataEntry[],
 ): CGDisplay[] {
   let result: CGDisplay[] = [];
@@ -48,16 +48,16 @@ export function flattenCgDataEntriesByName(
       result.push({ name: entry.name, cgData: entry.cgData });
     }
     if (entry.comps) {
-      result = result.concat(flattenCgDataEntriesByName(entry.comps));
+      result = result.concat(flattenCgDataForDisplay(entry.comps));
     }
   });
   return result.filter((x) => x.cgData !== null);
 }
 
-export function flattenCgDataEntries(
+export function flattenCgData(
   entries: CgDataEntry[],
 ): CgData[] {
-  const result = flattenCgDataEntriesByName(entries);
+  const result = flattenCgDataForDisplay(entries);
   return result.map((x) => x.cgData);
 }
 
@@ -167,7 +167,7 @@ export function calcCGForWeights(
     }
   }
 
-  const flat = flattenCgDataEntries(cgDataEntries);
+  const flat = flattenCgData(cgDataEntries);
 
   return [
     calcCG(flat),
