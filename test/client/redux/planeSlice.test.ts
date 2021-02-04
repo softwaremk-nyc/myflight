@@ -4,6 +4,9 @@ import reducer, {
   changeFlightTime,
   changeWeight,
   changeGals,
+  changeBhp,
+  changeMp,
+  changeRpm,
   PlaneSelectionState,
 } from '../../../client/redux/planeSlice';
 
@@ -153,4 +156,61 @@ it('sets gallons and expands array', () => {
       weights: [0, 0, 0],
       gals: [0, 5, 10],
     });
+});
+
+it('sets brake horsepower', () => {
+  expect(reducer(
+    state,
+    {
+      type: changeBhp.type,
+      payload: 250,
+    },
+  )).toEqual(
+    {
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [],
+      gals: [],
+      bhp: 250,
+    },
+  );
+});
+
+it('sets manifold pressure', () => {
+  expect(reducer(
+    state,
+    {
+      type: changeMp.type,
+      payload: 25,
+    },
+  )).toEqual(
+    {
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [],
+      gals: [],
+      mp: 25,
+    },
+  );
+});
+
+it('sets rpm', () => {
+  expect(reducer(
+    state,
+    {
+      type: changeRpm.type,
+      payload: 2500,
+    },
+  )).toEqual(
+    {
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [],
+      gals: [],
+      rpm: 2500,
+    },
+  );
 });

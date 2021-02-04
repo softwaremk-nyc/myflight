@@ -19,6 +19,9 @@ export interface PlaneSelectionState {
   flightTime?: number,
   weights: number[],
   gals: number[],
+  bhp?: number,
+  mp?: number,
+  rpm?: number,
 }
 
 const planeTypes = Object.keys(planes);
@@ -85,6 +88,15 @@ const planeSlice = createSlice({
       );
       state.gals[action.payload.id] = action.payload.gal;
     },
+    changeBhp: (state, action) => {
+      state.bhp = action.payload;
+    },
+    changeMp: (state, action) => {
+      state.mp = action.payload;
+    },
+    changeRpm: (state, action) => {
+      state.rpm = action.payload;
+    },
   },
   /* eslint-enable no-param-reassign */
 });
@@ -95,5 +107,8 @@ export const {
   changeFlightTime,
   changeWeight,
   changeGals,
+  changeBhp,
+  changeMp,
+  changeRpm,
 } = planeSlice.actions;
 export default planeSlice.reducer;
