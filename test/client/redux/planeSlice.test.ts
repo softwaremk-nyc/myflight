@@ -2,6 +2,7 @@ import reducer, {
   changeType,
   changeId,
   changeFlightTime,
+  changeFlightAltitude,
   changeWeight,
   changeGals,
   changeBhp,
@@ -69,6 +70,24 @@ it('sets a flight time if one is not present', () => {
       planeType: 'aa',
       planeId: 'cc',
       flightTime: 1.5,
+      weights: [],
+      gals: [],
+    });
+});
+
+it('sets a flight altitude if one is not present', () => {
+  expect(reducer(
+    state,
+    {
+      type: changeFlightAltitude.type,
+      payload: 4000,
+    },
+  ))
+    .toEqual({
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      flightAltitude: 4000,
       weights: [],
       gals: [],
     });

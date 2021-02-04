@@ -17,6 +17,7 @@ export interface PlaneSelectionState {
   planeType: string,
   planeId: string,
   flightTime?: number,
+  flightAltitude?: number,
   weights: number[],
   gals: number[],
   bhp?: number,
@@ -33,6 +34,7 @@ const initialState: PlaneSelectionState = {
   //  blank causes the default to be returned by selector
   planeId: '',
   flightTime: 1,
+  flightAltitude: 3000,
   //  first element is plane weight and should remain unmodified at -1
   weights: [-1],
   gals: [],
@@ -72,6 +74,9 @@ const planeSlice = createSlice({
     changeFlightTime: (state, action) => {
       state.flightTime = action.payload;
     },
+    changeFlightAltitude: (state, action) => {
+      state.flightAltitude = action.payload;
+    },
     changeWeight: (state, action) => {
       extendArrs(
         state.weights,
@@ -105,6 +110,7 @@ export const {
   changeType,
   changeId,
   changeFlightTime,
+  changeFlightAltitude,
   changeWeight,
   changeGals,
   changeBhp,
