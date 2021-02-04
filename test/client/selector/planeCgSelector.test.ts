@@ -1,6 +1,6 @@
 import {
   cgSelector,
-  cgSelectorByName,
+  cgSelectorForDisplay,
 } from '../../../client/selector/planeCgSelector';
 import { CgDataEntriesList } from '../../../src/cg';
 
@@ -44,7 +44,7 @@ const p: CgDataEntriesList = {
 };
 
 it('should select by type and id and return name', () => {
-  const sel = cgSelectorByName(p);
+  const sel = cgSelectorForDisplay(p);
   expect(sel({
     planeTypes: ['?', '?'],
     planeType: 'a',

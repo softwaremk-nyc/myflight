@@ -23,7 +23,7 @@ const typeIdSelector = (planes: CgDataEntriesList) => [
  * @param {CgDataEntriesList} planes - all type info
  * @returns {CgDisplay[]} - flattened cgdata for display
  */
-const cgSelectorByName = (planes: CgDataEntriesList) => createSelector(
+const cgSelectorForDisplay = (planes: CgDataEntriesList) => createSelector(
   typeIdSelector(planes),
   (planeType: string, planeId: string) => flattenCgDataForDisplay(
     planes[planeType][planeId],
@@ -59,6 +59,6 @@ const cgCalcSelector = (planes: CgDataEntriesList) => createSelector(
 
 export {
   cgSelector,
-  cgSelectorByName,
+  cgSelectorForDisplay,
   cgCalcSelector,
 };

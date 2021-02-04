@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { DebounceInput } from 'react-debounce-input';
 import { RootState } from '../redux/rootReducer';
 import {
-  cgSelectorByName,
+  cgSelectorForDisplay,
   cgCalcSelector,
 } from '../selector/planeCgSelector';
 import {
@@ -12,7 +12,7 @@ import {
 } from '../redux/planeSlice';
 
 const mapState = (state: RootState) => ({
-  cgData: cgSelectorByName(planes)(state.plane),
+  cgData: cgSelectorForDisplay(planes)(state.plane),
   cgCalc: cgCalcSelector(planes)(state.plane),
 });
 
