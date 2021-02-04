@@ -85,6 +85,13 @@ export const CgComp = (props: CgCompProp) => <div>
       }
     </tbody>
   </table>
+  {
+    props.cgCalc[2].map((p, index) => <p
+      className='text-danger'
+      key={index}>
+      {p}
+    </p>)
+  }
 </div>;
 
 export default connector(CgComp);

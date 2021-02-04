@@ -164,7 +164,7 @@ it('should return weights correctly adjusted if there is gals info', () => {
   );
 });
 
-it('should return ignore gals info if it is not a fuel position', () => {
+it('should ignore gals info if it is not a fuel position', () => {
   const sel = weightSelector(p);
 
   expect(sel({

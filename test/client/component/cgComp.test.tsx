@@ -17,6 +17,8 @@ it('should display one row per cg entry', () => {
     ],
     cgCalc: [
       { weight: 6, arm: 7, moment: 8 },
+      ,
+      [],
     ],
   };
 
@@ -35,6 +37,8 @@ it('should fire a weight update on input change', async () => {
     ],
     cgCalc: [
       { weight: 6, arm: 7, moment: 8 },
+      ,
+      [],
     ],
     changeWeight: fn,
   };
