@@ -34,7 +34,7 @@ const cgSelectorForDisplay = (planes: CgDataEntriesList) => createSelector(
 
 /**
  * Return fuel entries for a given a/c
- * @returns {[number, CgDisplay][]} - tuples of display info and
+ * @returns {{id: number, cgDisplay: CGDisplay}[]} - index for fuel info, cg display info
  * index into aircraft CgDataEntry[]
  */
 const fuelSelectorForDisplay = (planes: CgDataEntriesList) => createSelector(
