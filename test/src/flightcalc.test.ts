@@ -93,7 +93,7 @@ describe('headwind and crosswind component calculations', () => {
   });
 
   test('throws if wind direction is wrong', () => {
-    expect(() => { windComponent(1, 0, 1); }).toThrow('Invalid wind direction');
+    expect(() => { windComponent(1, -1, 1); }).toThrow('Invalid wind direction');
     expect(() => { windComponent(1, 361, 1); }).toThrow('Invalid wind direction');
   });
 

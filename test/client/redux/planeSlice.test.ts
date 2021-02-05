@@ -2,8 +2,13 @@ import reducer, {
   changeType,
   changeId,
   changeFlightTime,
+  changeFlightAltitude,
   changeWeight,
   changeGals,
+  changeBhp,
+  changeMp,
+  changeRpm,
+  changePowerSetting,
   PlaneSelectionState,
 } from '../../../client/redux/planeSlice';
 
@@ -66,6 +71,24 @@ it('sets a flight time if one is not present', () => {
       planeType: 'aa',
       planeId: 'cc',
       flightTime: 1.5,
+      weights: [],
+      gals: [],
+    });
+});
+
+it('sets a flight altitude if one is not present', () => {
+  expect(reducer(
+    state,
+    {
+      type: changeFlightAltitude.type,
+      payload: 4000,
+    },
+  ))
+    .toEqual({
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      flightAltitude: 4000,
       weights: [],
       gals: [],
     });
@@ -153,4 +176,80 @@ it('sets gallons and expands array', () => {
       weights: [0, 0, 0],
       gals: [0, 5, 10],
     });
+});
+
+it('sets brake horsepower', () => {
+  expect(reducer(
+    state,
+    {
+      type: changeBhp.type,
+      payload: 250,
+    },
+  )).toEqual(
+    {
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [],
+      gals: [],
+      bhp: 250,
+    },
+  );
+});
+
+it('sets manifold pressure', () => {
+  expect(reducer(
+    state,
+    {
+      type: changeMp.type,
+      payload: 25,
+    },
+  )).toEqual(
+    {
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [],
+      gals: [],
+      mp: 25,
+    },
+  );
+});
+
+it('sets rpm', () => {
+  expect(reducer(
+    state,
+    {
+      type: changeRpm.type,
+      payload: 2500,
+    },
+  )).toEqual(
+    {
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [],
+      gals: [],
+      rpm: 2500,
+    },
+  );
+});
+
+it('sets power setting', () => {
+  expect(reducer(
+    state,
+    {
+      type: changePowerSetting.type,
+      payload: 'bleh',
+    },
+  )).toEqual(
+    {
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [],
+      gals: [],
+      powerSetting: 'bleh',
+    },
+  );
 });

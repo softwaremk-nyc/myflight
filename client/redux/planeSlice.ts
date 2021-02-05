@@ -12,13 +12,23 @@ export const planes: CgDataEntriesList = {
   PA30: pa30,
 };
 
+export const powerSettings: string[] = [
+  'Best Economy',
+  'Best Power',
+];
+
 export interface PlaneSelectionState {
   planeTypes: string[];
   planeType: string,
   planeId: string,
   flightTime?: number,
+  flightAltitude?: number,
   weights: number[],
   gals: number[],
+  bhp?: number,
+  mp?: number,
+  rpm?: number,
+  powerSetting?: string,
 }
 
 const planeTypes = Object.keys(planes);
@@ -30,9 +40,14 @@ const initialState: PlaneSelectionState = {
   //  blank causes the default to be returned by selector
   planeId: '',
   flightTime: 1,
+  flightAltitude: 3000,
   //  first element is plane weight and should remain unmodified at -1
   weights: [-1],
   gals: [],
+  bhp: 78,
+  mp: 22,
+  rpm: 2300,
+  powerSetting: powerSettings[0],
 };
 
 const extendArr = (
@@ -69,6 +84,9 @@ const planeSlice = createSlice({
     changeFlightTime: (state, action) => {
       state.flightTime = action.payload;
     },
+    changeFlightAltitude: (state, action) => {
+      state.flightAltitude = action.payload;
+    },
     changeWeight: (state, action) => {
       extendArrs(
         state.weights,
@@ -85,6 +103,18 @@ const planeSlice = createSlice({
       );
       state.gals[action.payload.id] = action.payload.gal;
     },
+    changeBhp: (state, action) => {
+      state.bhp = action.payload;
+    },
+    changeMp: (state, action) => {
+      state.mp = action.payload;
+    },
+    changeRpm: (state, action) => {
+      state.rpm = action.payload;
+    },
+    changePowerSetting: (state, action) => {
+      state.powerSetting = action.payload;
+    },
   },
   /* eslint-enable no-param-reassign */
 });
@@ -93,7 +123,12 @@ export const {
   changeType,
   changeId,
   changeFlightTime,
+  changeFlightAltitude,
   changeWeight,
   changeGals,
+  changeBhp,
+  changeMp,
+  changeRpm,
+  changePowerSetting,
 } = planeSlice.actions;
 export default planeSlice.reducer;

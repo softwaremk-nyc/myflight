@@ -11,6 +11,7 @@ import AirportComp from './component/airportComp';
 import PlaneSelector from './component/planeSelector';
 import CgComp from './component/cgComp';
 import FuelComp from './component/fuelComp';
+import PerfComp from './component/perfComp';
 import store from './redux/rootReducer';
 
 const client = new ApolloClient({
@@ -43,4 +44,13 @@ ReactDOM.render(
     </div>
   </Provider>,
   document.getElementById('root2'),
+);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <div className='input-group mb-2'>
+      <PerfComp />
+    </div>
+  </Provider>,
+  document.getElementById('root3'),
 );
