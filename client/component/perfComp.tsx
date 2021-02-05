@@ -3,6 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
 import PerfCompFixed from './perfCompFixed';
 import PerfCompVariable from './perfCompVariable';
+import { powerSettings } from '../redux/planeSlice';
 
 const mapState = (state: RootState) => ({
   type: state.plane.planeType,
@@ -16,7 +17,7 @@ export const PerfComp = (props: PerfCompProp) => {
     return <PerfCompFixed />;
   }
   if (props.type === 'PA30') {
-    return <PerfCompVariable />;
+    return <PerfCompVariable powerSettings={powerSettings} />;
   }
 
   return <p>Unknown type: {props.type}</p>;

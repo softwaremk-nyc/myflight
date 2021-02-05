@@ -8,6 +8,7 @@ import reducer, {
   changeBhp,
   changeMp,
   changeRpm,
+  changePowerSetting,
   PlaneSelectionState,
 } from '../../../client/redux/planeSlice';
 
@@ -230,6 +231,25 @@ it('sets rpm', () => {
       weights: [],
       gals: [],
       rpm: 2500,
+    },
+  );
+});
+
+it('sets power setting', () => {
+  expect(reducer(
+    state,
+    {
+      type: changePowerSetting.type,
+      payload: 'bleh',
+    },
+  )).toEqual(
+    {
+      planeTypes: ['aa', 'bb'],
+      planeType: 'aa',
+      planeId: 'cc',
+      weights: [],
+      gals: [],
+      powerSetting: 'bleh',
     },
   );
 });

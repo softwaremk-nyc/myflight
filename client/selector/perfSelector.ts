@@ -16,7 +16,10 @@ import {
   stdTemp,
   windComponent,
 } from '../../src/flightcalc';
-import { PlaneSelectionState } from '../redux/planeSlice';
+import {
+  powerSettings,
+  PlaneSelectionState,
+} from '../redux/planeSlice';
 
 export interface RwyWindInfo {
   [rwy: string]: number;
@@ -164,7 +167,9 @@ export const perfVariable = (planes: CgDataEntriesList) => createSelector(
         p.dest,
         p.cruisepAlt,
         planeState.flightTime ?? 0,
-        false,
+        planeState.powerSetting
+          ? planeState.powerSetting.indexOf(powerSettings[0]) !== -1
+          : true,
       ),
       startHeadWindInfo: p.startHeadWindInfo,
       startMaxHeadwind: p.startMaxHeadwind,

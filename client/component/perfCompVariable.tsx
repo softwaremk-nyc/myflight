@@ -5,14 +5,16 @@ import { RootState } from '../redux/rootReducer';
 import {
   changeMp,
   changeRpm,
+  changePowerSetting,
 } from '../redux/planeSlice';
 
-const mapState = (state: RootState) => ({
+const mapState = (state: RootState, ownProps: { powerSettings: string[] }) => ({
   mp: state.plane.mp,
   rpm: state.plane.rpm,
+  powerSettings: ownProps.powerSettings,
 });
 
-const connector = connect(mapState, { changeMp, changeRpm });
+const connector = connect(mapState, { changeMp, changeRpm, changePowerSetting });
 type PerfCompVariableProp = ConnectedProps<typeof connector>;
 
 export const PerfCompVariable = (props: PerfCompVariableProp) => <div>
@@ -58,6 +60,25 @@ export const PerfCompVariable = (props: PerfCompVariableProp) => <div>
               props.changeRpm(info);
             }}
           />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Power Setting
+        </td>
+        <td>
+          <select
+            data-testid='powerSetting'
+            onChange={(event) => {
+              const newVal = event.target.value;
+              props.changePowerSetting(newVal);
+            }}
+          >
+            {
+              props.powerSettings.map((p, index) => <option key={index}
+                value={p}>{p}</option>)
+            }
+          </select>
         </td>
       </tr>
     </tbody>

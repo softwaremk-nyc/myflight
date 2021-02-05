@@ -12,6 +12,11 @@ export const planes: CgDataEntriesList = {
   PA30: pa30,
 };
 
+export const powerSettings: string[] = [
+  'Best Economy',
+  'Best Power',
+];
+
 export interface PlaneSelectionState {
   planeTypes: string[];
   planeType: string,
@@ -23,6 +28,7 @@ export interface PlaneSelectionState {
   bhp?: number,
   mp?: number,
   rpm?: number,
+  powerSetting?: string,
 }
 
 const planeTypes = Object.keys(planes);
@@ -41,6 +47,7 @@ const initialState: PlaneSelectionState = {
   bhp: 78,
   mp: 22,
   rpm: 2300,
+  powerSetting: powerSettings[0],
 };
 
 const extendArr = (
@@ -105,6 +112,9 @@ const planeSlice = createSlice({
     changeRpm: (state, action) => {
       state.rpm = action.payload;
     },
+    changePowerSetting: (state, action) => {
+      state.powerSetting = action.payload;
+    },
   },
   /* eslint-enable no-param-reassign */
 });
@@ -119,5 +129,6 @@ export const {
   changeBhp,
   changeMp,
   changeRpm,
+  changePowerSetting,
 } = planeSlice.actions;
 export default planeSlice.reducer;
