@@ -5,7 +5,7 @@ import {
 } from '../../src/cg';
 import { cgCalcSelector } from './planeCgSelector';
 import { perf172 } from '../../perf/c172sp/perf';
-// import perfPa30 from '../../perf/pa30';
+import perfPa30 from '../../perf/pa30/perf';
 import {
   AirportInfoState,
   RwyInfo,
@@ -22,7 +22,7 @@ export interface RwyWindInfo {
   [rwy: string]: number;
 }
 
-export const calcHeadWind = (
+const calcHeadWind = (
   runways: RwyInfo[],
   speed: number,
   direction: number,
@@ -60,6 +60,61 @@ const pAlt = (
   airportInfoState.info.altimeter,
 );
 
+const perfParams = (
+  airportInfo: AirportInfoState[],
+  indicatedAlt: number,
+) => {
+  const startState = airportInfo[0];
+  const destState = airportInfo[1];
+
+  const startpAlt = pAlt(startState);
+  const destpAlt = pAlt(destState);
+
+  const startHeadWindInfo = headWindInfo(
+    startState,
+  );
+  const destHeadWindInfo = headWindInfo(
+    destState,
+  );
+
+  const startMaxHeadwind = Math.max(...Object.values(startHeadWindInfo));
+  const destMaxHeadwind = Math.max(...Object.values(destHeadWindInfo));
+
+  const start: AirportInfo = {
+    pAlt: startpAlt,
+    temp: startState.info.temp,
+    stdTempCorrection: startState.info.temp - stdTemp(startpAlt),
+    headWind: startMaxHeadwind,
+    isPaved: true,
+  };
+  const dest: AirportInfo = {
+    pAlt: destpAlt,
+    temp: destState.info.temp,
+    stdTempCorrection: destState.info.temp - stdTemp(destpAlt),
+    headWind: destMaxHeadwind,
+    isPaved: true,
+  };
+
+  const cruisepAlt = pressureAlt(
+    indicatedAlt,
+    startState.info.altimeter,
+  );
+
+  return {
+    startState,
+    destState,
+    startpAlt,
+    destpAlt,
+    startHeadWindInfo,
+    destHeadWindInfo,
+    startMaxHeadwind,
+    destMaxHeadwind,
+    start,
+    dest,
+    cruisepAlt,
+  };
+};
+
 export const perfFixed = (planes: CgDataEntriesList) => createSelector(
   [
     (state: RootState) => state.plane,
@@ -67,59 +122,55 @@ export const perfFixed = (planes: CgDataEntriesList) => createSelector(
     (state: RootState) => cgCalcSelector(planes)(state.plane),
   ],
   (planeState: PlaneSelectionState, airportInfo: AirportInfoState[], [cgData]) => {
-    const startState = airportInfo[0];
-    const destState = airportInfo[1];
-
-    const startpAlt = pAlt(startState);
-    const destpAlt = pAlt(destState);
-
-    const startHeadWindInfo = headWindInfo(
-      startState,
-    );
-    const destHeadWindInfo = headWindInfo(
-      destState,
-    );
-
-    const startMaxHeadwind = Math.max(...Object.values(startHeadWindInfo));
-    const destMaxHeadwind = Math.max(...Object.values(destHeadWindInfo));
-
-    const start: AirportInfo = {
-      pAlt: startpAlt,
-      temp: startState.info.temp,
-      stdTempCorrection: startState.info.temp - stdTemp(startpAlt),
-      headWind: startMaxHeadwind,
-      isPaved: true,
-    };
-    const dest: AirportInfo = {
-      pAlt: destpAlt,
-      temp: destState.info.temp,
-      stdTempCorrection: destState.info.temp - stdTemp(destpAlt),
-      headWind: destMaxHeadwind,
-      isPaved: true,
-    };
-
-    const cruisepAlt = pressureAlt(
+    const p = perfParams(
+      airportInfo,
       planeState.flightAltitude ?? 0,
-      startState.info.altimeter,
     );
     return {
       perfResult: perf172(
         planeState.bhp ?? 0,
         cgData.weight,
-        start,
-        dest,
-        cruisepAlt,
+        p.start,
+        p.dest,
+        p.cruisepAlt,
         planeState.flightTime ?? 0,
       ),
-      startHeadWindInfo,
-      startMaxHeadwind,
-      destHeadWindInfo,
-      destMaxHeadwind,
-      cruisepAlt,
+      startHeadWindInfo: p.startHeadWindInfo,
+      startMaxHeadwind: p.startMaxHeadwind,
+      destHeadWindInfo: p.destHeadWindInfo,
+      destMaxHeadwind: p.destMaxHeadwind,
+      cruisepAlt: p.cruisepAlt,
     };
   },
 );
 
-// export const perfVariable = createSelector(
-
-// );
+export const perfVariable = (planes: CgDataEntriesList) => createSelector(
+  [
+    (state: RootState) => state.plane,
+    (state: RootState) => state.airportInfo,
+    (state: RootState) => cgCalcSelector(planes)(state.plane),
+  ],
+  (planeState: PlaneSelectionState, airportInfo: AirportInfoState[], [cgData]) => {
+    const p = perfParams(
+      airportInfo,
+      planeState.flightAltitude ?? 0,
+    );
+    return {
+      perfResult: perfPa30(
+        planeState.mp ?? 0,
+        planeState.rpm ?? 0,
+        cgData.weight,
+        p.start,
+        p.dest,
+        p.cruisepAlt,
+        planeState.flightTime ?? 0,
+        false,
+      ),
+      startHeadWindInfo: p.startHeadWindInfo,
+      startMaxHeadwind: p.startMaxHeadwind,
+      destHeadWindInfo: p.destHeadWindInfo,
+      destMaxHeadwind: p.destMaxHeadwind,
+      cruisepAlt: p.cruisepAlt,
+    };
+  },
+);
