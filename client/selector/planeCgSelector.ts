@@ -82,7 +82,9 @@ const weightSelector = (planes: CgDataEntriesList) => createSelector(
 
     if (derivedWeightNeeded) {
       fuelDisplayEntries.forEach((f) => {
-        weightsC[f.id] = gals[f.id] * lbsPerGallonFuel;
+        if (gals[f.id]) {
+          weightsC[f.id] = gals[f.id] * lbsPerGallonFuel;
+        }
       });
     }
 
