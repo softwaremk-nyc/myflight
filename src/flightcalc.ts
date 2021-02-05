@@ -61,7 +61,7 @@ export function windComponent(
   direction: number,
   rwy: number,
 ): [number, number] {
-  if (direction < 1 || direction > 360) {
+  if (direction < 0 || direction > 360) {
     throw Error(`Invalid wind direction provided ${direction}`);
   }
   if (rwy < 1 || rwy > 36) {

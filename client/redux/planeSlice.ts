@@ -38,6 +38,9 @@ const initialState: PlaneSelectionState = {
   //  first element is plane weight and should remain unmodified at -1
   weights: [-1],
   gals: [],
+  bhp: 78,
+  mp: 22,
+  rpm: 2300,
 };
 
 const extendArr = (

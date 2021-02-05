@@ -13,6 +13,11 @@ it('should fire a bhp change', async () => {
   const fn = jest.fn();
   const testProps: any = {
     bhp: 12,
+    perf: {
+      perfResult: {},
+      startHeadWindInfo: {},
+      destHeadWindInfo: {},
+    },
     changeBhp: fn,
   };
 
