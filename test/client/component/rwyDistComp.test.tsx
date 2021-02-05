@@ -14,11 +14,11 @@ it('should render a table of runway info', () => {
     title: 'bleh',
     normal: {
       label: 'n1',
-      dist: 30,
+      value: 30,
     },
     fiftyFoot: {
       label: 'n2',
-      dist: 150,
+      value: 150,
     },
     headWind: 60,
   };

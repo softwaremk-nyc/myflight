@@ -16,6 +16,11 @@ it('should fire a manifold pressure change', async () => {
   const testProps: any = {
     mp: 12,
     rpm: 2500,
+    perf: {
+      perfResult: {},
+      startHeadWindInfo: {},
+      destHeadWindInfo: {},
+    },
     changeMp: fn,
     changeRpm: fn2,
     changePowerSetting: fn3,
@@ -48,6 +53,11 @@ it('should fire a rpm change', async () => {
   const testProps: any = {
     mp: 12,
     rpm: 2500,
+    perf: {
+      perfResult: {},
+      startHeadWindInfo: {},
+      destHeadWindInfo: {},
+    },
     changeMp: fn,
     changeRpm: fn2,
     changePowerSetting: fn3,
@@ -80,6 +90,11 @@ it('should return changed power setting', () => {
   const testProps: any = {
     mp: 12,
     rpm: 2500,
+    perf: {
+      perfResult: {},
+      startHeadWindInfo: {},
+      destHeadWindInfo: {},
+    },
     changeMp: fn,
     changeRpm: fn2,
     changePowerSetting: fn3,

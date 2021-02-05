@@ -6,9 +6,12 @@ import {
   planes,
   changeBhp,
 } from '../redux/planeSlice';
-import { RwyComp } from './rwyComp';
-import { RwyDistComp } from './rwyDistComp';
 import { perfFixed } from '../selector/perfSelector';
+import {
+  ConfigPerf,
+  ConfigRwy,
+} from './rwyDistComp';
+import { PerfResultsComp } from './perfResultsComp';
 
 const mapState = (state: RootState) => ({
   bhp: state.plane.bhp,
@@ -18,9 +21,9 @@ const mapState = (state: RootState) => ({
 const connector = connect(mapState, { changeBhp });
 type PerfCompFixedProp = ConnectedProps<typeof connector>;
 
-const warningClass = 'text-warning';
 export const PerfCompFixed = (props: PerfCompFixedProp) => {
-  const config = [
+  const warningClass = 'text-warning';
+  const configPerf: ConfigPerf[] = [
     {
       label: 'Climb Time (min)',
       value: props.perf.perfResult.climbTime?.val,
@@ -70,18 +73,18 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
     },
   ];
 
-  const configRwy = [
+  const configRwy: ConfigRwy[] = [
     {
       title: 'Take off At Actual Weight',
       normal: {
         label: 'Short Field',
-        dist: props.perf.perfResult.toDist?.val,
+        value: props.perf.perfResult.toDist?.val,
         class: props.perf.perfResult.toDist?.extrapolation
           ? warningClass : '',
       },
       fiftyFoot: {
         label: 'Short Field',
-        dist: props.perf.perfResult.toDist50?.val,
+        value: props.perf.perfResult.toDist50?.val,
         class: props.perf.perfResult.toDist50?.extrapolation
           ? warningClass : '',
       },
@@ -91,42 +94,19 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
       title: 'Landing At Max Weight',
       normal: {
         label: 'Short Field',
-        dist: props.perf.perfResult.ldgDist?.val,
+        value: props.perf.perfResult.ldgDist?.val,
         class: props.perf.perfResult.ldgDist?.extrapolation
           ? warningClass : '',
       },
       fiftyFoot: {
         label: 'Short Field',
-        dist: props.perf.perfResult.ldgDist50?.val,
+        value: props.perf.perfResult.ldgDist50?.val,
         class: props.perf.perfResult.ldgDist50?.extrapolation
           ? warningClass : '',
       },
       headWind: props.perf.destMaxHeadwind,
     },
   ];
-
-  const perfResults = <table className='table table-responsive-sm'>
-    <thead>
-      <tr>
-        <th>Perf</th>
-        <th>Data</th>
-      </tr>
-    </thead>
-    <tbody className='align-middle'>
-      {
-        config.map((c, index) => <tr
-          key={index}
-          className={c.class}>
-            <td>
-              {c.label}
-            </td>
-            <td>
-              {c.value?.toFixed(1)}
-            </td>
-        </tr>)
-      }
-    </tbody>
-  </table>;
 
   return <div>
     <table className='table table-responsive-sm'>
@@ -154,12 +134,12 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
         </tr>
       </tbody>
     </table>
-    {perfResults}
-    {
-      configRwy.map((c, index) => <RwyDistComp key={index} {...c}/>)
-    }
-    <RwyComp label='Start' rwyWindInfo={props.perf.startHeadWindInfo}/>
-    <RwyComp label='Dest' rwyWindInfo={props.perf.destHeadWindInfo}/>
+    {<PerfResultsComp
+      configRwy={configRwy}
+      configPerf={configPerf}
+      startHeadWindInfo={props.perf.startHeadWindInfo}
+      destHeadWindInfo={props.perf.destHeadWindInfo}
+    />}
   </div>;
 };
 

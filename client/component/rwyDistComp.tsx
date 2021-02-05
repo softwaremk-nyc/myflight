@@ -1,21 +1,19 @@
 import React from 'react';
 
-export interface RwyDistCompProp {
-  title: string,
-  normal: {
-    label: string,
-    dist: number | undefined,
-    class: string,
-  },
-  fiftyFoot: {
-    label: string,
-    dist: number | undefined,
-    class: string,
-  },
-  headWind: number,
+export interface ConfigPerf {
+  label: string;
+  value: number | undefined;
+  class: string;
 }
 
-export const RwyDistComp = (props: RwyDistCompProp) => <div>
+export interface ConfigRwy {
+  title: string;
+  normal: ConfigPerf,
+  fiftyFoot: ConfigPerf,
+  headWind: number;
+}
+
+export const RwyDistComp = (props: ConfigRwy) => <div>
   <table className='table table-responsive-sm'>
     <thead>
       <tr>
@@ -29,7 +27,7 @@ export const RwyDistComp = (props: RwyDistCompProp) => <div>
           {`${props.normal.label}`}
         </td>
         <td>
-          {props.normal.dist}
+          {props.normal.value}
         </td>
       </tr>
       <tr className={props.fiftyFoot.class}>
@@ -37,7 +35,7 @@ export const RwyDistComp = (props: RwyDistCompProp) => <div>
           {`${props.fiftyFoot.label} Over 50 ft Obstacle`}
         </td>
         <td>
-          {props.fiftyFoot.dist}
+          {props.fiftyFoot.value}
         </td>
       </tr>
       <tr>
