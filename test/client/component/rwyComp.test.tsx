@@ -31,7 +31,7 @@ it('render rwy wind info in table rows', () => {
   render(<RwyComp {...testProps} />);
 
   const row1 = screen.getAllByRole('cell')[0].closest('tr');
-  const row2 = screen.getAllByRole('cell')[3].closest('tr');
+  const row2 = screen.getAllByRole('cell')[2].closest('tr');
   if (row1) {
     const utils = within(row1);
     expect(utils.getByText(12)).toBeTruthy();

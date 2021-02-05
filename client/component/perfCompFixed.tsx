@@ -7,9 +7,8 @@ import {
   changeBhp,
 } from '../redux/planeSlice';
 import { RwyComp } from './rwyComp';
-import {
-  perfFixed,
-} from '../selector/perfSelector';
+import { RwyDistComp } from './rwyDistComp';
+import { perfFixed } from '../selector/perfSelector';
 
 const mapState = (state: RootState) => ({
   bhp: state.plane.bhp,
@@ -24,52 +23,61 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
     {
       label: 'Climb Time (min)',
       value: props.perf.perfResult.climbTime?.val,
-      value2: null,
     },
     {
       label: 'Climb Fuel (gals)',
       value: props.perf.perfResult.climbFuel?.val,
-      value2: null,
     },
     {
       label: 'Climb Dist (nm)',
       value: props.perf.perfResult.climbDist?.val,
-      value2: null,
     },
     {
       label: 'Cruise RPM',
       value: props.perf.perfResult.cruiseRpm?.val,
-      value2: null,
     },
     {
       label: 'Cruise KTAS',
       value: props.perf.perfResult.cruiseKtas?.val,
-      value2: null,
     },
     {
       label: 'Cruise GPH',
       value: props.perf.perfResult.cruiseGph?.val,
-      value2: null,
-    },
-    {
-      label: 'T/O at ActW / Ldg at MaxW',
-      value: props.perf.perfResult.toDist?.val,
-      value2: props.perf.perfResult.ldgDist?.val,
-    },
-    {
-      label: 'T/O at ActW / Ldg at MaxW - 50 ft',
-      value: props.perf.perfResult.toDist50?.val,
-      value2: props.perf.perfResult.ldgDist50?.val,
     },
     {
       label: 'Cruise P Altitude',
       value: props.perf.cruisepAlt,
-      value2: null,
     },
     {
       label: 'Total Fuel (gals)',
       value: props.perf.perfResult.totalFuel?.val,
-      value2: null,
+    },
+  ];
+
+  const configRwy = [
+    {
+      title: 'Take off At Actual Weight',
+      normal: {
+        label: 'Short Field',
+        dist: props.perf.perfResult.toDist?.val,
+      },
+      fiftyFoot: {
+        label: 'Short Field',
+        dist: props.perf.perfResult.toDist50?.val,
+      },
+      headWind: props.perf.startMaxHeadwind,
+    },
+    {
+      title: 'Landing At Max Weight',
+      normal: {
+        label: 'Short Field',
+        dist: props.perf.perfResult.ldgDist50?.val,
+      },
+      fiftyFoot: {
+        label: 'Short Field',
+        dist: props.perf.perfResult.ldgDist50?.val,
+      },
+      headWind: props.perf.destMaxHeadwind,
     },
   ];
 
@@ -77,26 +85,19 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
     <thead>
       <tr>
         <th>Perf</th>
-        <th>Start</th>
-        <th>Dest</th>
+        <th>Data</th>
       </tr>
     </thead>
     <tbody className='align-middle'>
       {
-        config.map((c, index) => {
-          const ldg = c.value2
-            ? <td>{c.value2}</td>
-            : <td></td>;
-          return <tr key={index}>
+        config.map((c, index) => <tr key={index}>
             <td>
               {c.label}
             </td>
             <td>
               {c.value?.toFixed(1)}
             </td>
-            {ldg}
-          </tr>;
-        })
+        </tr>)
       }
     </tbody>
   </table>;
@@ -128,6 +129,9 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
       </tbody>
     </table>
     {perfResults}
+    {
+      configRwy.map((c, index) => <RwyDistComp key={index} {...c}/>)
+    }
     <RwyComp label='Start' rwyWindInfo={props.perf.startHeadWindInfo}/>
     <RwyComp label='Dest' rwyWindInfo={props.perf.destHeadWindInfo}/>
   </div>;
