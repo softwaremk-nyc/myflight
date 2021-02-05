@@ -5,10 +5,12 @@ export interface RwyDistCompProp {
   normal: {
     label: string,
     dist: number | undefined,
+    class: string,
   },
   fiftyFoot: {
     label: string,
     dist: number | undefined,
+    class: string,
   },
   headWind: number,
 }
@@ -22,7 +24,7 @@ export const RwyDistComp = (props: RwyDistCompProp) => <div>
       </tr>
     </thead>
     <tbody className='align-middle'>
-      <tr>
+      <tr className={props.normal.class}>
         <td>
           {`${props.normal.label}`}
         </td>
@@ -30,7 +32,7 @@ export const RwyDistComp = (props: RwyDistCompProp) => <div>
           {props.normal.dist}
         </td>
       </tr>
-      <tr>
+      <tr className={props.fiftyFoot.class}>
         <td>
           {`${props.fiftyFoot.label} Over 50 ft Obstacle`}
         </td>

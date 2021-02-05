@@ -18,39 +18,55 @@ const mapState = (state: RootState) => ({
 const connector = connect(mapState, { changeBhp });
 type PerfCompFixedProp = ConnectedProps<typeof connector>;
 
+const warningClass = 'text-warning';
 export const PerfCompFixed = (props: PerfCompFixedProp) => {
   const config = [
     {
       label: 'Climb Time (min)',
       value: props.perf.perfResult.climbTime?.val,
+      class: props.perf.perfResult.climbTime?.extrapolation
+        ? warningClass : '',
     },
     {
       label: 'Climb Fuel (gals)',
       value: props.perf.perfResult.climbFuel?.val,
+      class: props.perf.perfResult.climbFuel?.extrapolation
+        ? warningClass : '',
     },
     {
       label: 'Climb Dist (nm)',
       value: props.perf.perfResult.climbDist?.val,
+      class: props.perf.perfResult.climbDist?.extrapolation
+        ? warningClass : '',
     },
     {
       label: 'Cruise RPM',
       value: props.perf.perfResult.cruiseRpm?.val,
+      class: props.perf.perfResult.cruiseRpm?.extrapolation
+        ? warningClass : '',
     },
     {
       label: 'Cruise KTAS',
       value: props.perf.perfResult.cruiseKtas?.val,
+      class: props.perf.perfResult.cruiseKtas?.extrapolation
+        ? warningClass : '',
     },
     {
       label: 'Cruise GPH',
       value: props.perf.perfResult.cruiseGph?.val,
+      class: props.perf.perfResult.cruiseGph?.extrapolation
+        ? warningClass : '',
     },
     {
       label: 'Cruise P Altitude',
       value: props.perf.cruisepAlt,
+      class: '',
     },
     {
       label: 'Total Fuel (gals)',
       value: props.perf.perfResult.totalFuel?.val,
+      class: props.perf.perfResult.totalFuel?.extrapolation
+        ? warningClass : '',
     },
   ];
 
@@ -60,10 +76,14 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
       normal: {
         label: 'Short Field',
         dist: props.perf.perfResult.toDist?.val,
+        class: props.perf.perfResult.toDist?.extrapolation
+          ? warningClass : '',
       },
       fiftyFoot: {
         label: 'Short Field',
         dist: props.perf.perfResult.toDist50?.val,
+        class: props.perf.perfResult.toDist50?.extrapolation
+          ? warningClass : '',
       },
       headWind: props.perf.startMaxHeadwind,
     },
@@ -71,11 +91,15 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
       title: 'Landing At Max Weight',
       normal: {
         label: 'Short Field',
-        dist: props.perf.perfResult.ldgDist50?.val,
+        dist: props.perf.perfResult.ldgDist?.val,
+        class: props.perf.perfResult.ldgDist?.extrapolation
+          ? warningClass : '',
       },
       fiftyFoot: {
         label: 'Short Field',
         dist: props.perf.perfResult.ldgDist50?.val,
+        class: props.perf.perfResult.ldgDist50?.extrapolation
+          ? warningClass : '',
       },
       headWind: props.perf.destMaxHeadwind,
     },
@@ -90,7 +114,9 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
     </thead>
     <tbody className='align-middle'>
       {
-        config.map((c, index) => <tr key={index}>
+        config.map((c, index) => <tr
+          key={index}
+          className={c.class}>
             <td>
               {c.label}
             </td>
