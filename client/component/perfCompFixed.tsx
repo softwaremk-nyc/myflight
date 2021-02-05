@@ -6,6 +6,7 @@ import {
   planes,
   changeBhp,
 } from '../redux/planeSlice';
+import { RwyComp } from './rwyComp';
 import {
   perfFixed,
 } from '../selector/perfSelector';
@@ -100,30 +101,6 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
     </tbody>
   </table>;
 
-  const rwyResults = (
-    label: string,
-    rwyInfo: { [rwy: string]: number },
-  ) => <table className='table table-responsive-sm'>
-      <thead>
-        <tr>
-          <th>{label} Rwy</th>
-          <th>HeadWind</th>
-        </tr>
-      </thead>
-      <tbody className='align-middle'>
-        {
-          Object.keys(rwyInfo).map((c, index) => <tr key={index}>
-            <td>
-              {c}
-            </td>
-            <td>
-              {rwyInfo[c]}
-            </td>
-          </tr>)
-        }
-      </tbody>
-    </table>;
-
   return <div>
     <table className='table table-responsive-sm'>
       <tbody className='align-middle'>
@@ -151,14 +128,8 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
       </tbody>
     </table>
     {perfResults}
-    {rwyResults(
-      'Start',
-      props.perf.startHeadWindInfo,
-    )}
-    {rwyResults(
-      'Dest',
-      props.perf.destHeadWindInfo,
-    )}
+    <RwyComp label='Start' rwyWindInfo={props.perf.startHeadWindInfo}/>
+    <RwyComp label='Dest' rwyWindInfo={props.perf.destHeadWindInfo}/>
   </div>;
 };
 

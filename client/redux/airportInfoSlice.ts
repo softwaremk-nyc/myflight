@@ -1,14 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export interface RwyInfo {
+  ident1: string;
+  ident2: string;
+  isPaved: boolean;
+}
+
 export interface AirportApiData {
   elevation: number,
   temp: number,
   altimeter: number,
-  runways: {
-    ident1: string,
-    ident2: string,
-    isPaved: boolean,
-  }[],
+  runways: RwyInfo[],
   wind: {
     direction: number | null,
     speed: number | null,

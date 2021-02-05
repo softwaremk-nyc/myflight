@@ -6,7 +6,10 @@ import {
 import { cgCalcSelector } from './planeCgSelector';
 import { perf172 } from '../../perf/c172sp/perf';
 // import perfPa30 from '../../perf/pa30';
-import { AirportInfoState } from '../redux/airportInfoSlice';
+import {
+  AirportInfoState,
+  RwyInfo,
+} from '../redux/airportInfoSlice';
 import { AirportInfo } from '../../perf/perfCommon';
 import {
   pressureAlt,
@@ -15,12 +18,16 @@ import {
 } from '../../src/flightcalc';
 import { PlaneSelectionState } from '../redux/planeSlice';
 
+export interface RwyWindInfo {
+  [rwy: string]: number;
+}
+
 export const calcHeadWind = (
-  runways: { ident1: string, ident2: string }[],
+  runways: RwyInfo[],
   speed: number,
   direction: number,
 ) => {
-  const hwList: { [rwy: string]: number } = {};
+  const hwList: RwyWindInfo = {};
   runways.forEach((r) => {
     const res1 = windComponent(
       speed,

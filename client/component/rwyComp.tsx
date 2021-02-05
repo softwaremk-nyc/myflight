@@ -1,0 +1,28 @@
+import React from 'react';
+import { RwyWindInfo } from '../selector/perfSelector';
+
+export interface RwyCompProp {
+  label: string;
+  rwyWindInfo: RwyWindInfo;
+}
+
+export const RwyComp = (props: RwyCompProp) => <table className='table table-responsive-sm'>
+  <thead>
+    <tr>
+      <th>{props.label} Rwy</th>
+      <th>HeadWind</th>
+    </tr>
+  </thead>
+  <tbody className='align-middle'>
+    {
+      Object.keys(props.rwyWindInfo).map((c, index) => <tr key={index}>
+        <td>
+          {c}
+        </td>
+        <td>
+          {props.rwyWindInfo[c]}
+        </td>
+      </tr>)
+    }
+  </tbody>
+</table>;
