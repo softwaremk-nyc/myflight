@@ -3,6 +3,7 @@ import {
   cgSelectorForDisplay,
   fuelSelectorForDisplay,
   weightSelector,
+  cgGraphSelector,
 } from '../../../client/selector/planeCgSelector';
 import { CgDataEntriesList } from '../../../src/cg';
 
@@ -175,5 +176,22 @@ it('should ignore gals info if it is not a fuel position', () => {
     gals: [100, 0, 0],
   })).toEqual(
     [10, 20, 30],
+  );
+});
+
+it('returns graph coords based on plane type', () => {
+  const sel = cgGraphSelector({
+    a: [1, 2, 3],
+    b: [4, 5, 6],
+  });
+
+  expect(sel({
+    planeTypes: ['?', '?'],
+    planeType: 'b',
+    planeId: '?',
+    weights: [],
+    gals: [],
+  })).toEqual(
+    [4, 5, 6],
   );
 });

@@ -122,10 +122,20 @@ const cgCalcSelector = (planes: CgDataEntriesList) => createSelector(
   ),
 );
 
+/**
+ * Returns CG graph coordinates for current selected type
+ * @param {graphCoord} - array indexed by type containing chart.js coords
+ */
+const cgGraphSelector = (graphCoord: any) => createSelector(
+  (state: PlaneSelectionState) => state.planeType,
+  (planeType: string) => graphCoord[planeType],
+);
+
 export {
   cgSelector,
   cgSelectorForDisplay,
   cgCalcSelector,
   fuelSelectorForDisplay,
   weightSelector,
+  cgGraphSelector,
 };
