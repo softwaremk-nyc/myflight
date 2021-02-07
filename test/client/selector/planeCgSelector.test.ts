@@ -288,9 +288,7 @@ describe('testing fuel weight retrieval given configured gals and optional usage
 
 describe('testing aircraft weight retrieval with fuel adjustment', () => {
   it('should zero fuel weights if there are no gals info', () => {
-    const sel = weightSelector(p);
-
-    expect(sel({
+    expect(weightSelector(p)({
       planeTypes: ['?', '?'],
       planeType: 'a',
       planeId: 'h',
@@ -301,10 +299,20 @@ describe('testing aircraft weight retrieval with fuel adjustment', () => {
     );
   });
 
-  it('should zero fuel weights unadjusted if there are zeros for gals info', () => {
-    const sel = weightSelector(p);
+  it('should ignore fuel weights if there are no weights info', () => {
+    expect(weightSelector(p)({
+      planeTypes: ['?', '?'],
+      planeType: 'a',
+      planeId: 'h',
+      weights: [],
+      gals: [0, 5],
+    })).toEqual(
+      [],
+    );
+  });
 
-    expect(sel({
+  it('should zero fuel weights unadjusted if there are zeros for gals info', () => {
+    expect(weightSelector(p)({
       planeTypes: ['?', '?'],
       planeType: 'a',
       planeId: 'h',
@@ -316,9 +324,7 @@ describe('testing aircraft weight retrieval with fuel adjustment', () => {
   });
 
   it('should return weights correctly adjusted if there is gals info', () => {
-    const sel = weightSelector(p);
-
-    expect(sel({
+    expect(weightSelector(p)({
       planeTypes: ['?', '?'],
       planeType: 'a',
       planeId: 'h',
@@ -330,9 +336,7 @@ describe('testing aircraft weight retrieval with fuel adjustment', () => {
   });
 
   it('should ignore gals info if it is not a fuel position', () => {
-    const sel = weightSelector(p);
-
-    expect(sel({
+    expect(weightSelector(p)({
       planeTypes: ['?', '?'],
       planeType: 'a',
       planeId: 'h',

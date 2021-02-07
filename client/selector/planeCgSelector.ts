@@ -110,7 +110,9 @@ const weightSelector = (
       : weights;
 
     weightsFromFuel.forEach((w) => {
-      weightsC[w.id] = w.weight;
+      if (typeof weightsC[w.id] !== 'undefined') {
+        weightsC[w.id] = w.weight;
+      }
     });
 
     return weightsC;
@@ -132,10 +134,16 @@ const cgSelector = (planes: CgDataEntriesList) => createSelector(
  * Runs cg calculation
  * @param {CgDataEntriesList} planes - all type info
  */
-const cgCalcSelector = (planes: CgDataEntriesList) => createSelector(
+const cgCalcSelector = (
+  planes: CgDataEntriesList,
+  galsUsed: number = 0,
+) => createSelector(
   [
     cgSelector(planes),
-    weightSelector(planes),
+    weightSelector(
+      planes,
+      galsUsed,
+    ),
   ],
   (
     cgDataEntries: CgDataEntry[],

@@ -12,6 +12,7 @@ import {
 import {
   planes,
 } from '../redux/planeSlice';
+import { perfSelector } from '../selector/perfSelector';
 
 const cgGraph = {
   C172SP: {
@@ -102,6 +103,10 @@ const cgGraph = {
 const mapState = (state: RootState) => ({
   ds: cgGraphSelector(cgGraph)(state.plane),
   cgCalc: cgCalcSelector(planes)(state.plane),
+  cgCalcEnd: cgCalcSelector(
+    planes,
+    perfSelector(planes)(state).perfResult.totalFuel?.val,
+  )(state.plane),
 });
 
 const connector = connect(mapState);
@@ -114,9 +119,11 @@ const Chart = (props: ChartProp) => {
       label: 'My Flight',
       data: [
         { x: props.cgCalc[0].arm, y: props.cgCalc[0].weight },
+        { x: props.cgCalcEnd[0].arm, y: props.cgCalcEnd[0].weight },
       ],
       showLine: true,
       lineTension: 0,
+      fill: false,
       backgroundColor: 'Green',
     },
   ]);

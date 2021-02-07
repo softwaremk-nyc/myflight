@@ -8,7 +8,7 @@ import {
   changeRpm,
   changePowerSetting,
 } from '../redux/planeSlice';
-import { perfVariable } from '../selector/perfSelector';
+import { perfSelector } from '../selector/perfSelector';
 import {
   ConfigPerf,
   ConfigRwy,
@@ -19,7 +19,7 @@ const mapState = (state: RootState, ownProps: { powerSettings: string[] }) => ({
   mp: state.plane.mp,
   rpm: state.plane.rpm,
   powerSettings: ownProps.powerSettings,
-  perf: perfVariable(planes)(state),
+  perf: perfSelector(planes)(state),
 });
 
 const connector = connect(mapState, { changeMp, changeRpm, changePowerSetting });
