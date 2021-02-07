@@ -51,6 +51,43 @@ const fuelSelectorForDisplay = (planes: CgDataEntriesList) => createSelector(
 );
 
 /**
+ * Returns weights from gallons in state
+ * Gallons can be reduced by up to 'galsUsed'
+ * @param {CgDataEntriesList} planes - all type info
+ * @param {number} galsUsed - gals to remove for a given flight
+ */
+const weightFromGals = (
+  planes: CgDataEntriesList,
+  galsUsed: number = 0,
+) => createSelector(
+  [
+    fuelSelectorForDisplay(planes),
+    (state: PlaneSelectionState) => state.gals,
+  ],
+  (
+    fuelDisplayEntries: { id: number, cgDisplay: CGDisplay }[],
+    gals: number[],
+  ) => {
+    const res: { id: number, weight: number }[] = [];
+
+    fuelDisplayEntries.forEach((f) => {
+      const galsAvail = gals[f.id]
+        ? gals[f.id]
+        : 0;
+      const used = Math.min(galsAvail, galsUsed);
+      res.push({
+        id: f.id,
+        weight: (galsAvail - used) * lbsPerGallonFuel,
+      });
+      /* eslint-disable no-param-reassign */
+      galsUsed -= used;
+      /* eslint-enable no-param-reassign */
+    });
+    return res;
+  },
+);
+
+/**
  * Adjusted weight selector
  * Most weights are in state and user entered. However,
  * fuel weights are derived from gallon entries. Copy and calc ...
@@ -136,6 +173,7 @@ export {
   cgSelectorForDisplay,
   cgCalcSelector,
   fuelSelectorForDisplay,
+  weightFromGals,
   weightSelector,
   cgGraphSelector,
 };
