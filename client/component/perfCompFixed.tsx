@@ -6,7 +6,7 @@ import {
   planes,
   changeBhp,
 } from '../redux/planeSlice';
-import { perfFixed } from '../selector/perfSelector';
+import { perfSelector } from '../selector/perfSelector';
 import {
   ConfigPerf,
   ConfigRwy,
@@ -15,7 +15,7 @@ import { PerfResultsComp } from './perfResultsComp';
 
 const mapState = (state: RootState) => ({
   bhp: state.plane.bhp,
-  perf: perfFixed(planes)(state),
+  perf: perfSelector(planes)(state),
 });
 
 const connector = connect(mapState, { changeBhp });

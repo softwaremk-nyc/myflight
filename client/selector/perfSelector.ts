@@ -17,6 +17,8 @@ import {
   windComponent,
 } from '../../src/flightcalc';
 import {
+  C172SP,
+  PA30,
   powerSettings,
   PlaneSelectionState,
 } from '../redux/planeSlice';
@@ -177,5 +179,20 @@ export const perfVariable = (planes: CgDataEntriesList) => createSelector(
       destMaxHeadwind: p.destMaxHeadwind,
       cruisepAlt: p.cruisepAlt,
     };
+  },
+);
+
+export const perfSelector = (planes: CgDataEntriesList) => createSelector(
+  [
+    (state: RootState) => state,
+  ],
+  (state: RootState) => {
+    if (state.plane.planeType === C172SP) {
+      return perfFixed(planes)(state);
+    }
+    if (state.plane.planeType === PA30) {
+      return perfVariable(planes)(state);
+    }
+    throw Error(`Unknown type ${state.plane.planeType} for performance calculation`);
   },
 );

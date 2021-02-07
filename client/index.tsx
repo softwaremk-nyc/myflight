@@ -12,6 +12,7 @@ import PlaneSelector from './component/planeSelector';
 import CgComp from './component/cgComp';
 import FuelComp from './component/fuelComp';
 import PerfComp from './component/perfComp';
+import Chart from './component/cgChart';
 import store from './redux/rootReducer';
 
 const client = new ApolloClient({
@@ -44,6 +45,15 @@ ReactDOM.render(
     </div>
   </Provider>,
   document.getElementById('root2'),
+);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <div>
+      <Chart />
+    </div>
+  </Provider>,
+  document.getElementById('rootChart'),
 );
 
 ReactDOM.render(

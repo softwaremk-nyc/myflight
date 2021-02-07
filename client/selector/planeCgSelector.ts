@@ -51,42 +51,69 @@ const fuelSelectorForDisplay = (planes: CgDataEntriesList) => createSelector(
 );
 
 /**
+ * Returns weights from gallons in state
+ * Gallons can be reduced by up to 'galsUsed'
+ * @param {CgDataEntriesList} planes - all type info
+ * @param {number} galsUsed - gals to remove for a given flight
+ */
+const weightFromGals = (
+  planes: CgDataEntriesList,
+  galsUsed: number = 0,
+) => createSelector(
+  [
+    fuelSelectorForDisplay(planes),
+    (state: PlaneSelectionState) => state.gals,
+  ],
+  (
+    fuelDisplayEntries: { id: number, cgDisplay: CGDisplay }[],
+    gals: number[],
+  ) => {
+    const res: { id: number, weight: number }[] = [];
+
+    fuelDisplayEntries.forEach((f) => {
+      const galsAvail = gals[f.id]
+        ? gals[f.id]
+        : 0;
+      const used = Math.min(galsAvail, galsUsed);
+      res.push({
+        id: f.id,
+        weight: (galsAvail - used) * lbsPerGallonFuel,
+      });
+      /* eslint-disable no-param-reassign */
+      galsUsed -= used;
+      /* eslint-enable no-param-reassign */
+    });
+    return res;
+  },
+);
+
+/**
  * Adjusted weight selector
  * Most weights are in state and user entered. However,
  * fuel weights are derived from gallon entries. Copy and calc ...
  * @param {CgDataEntriesList} planes - all type info
  */
-const weightSelector = (planes: CgDataEntriesList) => createSelector(
+const weightSelector = (
+  planes: CgDataEntriesList,
+  galsUsed: number = 0,
+) => createSelector(
   [
-    fuelSelectorForDisplay(planes),
     (state: PlaneSelectionState) => state.weights,
-    (state: PlaneSelectionState) => state.gals,
+    weightFromGals(planes, galsUsed),
   ],
   (
-    fuelDisplayEntries: { id: number, cgDisplay: CGDisplay }[],
     weights: number[],
-    gals: number[],
+    weightsFromFuel: { id: number, weight: number }[],
   ) => {
-    //  if there are derives weights needed, copy and calc
-    let derivedWeightNeeded = false;
-    for (let i = 0; i < fuelDisplayEntries.length; i += 1) {
-      if (gals[fuelDisplayEntries[i].id]) {
-        derivedWeightNeeded = true;
-        break;
-      }
-    }
-
-    const weightsC = derivedWeightNeeded
+    const weightsC = weightsFromFuel.length > 0
       ? [...weights]
       : weights;
 
-    if (derivedWeightNeeded) {
-      fuelDisplayEntries.forEach((f) => {
-        if (gals[f.id]) {
-          weightsC[f.id] = gals[f.id] * lbsPerGallonFuel;
-        }
-      });
-    }
+    weightsFromFuel.forEach((w) => {
+      if (typeof weightsC[w.id] !== 'undefined') {
+        weightsC[w.id] = w.weight;
+      }
+    });
 
     return weightsC;
   },
@@ -107,10 +134,16 @@ const cgSelector = (planes: CgDataEntriesList) => createSelector(
  * Runs cg calculation
  * @param {CgDataEntriesList} planes - all type info
  */
-const cgCalcSelector = (planes: CgDataEntriesList) => createSelector(
+const cgCalcSelector = (
+  planes: CgDataEntriesList,
+  galsUsed: number = 0,
+) => createSelector(
   [
     cgSelector(planes),
-    weightSelector(planes),
+    weightSelector(
+      planes,
+      galsUsed,
+    ),
   ],
   (
     cgDataEntries: CgDataEntry[],
@@ -122,10 +155,21 @@ const cgCalcSelector = (planes: CgDataEntriesList) => createSelector(
   ),
 );
 
+/**
+ * Returns CG graph coordinates for current selected type
+ * @param {graphCoord} - array indexed by type containing chart.js coords
+ */
+const cgGraphSelector = (graphCoord: any) => createSelector(
+  (state: PlaneSelectionState) => state.planeType,
+  (planeType: string) => graphCoord[planeType],
+);
+
 export {
   cgSelector,
   cgSelectorForDisplay,
   cgCalcSelector,
   fuelSelectorForDisplay,
+  weightFromGals,
   weightSelector,
+  cgGraphSelector,
 };

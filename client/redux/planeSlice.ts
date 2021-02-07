@@ -12,6 +12,9 @@ export const planes: CgDataEntriesList = {
   PA30: pa30,
 };
 
+export const C172SP = 'C172SP';
+export const PA30 = 'PA30';
+
 export const powerSettings: string[] = [
   'Best Economy',
   'Best Power',
