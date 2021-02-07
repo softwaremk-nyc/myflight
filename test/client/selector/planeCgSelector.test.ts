@@ -154,7 +154,7 @@ it('should return results for fuel info only', () => {
   ]);
 });
 
-describe('testing weight retrieval given configured gals and optional usage', () => {
+describe('testing fuel weight retrieval given configured gals and optional usage', () => {
   it('should return no weights if a/c fuels info is not present', () => {
     expect(weightFromGals(p)({
       planeTypes: ['?', '?'],
@@ -286,60 +286,62 @@ describe('testing weight retrieval given configured gals and optional usage', ()
   });
 });
 
-it('should return weights unadjusted if there are no gals info', () => {
-  const sel = weightSelector(p);
+describe('testing aircraft weight retrieval with fuel adjustment', () => {
+  it('should zero fuel weights if there are no gals info', () => {
+    const sel = weightSelector(p);
 
-  expect(sel({
-    planeTypes: ['?', '?'],
-    planeType: 'a',
-    planeId: 'h',
-    weights: [10, 20, 30],
-    gals: [],
-  })).toEqual(
-    [10, 20, 30],
-  );
-});
+    expect(sel({
+      planeTypes: ['?', '?'],
+      planeType: 'a',
+      planeId: 'h',
+      weights: [10, 20, 30],
+      gals: [],
+    })).toEqual(
+      [10, 0, 30],
+    );
+  });
 
-it('should return weights unadjusted if there are zeros for gals info', () => {
-  const sel = weightSelector(p);
+  it('should zero fuel weights unadjusted if there are zeros for gals info', () => {
+    const sel = weightSelector(p);
 
-  expect(sel({
-    planeTypes: ['?', '?'],
-    planeType: 'a',
-    planeId: 'h',
-    weights: [10, 20, 30],
-    gals: [0, 0, 0],
-  })).toEqual(
-    [10, 20, 30],
-  );
-});
+    expect(sel({
+      planeTypes: ['?', '?'],
+      planeType: 'a',
+      planeId: 'h',
+      weights: [10, 20, 30],
+      gals: [0, 0, 0],
+    })).toEqual(
+      [10, 0, 30],
+    );
+  });
 
-it('should return weights correctly adjusted if there is gals info', () => {
-  const sel = weightSelector(p);
+  it('should return weights correctly adjusted if there is gals info', () => {
+    const sel = weightSelector(p);
 
-  expect(sel({
-    planeTypes: ['?', '?'],
-    planeType: 'a',
-    planeId: 'h',
-    weights: [10, 20, 30],
-    gals: [0, 10, 0],
-  })).toEqual(
-    [10, 60, 30],
-  );
-});
+    expect(sel({
+      planeTypes: ['?', '?'],
+      planeType: 'a',
+      planeId: 'h',
+      weights: [10, 20, 30],
+      gals: [0, 10, 0],
+    })).toEqual(
+      [10, 60, 30],
+    );
+  });
 
-it('should ignore gals info if it is not a fuel position', () => {
-  const sel = weightSelector(p);
+  it('should ignore gals info if it is not a fuel position', () => {
+    const sel = weightSelector(p);
 
-  expect(sel({
-    planeTypes: ['?', '?'],
-    planeType: 'a',
-    planeId: 'h',
-    weights: [10, 20, 30],
-    gals: [100, 0, 0],
-  })).toEqual(
-    [10, 20, 30],
-  );
+    expect(sel({
+      planeTypes: ['?', '?'],
+      planeType: 'a',
+      planeId: 'h',
+      weights: [10, 20, 30],
+      gals: [100, 0, 0],
+    })).toEqual(
+      [10, 0, 30],
+    );
+  });
 });
 
 it('returns graph coords based on plane type', () => {

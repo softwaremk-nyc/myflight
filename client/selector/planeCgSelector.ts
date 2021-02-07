@@ -93,37 +93,25 @@ const weightFromGals = (
  * fuel weights are derived from gallon entries. Copy and calc ...
  * @param {CgDataEntriesList} planes - all type info
  */
-const weightSelector = (planes: CgDataEntriesList) => createSelector(
+const weightSelector = (
+  planes: CgDataEntriesList,
+  galsUsed: number = 0,
+) => createSelector(
   [
-    fuelSelectorForDisplay(planes),
     (state: PlaneSelectionState) => state.weights,
-    (state: PlaneSelectionState) => state.gals,
+    weightFromGals(planes, galsUsed),
   ],
   (
-    fuelDisplayEntries: { id: number, cgDisplay: CGDisplay }[],
     weights: number[],
-    gals: number[],
+    weightsFromFuel: { id: number, weight: number }[],
   ) => {
-    //  if there are derives weights needed, copy and calc
-    let derivedWeightNeeded = false;
-    for (let i = 0; i < fuelDisplayEntries.length; i += 1) {
-      if (gals[fuelDisplayEntries[i].id]) {
-        derivedWeightNeeded = true;
-        break;
-      }
-    }
-
-    const weightsC = derivedWeightNeeded
+    const weightsC = weightsFromFuel.length > 0
       ? [...weights]
       : weights;
 
-    if (derivedWeightNeeded) {
-      fuelDisplayEntries.forEach((f) => {
-        if (gals[f.id]) {
-          weightsC[f.id] = gals[f.id] * lbsPerGallonFuel;
-        }
-      });
-    }
+    weightsFromFuel.forEach((w) => {
+      weightsC[w.id] = w.weight;
+    });
 
     return weightsC;
   },
