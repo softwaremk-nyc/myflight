@@ -5,7 +5,7 @@ import {
   fireEvent,
   cleanup,
 } from '@testing-library/react';
-import { PerfCompVariable } from '../../../client/component/perfCompVariable';
+import { PerfVariableComp } from '../../../client/component/perfVariableComp';
 
 afterEach(cleanup);
 
@@ -26,7 +26,7 @@ it('should fire a manifold pressure change', async () => {
     changePowerSetting: fn3,
   };
 
-  render(<PerfCompVariable {...testProps} powerSettings={['a', 'b']} />);
+  render(<PerfVariableComp {...testProps} powerSettings={['a', 'b']} />);
 
   const w = screen.getByPlaceholderText(/Manifold Pressure/);
   fireEvent.change(w, {
@@ -63,7 +63,7 @@ it('should fire a rpm change', async () => {
     changePowerSetting: fn3,
   };
 
-  render(<PerfCompVariable {...testProps} powerSettings={['a', 'b']} />);
+  render(<PerfVariableComp {...testProps} powerSettings={['a', 'b']} />);
 
   const w = screen.getByPlaceholderText(/RPM/);
   fireEvent.change(w, {
@@ -100,7 +100,7 @@ it('should return changed power setting', () => {
     changePowerSetting: fn3,
   };
 
-  render(<PerfCompVariable {...testProps} powerSettings={['a', 'b']} />);
+  render(<PerfVariableComp {...testProps} powerSettings={['a', 'b']} />);
 
   fireEvent.change(screen.getByTestId('powerSetting'), { target: { value: 'b' } });
   expect(fn.mock.calls.length).toEqual(0);

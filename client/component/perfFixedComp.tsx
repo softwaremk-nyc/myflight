@@ -19,9 +19,9 @@ const mapState = (state: RootState) => ({
 });
 
 const connector = connect(mapState, { changeBhp });
-type PerfCompFixedProp = ConnectedProps<typeof connector>;
+type PerfFixedCompProp = ConnectedProps<typeof connector>;
 
-export const PerfCompFixed = (props: PerfCompFixedProp) => {
+export const PerfFixedComp = (props: PerfFixedCompProp) => {
   const warningClass = 'text-warning';
   const configPerf: ConfigPerf[] = [
     {
@@ -143,4 +143,4 @@ export const PerfCompFixed = (props: PerfCompFixedProp) => {
   </div>;
 };
 
-export default connector(PerfCompFixed);
+export default connector(PerfFixedComp);

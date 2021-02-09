@@ -23,9 +23,9 @@ const mapState = (state: RootState, ownProps: { powerSettings: string[] }) => ({
 });
 
 const connector = connect(mapState, { changeMp, changeRpm, changePowerSetting });
-type PerfCompVariableProp = ConnectedProps<typeof connector>;
+type PerfVariableCompProp = ConnectedProps<typeof connector>;
 
-export const PerfCompVariable = (props: PerfCompVariableProp) => {
+export const PerfVariableComp = (props: PerfVariableCompProp) => {
   const warningClass = 'text-warning';
   const configPerf: ConfigPerf[] = [
     {
@@ -181,4 +181,4 @@ export const PerfCompVariable = (props: PerfCompVariableProp) => {
   </div>;
 };
 
-export default connector(PerfCompVariable);
+export default connector(PerfVariableComp);

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
-import PerfCompFixed from './perfCompFixed';
-import PerfCompVariable from './perfCompVariable';
+import PerfFixedComp from './perfFixedComp';
+import PerfVariableComp from './perfVariableComp';
 import {
   powerSettings,
   PA30,
@@ -18,10 +18,10 @@ type PerfCompProp = ConnectedProps<typeof connector>;
 
 export const PerfComp = (props: PerfCompProp) => {
   if (props.type === C172SP) {
-    return <PerfCompFixed />;
+    return <PerfFixedComp />;
   }
   if (props.type === PA30) {
-    return <PerfCompVariable powerSettings={powerSettings} />;
+    return <PerfVariableComp powerSettings={powerSettings} />;
   }
 
   return <p>Unknown type: {props.type}</p>;
