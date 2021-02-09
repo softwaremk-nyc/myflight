@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { DebounceInput } from 'react-debounce-input';
 import { RootState } from '../redux/rootReducer';
 import {
   planes,
@@ -15,10 +14,7 @@ import {
 } from './rwyDistComp';
 import { PerfResultsComp } from './perfResultsComp';
 
-const mapState = (state: RootState, ownProps: { powerSettings: string[] }) => ({
-  mp: state.plane.mp,
-  rpm: state.plane.rpm,
-  powerSettings: ownProps.powerSettings,
+const mapState = (state: RootState) => ({
   perf: perfSelector(planes)(state),
 });
 
@@ -106,79 +102,12 @@ export const PerfVariableComp = (props: PerfVariableCompProp) => {
     },
   ];
 
-  return <div>
-  <table className='table table-responsive-sm'>
-    <tbody className='align-middle'>
-      <tr>
-        <td>
-          Manifold Pressure
-      </td>
-        <td>
-          <DebounceInput
-            type='number'
-            debounceTimeout={500}
-            className='form-control form-control-sm'
-            placeholder='Manifold Pressure'
-            aria-label='Manifold Pressure'
-            value={props.mp}
-            onChange={(event) => {
-              const info = Number.isNaN(event.target.valueAsNumber)
-                ? 0
-                : event.target.valueAsNumber;
-              props.changeMp(info);
-            }}
-          />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          RPM
-      </td>
-        <td>
-          <DebounceInput
-            type='number'
-            debounceTimeout={500}
-            className='form-control form-control-sm'
-            placeholder='RPM'
-            aria-label='RPM'
-            value={props.rpm}
-            onChange={(event) => {
-              const info = Number.isNaN(event.target.valueAsNumber)
-                ? 0
-                : event.target.valueAsNumber;
-              props.changeRpm(info);
-            }}
-          />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Power Setting
-        </td>
-        <td>
-          <select
-            data-testid='powerSetting'
-            onChange={(event) => {
-              const newVal = event.target.value;
-              props.changePowerSetting(newVal);
-            }}
-          >
-            {
-              props.powerSettings.map((p, index) => <option key={index}
-                value={p}>{p}</option>)
-            }
-          </select>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-    {<PerfResultsComp
-      configRwy={configRwy}
-      configPerf={configPerf}
-      startHeadWindInfo={props.perf.startHeadWindInfo}
-      destHeadWindInfo={props.perf.destHeadWindInfo}
-    />}
-  </div>;
+  return <PerfResultsComp
+    configRwy={configRwy}
+    configPerf={configPerf}
+    startHeadWindInfo={props.perf.startHeadWindInfo}
+    destHeadWindInfo={props.perf.destHeadWindInfo}
+  />;
 };
 
 export default connector(PerfVariableComp);

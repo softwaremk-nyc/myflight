@@ -1,11 +1,7 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { DebounceInput } from 'react-debounce-input';
 import { RootState } from '../redux/rootReducer';
-import {
-  planes,
-  changeBhp,
-} from '../redux/planeSlice';
+import { planes } from '../redux/planeSlice';
 import { perfSelector } from '../selector/perfSelector';
 import {
   ConfigPerf,
@@ -14,11 +10,10 @@ import {
 import { PerfResultsComp } from './perfResultsComp';
 
 const mapState = (state: RootState) => ({
-  bhp: state.plane.bhp,
   perf: perfSelector(planes)(state),
 });
 
-const connector = connect(mapState, { changeBhp });
+const connector = connect(mapState);
 type PerfFixedCompProp = ConnectedProps<typeof connector>;
 
 export const PerfFixedComp = (props: PerfFixedCompProp) => {
@@ -108,39 +103,12 @@ export const PerfFixedComp = (props: PerfFixedCompProp) => {
     },
   ];
 
-  return <div>
-    <table className='table table-responsive-sm'>
-      <tbody className='align-middle'>
-        <tr>
-          <td>
-            %BHP
-          </td>
-          <td>
-            <DebounceInput
-              type='number'
-              debounceTimeout={500}
-              className='form-control form-control-sm'
-              placeholder='%BHP'
-              aria-label='%BHP'
-              value={props.bhp}
-              onChange={(event) => {
-                const info = Number.isNaN(event.target.valueAsNumber)
-                  ? 0
-                  : event.target.valueAsNumber;
-                props.changeBhp(info);
-              }}
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    {<PerfResultsComp
-      configRwy={configRwy}
-      configPerf={configPerf}
-      startHeadWindInfo={props.perf.startHeadWindInfo}
-      destHeadWindInfo={props.perf.destHeadWindInfo}
-    />}
-  </div>;
+  return <PerfResultsComp
+    configRwy={configRwy}
+    configPerf={configPerf}
+    startHeadWindInfo={props.perf.startHeadWindInfo}
+    destHeadWindInfo={props.perf.destHeadWindInfo}
+  />;
 };
 
 export default connector(PerfFixedComp);

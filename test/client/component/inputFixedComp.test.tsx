@@ -5,7 +5,7 @@ import {
   fireEvent,
   cleanup,
 } from '@testing-library/react';
-import { PerfFixedComp } from '../../../client/component/perfFixedComp';
+import { InputFixedComp } from '../../../client/component/inputFixedComp';
 
 afterEach(cleanup);
 
@@ -21,7 +21,7 @@ it('should fire a bhp change', async () => {
     changeBhp: fn,
   };
 
-  render(<PerfFixedComp {...testProps} />);
+  render(<InputFixedComp {...testProps} />);
   const w = screen.getByPlaceholderText(/BHP/);
   fireEvent.change(w, {
     target: { value: 15 },

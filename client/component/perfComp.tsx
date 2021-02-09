@@ -4,7 +4,6 @@ import { RootState } from '../redux/rootReducer';
 import PerfFixedComp from './perfFixedComp';
 import PerfVariableComp from './perfVariableComp';
 import {
-  powerSettings,
   PA30,
   C172SP,
 } from '../redux/planeSlice';
@@ -21,7 +20,7 @@ export const PerfComp = (props: PerfCompProp) => {
     return <PerfFixedComp />;
   }
   if (props.type === PA30) {
-    return <PerfVariableComp powerSettings={powerSettings} />;
+    return <PerfVariableComp/>;
   }
 
   return <p>Unknown type: {props.type}</p>;
