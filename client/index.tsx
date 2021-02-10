@@ -13,6 +13,7 @@ import CgComp from './component/cgComp';
 import FuelComp from './component/fuelComp';
 import PerfComp from './component/perfComp';
 import Chart from './component/cgChart';
+import InputComp from './component/inputComp';
 import store from './redux/rootReducer';
 
 const client = new ApolloClient({
@@ -25,6 +26,7 @@ ReactDOM.render(
     <Provider store={store}>
       <div className='col-sm-4 mb-2'>
         <PlaneSelector />
+        <InputComp />
       </div>
       <div className='col-sm-8 mb-2'>
         <div className='input-group'>
