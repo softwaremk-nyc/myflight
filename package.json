@@ -12,7 +12,7 @@
     "watch-test": "jest --watchAll",
     "start:server": "nodemon dist/server/index.js",
     "start:client": "webpack serve --mode=development --content-base ./dist/client --hot --inline",
-    "package": "webpack -p",
+    "package": "webpack --mode production",
     "packaged": "webpack"
   },
   "repository": {

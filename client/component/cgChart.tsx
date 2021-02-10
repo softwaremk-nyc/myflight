@@ -12,7 +12,7 @@ import {
 import {
   planes,
 } from '../redux/planeSlice';
-import { perfSelector } from '../selector/perfSelector';
+import { perfSelectorFuelGalsRequired } from '../selector/perfSelector';
 
 const cgGraph = {
   C172SP: {
@@ -105,7 +105,7 @@ const mapState = (state: RootState) => ({
   cgCalc: cgCalcSelector(planes)(state.plane),
   cgCalcEnd: cgCalcSelector(
     planes,
-    perfSelector(planes)(state).perfResult.totalFuel?.val,
+    perfSelectorFuelGalsRequired(planes)(state),
   )(state.plane),
 });
 

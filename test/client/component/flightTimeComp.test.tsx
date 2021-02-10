@@ -9,15 +9,24 @@ import { FlightTimeComp } from '../../../client/component/flightTimeComp';
 
 afterEach(cleanup);
 
-it('invokes cb with number value if input text is changed - time', async () => {
-  const fn = jest.fn();
-  const fn2 = jest.fn();
-  const testProp: any = {
+let fn: jest.Mock<any, any>;
+let fn2: jest.Mock<any, any>;
+let testProp: any;
+
+beforeEach(() => {
+  fn = jest.fn();
+  fn2 = jest.fn();
+  testProp = {
     flightTime: 1,
+    flightAltitude: 500,
     changeFlightTime: fn,
     changeFlightAltitude: fn2,
+    totalFuelWReq: 5,
+    totalFuelWAvail: 10,
   };
+});
 
+it('invokes cb with number value if input text is changed - time', async () => {
   render(
     <FlightTimeComp {...testProp} />
   );
@@ -37,14 +46,6 @@ it('invokes cb with number value if input text is changed - time', async () => {
 });
 
 it('invokes cb with number value if input text is changed - altitude', async () => {
-  const fn = jest.fn();
-  const fn2 = jest.fn();
-  const testProp: any = {
-    flightAltitude: 500,
-    changeFlightTime: fn,
-    changeFlightAltitude: fn2,
-  };
-
   render(
     <FlightTimeComp {...testProp} />
   );
@@ -64,20 +65,11 @@ it('invokes cb with number value if input text is changed - altitude', async () 
 });
 
 it('invokes cb with 0 if empty string is in input - time', async () => {
-  const fn = jest.fn();
-  const fn2 = jest.fn();
-  const testProp: any = {
-    flightTime: 1.5,
-    changeFlightTime: fn,
-    changeFlightAltitude: fn2,
-  };
-
   render(
     <FlightTimeComp {...testProp} />
   );
-  const input = screen.getByPlaceholderText(/Time/);
 
-  fireEvent.change(input, {
+  fireEvent.change(screen.getByPlaceholderText(/Time/), {
     target: { value: '' },
   });
 
@@ -93,20 +85,11 @@ it('invokes cb with 0 if empty string is in input - time', async () => {
 });
 
 it('invokes cb with 0 if empty string is in input - altitude', async () => {
-  const fn = jest.fn();
-  const fn2 = jest.fn();
-  const testProp: any = {
-    flightAltitude: 1000,
-    changeFlightTime: fn,
-    changeFlightAltitude: fn2,
-  };
-
   render(
     <FlightTimeComp {...testProp} />
   );
-  const input = screen.getByPlaceholderText(/Altitude/);
 
-  fireEvent.change(input, {
+  fireEvent.change(screen.getByPlaceholderText(/Altitude/), {
     target: { value: '' },
   });
 
@@ -119,4 +102,19 @@ it('invokes cb with 0 if empty string is in input - altitude', async () => {
   expect(fn.mock.calls.length).toEqual(0);
   expect(fn2.mock.calls.length).toEqual(1);
   expect(fn2.mock.calls[0][0]).toEqual(0);
+});
+
+it('should display no h5 warning by default', async () => {
+  render(
+    <FlightTimeComp {...testProp} />
+  );
+  expect(screen.queryAllByText(/Insufficient fuel/).length).toEqual(0);
+});
+
+it('should display no h5 warning by default', async () => {
+  testProp.totalFuelWAvail = 4.99;
+  render(
+    <FlightTimeComp {...testProp} />
+  );
+  expect(screen.queryAllByText(/Insufficient fuel/).length).toEqual(1);
 });

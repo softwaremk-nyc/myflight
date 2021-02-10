@@ -86,11 +86,11 @@ export const CgComp = (props: CgCompProp) => <div>
     </tbody>
   </table>
   {
-    props.cgCalc[2].map((p, index) => <p
+    props.cgCalc[2].map((p, index) => <h5
       className='text-danger'
       key={index}>
       {p}
-    </p>)
+    </h5>)
   }
 </div>;
 

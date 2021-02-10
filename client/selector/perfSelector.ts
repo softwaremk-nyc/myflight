@@ -10,7 +10,7 @@ import {
   AirportInfoState,
   RwyInfo,
 } from '../redux/airportInfoSlice';
-import { AirportInfo } from '../../perf/perfCommon';
+import { AirportInfo, PerfResult } from '../../perf/perfCommon';
 import {
   pressureAlt,
   stdTemp,
@@ -195,4 +195,15 @@ export const perfSelector = (planes: CgDataEntriesList) => createSelector(
     }
     throw Error(`Unknown type ${state.plane.planeType} for performance calculation`);
   },
+);
+
+export const perfSelectorFuelGalsRequired = (planes: CgDataEntriesList) => createSelector(
+  [
+    (state: RootState) => perfSelector(planes)(state).perfResult,
+  ],
+  (perfResult: PerfResult) => (
+    perfResult.totalFuel
+      ? perfResult.totalFuel.val
+      : 0
+  ),
 );
