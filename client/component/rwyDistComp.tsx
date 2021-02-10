@@ -8,16 +8,18 @@ export interface ConfigPerf {
 
 export interface ConfigRwy {
   title: string;
+  colHdr: string;
   normal: ConfigPerf,
   fiftyFoot: ConfigPerf,
   headWind: number;
 }
 
 export const RwyDistComp = (props: ConfigRwy) => <div>
+  <b>{props.title}</b>
   <table className='table'>
     <thead>
       <tr>
-        <th>{props.title}</th>
+        <th>{props.colHdr}</th>
         <th>Distance (ft)</th>
       </tr>
     </thead>

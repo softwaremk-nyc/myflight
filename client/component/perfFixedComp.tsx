@@ -70,7 +70,8 @@ export const PerfFixedComp = (props: PerfFixedCompProp) => {
 
   const configRwy: ConfigRwy[] = [
     {
-      title: 'Take off At Actual Weight',
+      title: 'TakeOff',
+      colHdr: 'Actual Weight',
       normal: {
         label: 'Short Field',
         value: props.perf.perfResult.toDist?.val,
@@ -86,7 +87,8 @@ export const PerfFixedComp = (props: PerfFixedCompProp) => {
       headWind: props.perf.startMaxHeadwind,
     },
     {
-      title: 'Landing At Max Weight',
+      title: 'Landing',
+      colHdr: 'Max Weight',
       normal: {
         label: 'Short Field',
         value: props.perf.perfResult.ldgDist?.val,

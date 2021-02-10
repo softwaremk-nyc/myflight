@@ -40,6 +40,12 @@ export const PerfResultsComp = (props: PerfResultsCompProp) => <div>
   {
     props.configRwy.map((c, index) => <RwyDistComp key={index} {...c} />)
   }
-  <RwyComp label='Start' rwyWindInfo={props.startHeadWindInfo} />
-  <RwyComp label='Dest' rwyWindInfo={props.destHeadWindInfo} />
+  <RwyComp
+    title='Start'
+    colHdr='Rwy'
+    rwyWindInfo={props.startHeadWindInfo} />
+  <RwyComp
+    title='Dest'
+    colHdr='Rwy'
+    rwyWindInfo={props.destHeadWindInfo} />
 </div>;

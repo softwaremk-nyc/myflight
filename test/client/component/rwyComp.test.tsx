@@ -11,7 +11,8 @@ afterEach(cleanup);
 
 it('render no rows if no wind info is present', () => {
   const testProps = {
-    label: '',
+    title: '',
+    colHdr: '',
     rwyWindInfo: {},
   };
 
@@ -21,7 +22,8 @@ it('render no rows if no wind info is present', () => {
 
 it('render rwy wind info in table rows', () => {
   const testProps = {
-    label: '',
+    title: '',
+    colHdr: '',
     rwyWindInfo: {
       12: 20,
       24: 36,
