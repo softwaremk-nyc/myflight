@@ -23,11 +23,23 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
-      <div>
-        <div className='input-group mb-2'>
+      <div className='col-sm-4 mb-2'>
+        <PlaneSelector />
+      </div>
+      <div className='col-sm-8 mb-2'>
+        <div className='input-group'>
+          <FuelComp />
+        </div>
+      </div>
+      <div className='col-sm-8 mb-2'>
+        <div className='input-group'>
           <FlightTimeComp />
         </div>
-        <AirportComp />
+      </div>
+      <div className='col-sm-8 mb-2'>
+        <div className='input-group'>
+          <AirportComp />
+        </div>
       </div>
     </Provider>
   </ApolloProvider>,
@@ -37,11 +49,9 @@ ReactDOM.render(
 ReactDOM.render(
   <Provider store={store}>
     <div>
-      <div className='mb-2'>
-        <PlaneSelector />
+      <div className='col-md-6 mb-2'>
+        <CgComp />
       </div>
-      <FuelComp />
-      <CgComp />
     </div>
   </Provider>,
   document.getElementById('root2'),
@@ -49,7 +59,7 @@ ReactDOM.render(
 
 ReactDOM.render(
   <Provider store={store}>
-    <div>
+    <div className='col-lg-8 mb-2'>
       <Chart />
     </div>
   </Provider>,

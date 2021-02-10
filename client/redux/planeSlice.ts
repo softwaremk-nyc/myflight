@@ -42,8 +42,8 @@ const initialState: PlaneSelectionState = {
   planeType: defaultType,
   //  blank causes the default to be returned by selector
   planeId: '',
-  flightTime: 1,
-  flightAltitude: 3000,
+  flightTime: 1.5,
+  flightAltitude: 3500,
   //  first element is plane weight and should remain unmodified at -1
   weights: [-1],
   gals: [],
