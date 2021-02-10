@@ -15,7 +15,7 @@ export interface PerfResultsCompProp {
 }
 
 export const PerfResultsComp = (props: PerfResultsCompProp) => <div>
-  <table className='table table-responsive-sm'>
+  <table className='table'>
     <thead>
       <tr>
         <th>Perf</th>

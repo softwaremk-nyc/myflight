@@ -6,7 +6,7 @@ export interface RwyCompProp {
   rwyWindInfo: RwyWindInfo;
 }
 
-export const RwyComp = (props: RwyCompProp) => <table className='table table-responsive-sm'>
+export const RwyComp = (props: RwyCompProp) => <table className='table'>
   <thead>
     <tr>
       <th>{props.label} Rwy</th>

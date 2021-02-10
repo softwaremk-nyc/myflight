@@ -174,7 +174,7 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
     <div className='my-2'>
       {p}
     </div>
-    <table className='table table-responsive-sm'>
+    <table className='table'>
       <tbody className='align-middle'>
         {
           config.map((c, index) => {

@@ -14,7 +14,7 @@ export interface ConfigRwy {
 }
 
 export const RwyDistComp = (props: ConfigRwy) => <div>
-  <table className='table table-responsive-sm'>
+  <table className='table'>
     <thead>
       <tr>
         <th>{props.title}</th>

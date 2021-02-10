@@ -37,7 +37,7 @@ ReactDOM.render(
 ReactDOM.render(
   <Provider store={store}>
     <div>
-      <div className='input-group mb-2'>
+      <div className='mb-2'>
         <PlaneSelector />
       </div>
       <FuelComp />
@@ -58,7 +58,7 @@ ReactDOM.render(
 
 ReactDOM.render(
   <Provider store={store}>
-    <div className='input-group mb-2'>
+    <div className='mb-2'>
       <PerfComp />
     </div>
   </Provider>,
