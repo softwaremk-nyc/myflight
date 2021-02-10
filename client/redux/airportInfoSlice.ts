@@ -88,6 +88,9 @@ const airportInfoSlice = createSlice({
     changeWindGust: (state, action) => {
       state[action.payload.id].info.wind.gust = action.payload.windGust;
     },
+    changeUpdated: (state, action) => {
+      state[action.payload.id].info.updated = action.payload.updated;
+    },
   },
   /* eslint-enable no-param-reassign */
 });
@@ -101,5 +104,6 @@ export const {
   changeWindDirection,
   changeWindSpeed,
   changeWindGust,
+  changeUpdated,
 } = airportInfoSlice.actions;
 export default airportInfoSlice.reducer;

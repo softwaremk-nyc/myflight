@@ -34,8 +34,8 @@ export const CgComp = (props: CgCompProp) => <div>
       {
         props.cgData.map((p, index) => {
           const input = index === 0 || p.name.indexOf('Fuel') !== -1
-            ? <td>{p.cgData.weight}</td>
-            : <td><DebounceInput
+            ? p.cgData.weight
+            : <DebounceInput
               type='number'
               debounceTimeout={500}
               className='form-control form-control-sm'
@@ -51,13 +51,14 @@ export const CgComp = (props: CgCompProp) => <div>
                   weight: info,
                 });
               }}
-            />
-            </td>;
+            />;
           return <tr key={index}>
             <td>
               {p.name}
             </td>
-            {input}
+            <td>
+              {input}
+            </td>
             <td>
               {index === 0 ? p.cgData.arm.toFixed(1) : p.cgData.arm}
             </td>

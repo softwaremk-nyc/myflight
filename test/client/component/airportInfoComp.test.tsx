@@ -52,8 +52,8 @@ const mocks = [
             gust: 22
           }
         }
-      }
-    }
+      },
+    },
   }
 ];
 
@@ -119,7 +119,8 @@ let
   fn5: jest.Mock<any, any>,
   fn6: jest.Mock<any, any>,
   fn7: jest.Mock<any, any>,
-  fn8: jest.Mock<any, any>;
+  fn8: jest.Mock<any, any>,
+  fn9: jest.Mock<any, any>;
 
 beforeEach(() => {
   fn2 = jest.fn();
@@ -129,6 +130,7 @@ beforeEach(() => {
   fn6 = jest.fn();
   fn7 = jest.fn();
   fn8 = jest.fn();
+  fn9 = jest.fn();
 
   testProp = {
     airportInfo: {
@@ -143,6 +145,7 @@ beforeEach(() => {
     changeWindDirection: fn6,
     changeWindSpeed: fn7,
     changeWindGust: fn8,
+    changeUpdated: fn9,
   };
 });
 
@@ -195,6 +198,9 @@ it('should display load complete status with requested airport name and update s
 
     expect(fn8.mock.calls.length).toEqual(1);
     expect(fn8.mock.calls[0][0]).toEqual({ id: 5, windGust: 22 });
+    
+    expect(fn9.mock.calls.length).toEqual(1);
+    expect(fn9.mock.calls[0][0]).toEqual({ id: 5, updated: '2021-02-01T16:20:00Z' });
   });
 });
 

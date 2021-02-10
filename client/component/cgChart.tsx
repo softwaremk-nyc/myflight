@@ -102,11 +102,11 @@ const cgGraph = {
 
 const mapState = (state: RootState) => ({
   ds: cgGraphSelector(cgGraph)(state.plane),
-  cgCalc: cgCalcSelector(planes)(state.plane),
   cgCalcEnd: cgCalcSelector(
     planes,
     perfSelectorFuelGalsRequired(planes)(state),
   )(state.plane),
+  cgCalc: cgCalcSelector(planes)(state.plane),
 });
 
 const connector = connect(mapState);

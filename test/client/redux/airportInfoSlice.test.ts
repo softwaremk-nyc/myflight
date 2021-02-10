@@ -7,6 +7,7 @@ import reducer, {
   changeWindDirection,
   changeWindSpeed,
   changeWindGust,
+  changeUpdated,
   AirportInfoState,
   defaultAirportData,
 } from '../../../client/redux/airportInfoSlice';
@@ -307,6 +308,35 @@ it('sets the third wind gust info correctly by id 2', () => {
       icaoId: '',
       label: '',
       info: expected,
+    },
+  ]);
+});
+
+it('sets the updated info correctly by id 1', () => {
+  const expected = { ...defaultAirportData };
+  expected.updated = 'cccc';
+  expect(reducer(
+    [
+      { ...state },
+      { ...state },
+    ],
+    {
+      type: changeUpdated.type,
+      payload: {
+        id: 0,
+        updated: 'cccc',
+      },
+    },
+  )).toEqual([
+    {
+      icaoId: '',
+      label: '',
+      info: expected,
+    },
+    {
+      icaoId: '',
+      label: '',
+      info: defaultAirportData,
     },
   ]);
 });

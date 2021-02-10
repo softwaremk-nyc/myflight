@@ -14,6 +14,7 @@ import {
   changeWindDirection,
   changeWindSpeed,
   changeWindGust,
+  changeUpdated,
 } from '../redux/airportInfoSlice';
 
 export const STATION_INFO = gql`
@@ -57,6 +58,7 @@ const connector = connect(mapState, {
   changeWindDirection,
   changeWindSpeed,
   changeWindGust,
+  changeUpdated,
 });
 type AirportInfoCompProp = ConnectedProps<typeof connector>;
 
@@ -66,10 +68,16 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
   const { icaoId } = airportInfo;
 
   let p: any = null;
+  let b: any = null;
   if (icaoId.length < 3) {
     p = <p className='text-muted'>Please enter airport id</p>;
   } else {
-    const { error, loading, data } = useQuery(STATION_INFO, {
+    const {
+      error,
+      loading,
+      data,
+      refetch,
+    } = useQuery(STATION_INFO, {
       variables: {
         icaoId,
       },
@@ -106,6 +114,10 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
             id,
             windGust: data.metar.wind.gust,
           });
+          props.changeUpdated({
+            id,
+            updated: data.metar.updated,
+          });
         });
       }
     }, [data]);
@@ -116,6 +128,21 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
       p = <p className='text-danger'>No info for {icaoId}</p>;
     } else if (data) {
       p = <p className='text-success'>Loaded {icaoId}</p>;
+      const mins = (
+        (new Date().valueOf() - new Date(props.airportInfo.info.updated).valueOf())
+        / 1000
+        / 60
+      );
+
+      b = (
+        <button
+          type='button'
+          className='btn btn-outline-secondary btn-sm'
+          onClick={() => (mins > 55 ? refetch() : 0)}
+        >
+          Update METAR
+        </button>
+      );
     }
   }
 
@@ -169,7 +196,16 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
       prop: 'windGust',
       maxLen: 4,
     },
+    {
+      label: 'Updated',
+      allowEdit: false,
+      onChange: props.changeUpdated,
+      value: new Date(props.airportInfo.info.updated).toLocaleString(),
+      prop: 'updated',
+      maxLen: 4,
+    },
   ];
+
   return <div>
     <div className='my-2'>
       {p}
@@ -179,8 +215,8 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
         {
           config.map((c, index) => {
             const input = c.allowEdit === false
-              ? <td>{c.value}</td>
-              : <td><DebounceInput
+              ? c.value
+              : <DebounceInput
                 type='number'
                 id={`${c.prop}_${id}`}
                 maxLength={c.maxLen}
@@ -198,19 +234,21 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
                     [c.prop]: info,
                   });
                 }}
-              />
-              </td>;
+              />;
 
             return <tr key={`${index}`}>
               <td>
                 {c.label}
               </td>
-              {input}
+              <td>
+                {input}
+              </td>
             </tr>;
           })
         }
       </tbody>
     </table>
+    {b}
   </div>;
 };
 
