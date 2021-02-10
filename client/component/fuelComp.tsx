@@ -18,7 +18,7 @@ const connector = connect(mapState, { changeGals });
 type FuelCompProp = ConnectedProps<typeof connector>;
 
 export const FuelComp = (props: FuelCompProp) => <div>
-  <table className='table table-responsive-sm'>
+  <table className='table'>
     <thead>
       <tr>
         <th>Fuel</th>

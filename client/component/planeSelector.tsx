@@ -25,7 +25,7 @@ const connector = connect(mapState, { changeType, changeId });
 type PlaneSelectorProp = ConnectedProps<typeof connector>;
 
 //  export directly for unit-tests
-export const PlaneSelector = (props: PlaneSelectorProp) => <table className='table table-responsive-sm table-borderless w-25'>
+export const PlaneSelector = (props: PlaneSelectorProp) => <table className='table table-borderless'>
   <tbody>
     <tr>
       <td>

@@ -15,7 +15,7 @@ export interface PerfResultsCompProp {
 }
 
 export const PerfResultsComp = (props: PerfResultsCompProp) => <div>
-  <table className='table table-responsive-sm'>
+  <table className='table'>
     <thead>
       <tr>
         <th>Perf</th>
@@ -37,9 +37,26 @@ export const PerfResultsComp = (props: PerfResultsCompProp) => <div>
       }
     </tbody>
   </table>
-  {
-    props.configRwy.map((c, index) => <RwyDistComp key={index} {...c} />)
-  }
-  <RwyComp label='Start' rwyWindInfo={props.startHeadWindInfo} />
-  <RwyComp label='Dest' rwyWindInfo={props.destHeadWindInfo} />
+  <div className='row'>
+    {
+      props.configRwy.map((c, index) => (<div key={index} className='col-lg-6 mb-3'>
+        <RwyDistComp {...c} />
+      </div>
+      ))
+    }
+  </div>
+  <div className='row'>
+    <div className='col-sm-6 mb-3'>
+      <RwyComp
+        title='Start'
+        colHdr='Rwy'
+        rwyWindInfo={props.startHeadWindInfo} />
+    </div>
+    <div className='col-sm-6 mb-3'>
+      <RwyComp
+        title='Dest'
+        colHdr='Rwy'
+        rwyWindInfo={props.destHeadWindInfo} />
+    </div>
+  </div>
 </div>;

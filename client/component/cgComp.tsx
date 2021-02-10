@@ -21,7 +21,7 @@ type CgCompProp = ConnectedProps<typeof connector>;
 
 //  direct export for unit testing
 export const CgComp = (props: CgCompProp) => <div>
-  <table className='table table-responsive-sm'>
+  <table className='table'>
     <thead>
       <tr>
         <th>Component</th>

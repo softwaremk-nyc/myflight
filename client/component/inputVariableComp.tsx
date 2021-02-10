@@ -21,7 +21,7 @@ const connector = connect(mapState, {
 });
 type InputVariableCompProp = ConnectedProps<typeof connector>;
 
-export const InputVariableComp = (props: InputVariableCompProp) => <table className='table table-responsive-sm'>
+export const InputVariableComp = (props: InputVariableCompProp) => <table className='table'>
   <tbody className='align-middle'>
     <tr>
       <td>

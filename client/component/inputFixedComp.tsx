@@ -11,7 +11,7 @@ const mapState = (state: RootState) => ({
 const connector = connect(mapState, { changeBhp });
 type InputFixedCompProp = ConnectedProps<typeof connector>;
 
-export const InputFixedComp = (props: InputFixedCompProp) => <table className='table table-responsive-sm'>
+export const InputFixedComp = (props: InputFixedCompProp) => <table className='table'>
   <tbody className='align-middle'>
     <tr>
       <td>

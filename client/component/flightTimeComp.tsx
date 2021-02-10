@@ -16,7 +16,7 @@ const connector = connect(mapState, { changeFlightTime, changeFlightAltitude });
 type FlightTimeCompProp = ConnectedProps<typeof connector>;
 
 export const FlightTimeComp = (props: FlightTimeCompProp) => <div>
-  <table className='table table-responsive-sm table-borderless'>
+  <table className='table table-borderless'>
     <tbody className='align-middle'>
       <tr>
         <td>

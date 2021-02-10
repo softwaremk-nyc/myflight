@@ -8,17 +8,19 @@ export interface ConfigPerf {
 
 export interface ConfigRwy {
   title: string;
+  colHdr: string;
   normal: ConfigPerf,
   fiftyFoot: ConfigPerf,
   headWind: number;
 }
 
 export const RwyDistComp = (props: ConfigRwy) => <div>
-  <table className='table table-responsive-sm'>
+  <b>{props.title}</b>
+  <table className='table'>
     <thead>
       <tr>
-        <th>{props.title}</th>
-        <th>Distance (ft)</th>
+        <th>{props.colHdr}</th>
+        <th>Dist (ft)</th>
       </tr>
     </thead>
     <tbody className='align-middle'>

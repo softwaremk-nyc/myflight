@@ -12,6 +12,7 @@ afterEach(cleanup);
 it('should render a table of runway info', () => {
   const testProp: any = {
     title: 'bleh',
+    colHdr: 'bleh2',
     normal: {
       label: 'n1',
       value: 30,
