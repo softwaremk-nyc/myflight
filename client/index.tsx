@@ -58,7 +58,7 @@ ReactDOM.render(
 
 ReactDOM.render(
   <Provider store={store}>
-    <div className='mb-2'>
+    <div className='col-md-6 mb-2'>
       <PerfComp />
     </div>
   </Provider>,

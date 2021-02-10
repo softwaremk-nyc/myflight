@@ -20,7 +20,7 @@ export const RwyDistComp = (props: ConfigRwy) => <div>
     <thead>
       <tr>
         <th>{props.colHdr}</th>
-        <th>Distance (ft)</th>
+        <th>Dist (ft)</th>
       </tr>
     </thead>
     <tbody className='align-middle'>

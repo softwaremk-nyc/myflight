@@ -12,7 +12,7 @@ export const RwyComp = (props: RwyCompProp) => <div>
   <table className='table'>
     <thead>
       <tr>
-        <th>{props.colHdr} Rwy</th>
+        <th>{props.colHdr}</th>
         <th>HeadWind</th>
       </tr>
     </thead>
