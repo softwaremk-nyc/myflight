@@ -10,6 +10,7 @@ import {
 import { perfSelectorFuelGalsRequired } from '../selector/perfSelector';
 import { lbsPerGallonFuel } from '../../perf/perfCommon';
 import { weightFromGals } from '../selector/planeCgSelector';
+import { numberDebounce } from './debounceInputProp';
 
 const mapState = (state: RootState) => ({
   flightTime: state.plane.flightTime,
@@ -38,18 +39,16 @@ export const FlightTimeComp = (props: FlightTimeCompProp) => {
           <td>
             <div className='input-group'>
               <DebounceInput
-                type='number'
-                debounceTimeout={500}
-                className='form-control form-control-sm'
-                placeholder='Time'
-                aria-label='Cruise Time (hours)'
-                value={props.flightTime}
-                onChange={(event) => {
-                  const info = Number.isNaN(event.target.valueAsNumber)
-                    ? 0
-                    : event.target.valueAsNumber;
-                  props.changeFlightTime(info);
-                }}
+                {...numberDebounce(
+                  'time',
+                  props.flightTime ?? 0,
+                  'Cruise Time (hours)',
+                  (time: number) => {
+                    props.changeFlightTime(time);
+                  },
+                  0,
+                  1000,
+                )}
               />
               <span className='input-group-text'>Hours</span>
             </div>
@@ -62,18 +61,16 @@ export const FlightTimeComp = (props: FlightTimeCompProp) => {
           <td>
             <div className='input-group'>
               <DebounceInput
-                type='number'
-                debounceTimeout={500}
-                className='form-control form-control-sm'
-                placeholder='Altitude'
-                aria-label='Cruise Altitude (ft)'
-                value={props.flightAltitude}
-                onChange={(event) => {
-                  const info = Number.isNaN(event.target.valueAsNumber)
-                    ? 0
-                    : event.target.valueAsNumber;
-                  props.changeFlightAltitude(info);
-                }}
+                {...numberDebounce(
+                  'altitude',
+                  props.flightAltitude ?? 0,
+                  'Cruise Altitude (ft)',
+                  (alt: number) => {
+                    props.changeFlightAltitude(alt);
+                  },
+                  0,
+                  30000,
+                )}
               />
               <span className='input-group-text'>Ft</span>
             </div>

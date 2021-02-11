@@ -8,6 +8,7 @@ import {
   changeGals,
 } from '../redux/planeSlice';
 import { lbsPerGallonFuel } from '../../perf/perfCommon';
+import { numberDebounce } from './debounceInputProp';
 
 const mapState = (state: RootState) => ({
   gals: state.plane.gals,
@@ -28,37 +29,36 @@ export const FuelComp = (props: FuelCompProp) => <div>
     </thead>
     <tbody className='align-middle'>
       {
-        props.fuelComp.map((f, index) => <tr key={index}>
-          <td>
-            {f.cgDisplay.name}
-          </td>
-          <td>
-            <DebounceInput
-              type='number'
-              debounceTimeout={500}
-              className='form-control form-control-sm'
-              placeholder='Gals'
-              aria-label='Gals'
-              value={props.gals[f.id]}
-              onChange={(event) => {
-                const info = Number.isNaN(event.target.valueAsNumber)
-                  ? 0
-                  : event.target.valueAsNumber;
-                props.changeGals({
-                  id: f.id,
-                  gal: info,
-                });
-              }}
-            />
-          </td>
-          <td>
-            {
-              f.cgDisplay.maxW
-                ? f.cgDisplay.maxW / lbsPerGallonFuel
-                : ''
-            }
-          </td>
-        </tr>)
+        props.fuelComp.map((f, index) => {
+          const maxGals = f.cgDisplay.maxW
+            ? f.cgDisplay.maxW / lbsPerGallonFuel
+            : 0;
+          return <tr key={index}>
+            <td>
+              {f.cgDisplay.name}
+            </td>
+            <td>
+              <DebounceInput
+                {...numberDebounce(
+                  'gals',
+                  props.gals[f.id],
+                  'Gals',
+                  (gal: number) => {
+                    props.changeGals({
+                      id: f.id,
+                      gal,
+                    });
+                  },
+                  0,
+                  maxGals,
+                )}
+              />
+            </td>
+            <td>
+              {maxGals}
+            </td>
+          </tr>;
+        })
       }
     </tbody>
   </table>

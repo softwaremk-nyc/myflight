@@ -4,6 +4,7 @@ import { DebounceInput } from 'react-debounce-input';
 import { RootState } from '../redux/rootReducer';
 import { changeIcaoId } from '../redux/airportInfoSlice';
 import AirportInfoComp from './airportInfoComp';
+import { textDebounce } from './debounceInputProp';
 
 const mapState = (state: RootState) => ({
   airportInfo: state.airportInfo,
@@ -20,23 +21,21 @@ export const AirportComp = (props: AirportCompProp) => <div
       key={`key_${index}`}
       className='form-floating mb-2 mx-2'>
       <DebounceInput
-        type='text'
-        id={`label_${index}`}
-        minLength={3}
-        maxLength={4}
-        debounceTimeout={2000}
-        className='form-control'
-        placeholder='Airport'
-        aria-label='Airport'
-        onChange={(event) => {
-          props.changeIcaoId({
-            id: index,
-            icaoId: event.target.value.toUpperCase(),
-          });
-        }}
+        { ...textDebounce(
+          `label_${index}`,
+          'Airport',
+          3,
+          4,
+          (icaoId: string) => {
+            props.changeIcaoId({
+              id: index,
+              icaoId,
+            });
+          },
+        )}
       />
       <label htmlFor={`label_${index}`}>{info.label}</label>
-      <AirportInfoComp key={`key_${index}`} id={index}/>
+      <AirportInfoComp key={`key_${index}`} id={index} />
     </div>
     ))
   }

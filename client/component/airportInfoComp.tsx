@@ -16,6 +16,7 @@ import {
   changeWindGust,
   changeUpdated,
 } from '../redux/airportInfoSlice';
+import { numberDebounce } from './debounceInputProp';
 
 export const STATION_INFO = gql`
   query ($icaoId: String!) {
@@ -154,7 +155,8 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
       onChange: props.changeElevation,
       value: props.airportInfo.info.elevation,
       prop: 'elevation',
-      maxLen: 5,
+      minValue: -5000,
+      maxValue: 5000,
     },
     {
       label: 'Temp (c)',
@@ -162,7 +164,8 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
       onChange: props.changeTemp,
       value: props.airportInfo.info.temp,
       prop: 'temp',
-      maxLen: 4,
+      minValue: -30,
+      maxValue: 50,
     },
     {
       label: 'Altimeter',
@@ -170,7 +173,8 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
       onChange: props.changeAltimeter,
       value: props.airportInfo.info.altimeter,
       prop: 'altimeter',
-      maxLen: 5,
+      minValue: 28,
+      maxValue: 31,
     },
     {
       label: 'Direction',
@@ -178,7 +182,8 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
       onChange: props.changeWindDirection,
       value: props.airportInfo.info.wind.direction ?? 0,
       prop: 'windDirection',
-      maxLen: 4,
+      minValue: -1,
+      maxValue: -1,
     },
     {
       label: 'Speed (kts)',
@@ -186,7 +191,8 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
       onChange: props.changeWindSpeed,
       value: props.airportInfo.info.wind.speed ?? 0,
       prop: 'windSpeed',
-      maxLen: 4,
+      minValue: -1,
+      maxValue: -1,
     },
     {
       label: 'Gust (kts)',
@@ -194,15 +200,8 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
       onChange: props.changeWindGust,
       value: props.airportInfo.info.wind.gust ?? 0,
       prop: 'windGust',
-      maxLen: 4,
-    },
-    {
-      label: 'Updated',
-      allowEdit: false,
-      onChange: props.changeUpdated,
-      value: new Date(props.airportInfo.info.updated).toLocaleString(),
-      prop: 'updated',
-      maxLen: 4,
+      minValue: -1,
+      maxValue: -1,
     },
   ];
 
@@ -217,23 +216,20 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
             const input = c.allowEdit === false
               ? c.value
               : <DebounceInput
-                type='number'
-                id={`${c.prop}_${id}`}
-                maxLength={c.maxLen}
-                debounceTimeout={debounceTime}
-                className='form-control form-control-sm'
-                placeholder={`${c.label}`}
-                aria-label={`${c.label}`}
-                value={c.value}
-                onChange={(event) => {
-                  const info = Number.isNaN(event.target.valueAsNumber)
-                    ? 0
-                    : event.target.valueAsNumber;
-                  c.onChange({
-                    id,
-                    [c.prop]: info,
-                  });
-                }}
+                { ...numberDebounce(
+                  `${c.prop}_${id}`,
+                  c.value,
+                  c.label,
+                  (val: number) => {
+                    c.onChange({
+                      id,
+                      [c.prop]: val,
+                    });
+                  },
+                  c.minValue,
+                  c.maxValue,
+                  debounceTime,
+                )}
               />;
 
             return <tr key={`${index}`}>
@@ -246,6 +242,14 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
             </tr>;
           })
         }
+        <tr>
+          <td>
+            Updated
+          </td>
+          <td>
+            {new Date(props.airportInfo.info.updated).toLocaleString()}
+          </td>
+        </tr>
       </tbody>
     </table>
     {b}

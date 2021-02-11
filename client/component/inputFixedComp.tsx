@@ -3,6 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { DebounceInput } from 'react-debounce-input';
 import { changeBhp } from '../redux/planeSlice';
 import { RootState } from '../redux/rootReducer';
+import { numberDebounce } from './debounceInputProp';
 
 const mapState = (state: RootState) => ({
   bhp: state.plane.bhp,
@@ -19,18 +20,16 @@ export const InputFixedComp = (props: InputFixedCompProp) => <table className='t
     </td>
       <td>
         <DebounceInput
-          type='number'
-          debounceTimeout={500}
-          className='form-control form-control-sm'
-          placeholder='%BHP'
-          aria-label='%BHP'
-          value={props.bhp}
-          onChange={(event) => {
-            const info = Number.isNaN(event.target.valueAsNumber)
-              ? 0
-              : event.target.valueAsNumber;
-            props.changeBhp(info);
-          }}
+          {...numberDebounce(
+            'bhp',
+            props.bhp ?? 0,
+            '%BHP',
+            (bhp: number) => {
+              props.changeBhp(bhp);
+            },
+            0,
+            1000,
+          )}
         />
       </td>
     </tr>

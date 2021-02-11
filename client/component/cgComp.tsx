@@ -10,6 +10,7 @@ import {
   planes,
   changeWeight,
 } from '../redux/planeSlice';
+import { numberDebounce } from './debounceInputProp';
 
 const mapState = (state: RootState) => ({
   cgData: cgSelectorForDisplay(planes)(state.plane),
@@ -36,21 +37,19 @@ export const CgComp = (props: CgCompProp) => <div>
           const input = index === 0 || p.name.indexOf('Fuel') !== -1
             ? p.cgData.weight
             : <DebounceInput
-              type='number'
-              debounceTimeout={500}
-              className='form-control form-control-sm'
-              placeholder='Weight'
-              aria-label='Weight'
-              value={p.cgData.weight}
-              onChange={(event) => {
-                const info = Number.isNaN(event.target.valueAsNumber)
-                  ? 0
-                  : event.target.valueAsNumber;
-                props.changeWeight({
-                  id: index,
-                  weight: info,
-                });
-              }}
+              {...numberDebounce(
+                `${index}`,
+                p.cgData.weight,
+                'Weight',
+                (weight: number) => {
+                  props.changeWeight({
+                    id: index,
+                    weight,
+                  });
+                },
+                0,
+                10000,
+              )}
             />;
           return <tr key={index}>
             <td>

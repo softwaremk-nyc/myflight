@@ -7,6 +7,7 @@ import {
   changePowerSetting,
 } from '../redux/planeSlice';
 import { RootState } from '../redux/rootReducer';
+import { numberDebounce } from './debounceInputProp';
 
 const mapState = (state: RootState, ownProps: { powerSettings: string[] }) => ({
   mp: state.plane.mp,
@@ -29,18 +30,16 @@ export const InputVariableComp = (props: InputVariableCompProp) => <table classN
   </td>
       <td>
         <DebounceInput
-          type='number'
-          debounceTimeout={500}
-          className='form-control form-control-sm'
-          placeholder='Manifold Pressure'
-          aria-label='Manifold Pressure'
-          value={props.mp}
-          onChange={(event) => {
-            const info = Number.isNaN(event.target.valueAsNumber)
-              ? 0
-              : event.target.valueAsNumber;
-            props.changeMp(info);
-          }}
+          {...numberDebounce(
+            'manifoldp',
+            props.mp ?? 0,
+            'Manifold Pressure',
+            (mp: number) => {
+              props.changeMp(mp);
+            },
+            0,
+            30,
+          )}
         />
       </td>
     </tr>
@@ -50,18 +49,16 @@ export const InputVariableComp = (props: InputVariableCompProp) => <table classN
   </td>
       <td>
         <DebounceInput
-          type='number'
-          debounceTimeout={500}
-          className='form-control form-control-sm'
-          placeholder='RPM'
-          aria-label='RPM'
-          value={props.rpm}
-          onChange={(event) => {
-            const info = Number.isNaN(event.target.valueAsNumber)
-              ? 0
-              : event.target.valueAsNumber;
-            props.changeRpm(info);
-          }}
+          {...numberDebounce(
+            'rpm',
+            props.rpm ?? 0,
+            'RPM',
+            (rpm: number) => {
+              props.changeRpm(rpm);
+            },
+            0,
+            5000,
+          )}
         />
       </td>
     </tr>
