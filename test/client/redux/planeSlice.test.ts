@@ -58,6 +58,25 @@ it('changing type - resets id', () => {
     });
 });
 
+it('changing type - resets gals', () => {
+  state.gals = [1, 2, 3];
+  state.weights = [1, 2, 3];
+  expect(reducer(
+    state,
+    {
+      type: changeType.type,
+      payload: 'bb1',
+    },
+  ))
+    .toEqual({
+      planeTypes: ['aa', 'bb'],
+      planeType: 'bb1',
+      planeId: '',
+      weights: [1, 2, 3],
+      gals: [0, 0, 0],
+    });
+});
+
 it('sets a flight time if one is not present', () => {
   expect(reducer(
     state,

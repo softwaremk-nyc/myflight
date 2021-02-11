@@ -80,6 +80,10 @@ const planeSlice = createSlice({
       state.planeType = action.payload;
       //  new plane type so reset id as well
       state.planeId = '';
+      //  reset gals
+      for (let i = 0; i < state.gals.length; i += 1) {
+        state.gals[i] = 0;
+      }
     },
     changeId: (state, action) => {
       state.planeId = action.payload;

@@ -26,6 +26,8 @@ ReactDOM.render(
     <Provider store={store}>
       <div className='col-sm-4 mb-2'>
         <PlaneSelector />
+      </div>
+      <div className='col-sm-3 mb-2'>
         <InputComp />
       </div>
       <div className='col-sm-8 mb-2'>
