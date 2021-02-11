@@ -4,16 +4,17 @@
   "description": "basic flight performance calculation",
   "main": "dist/index.js",
   "scripts": {
-    "build": "eslint . --ext .js,.ts && tsc",
-    "start:dev": "npm run build && concurrently --kill-others --names \"LINT,TSC,TEST\" npm:watch-lint npm:watch-tsc npm:watch-test",
-    "test": "npm run build && jest",
-    "watch-lint": "esw . --ext .js,.ts -w",
-    "watch-tsc": "tsc -w",
-    "watch-test": "jest --watchAll",
+    "clean": "rimraf ./dist",
+    "start": "node dist/server/index.js",
+    "build": "npm run clean && tsc -p ./server && webpack --mode production",
+    "build:dev": "npm run clean && eslint . --ext .js,.ts && tsc",
+    "start:dev": "npm run build:dev && concurrently --kill-others --names \"LINT,TSC,TEST\" npm:watch-lint npm:watch-tsc npm:watch-test",
     "start:server": "nodemon dist/server/index.js",
     "start:client": "webpack serve --mode=development --content-base ./dist/client --hot --inline",
-    "package": "webpack --mode production",
-    "packaged": "webpack"
+    "test": "npm run build:dev && jest",
+    "watch-lint": "esw . --ext .js,.ts -w",
+    "watch-tsc": "tsc -w",
+    "watch-test": "jest --watchAll"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "html-webpack-plugin": "^4.5.1",
     "jest": "^26.6.3",
     "nodemon": "^2.0.7",
+    "rimraf": "^3.0.2",
     "source-map-loader": "^2.0.0",
     "ts-loader": "^8.0.14",
     "typescript": "^4.1.3",

@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import { ApolloServer } from 'apollo-server-express';
 import typeDefs from './gql/schema';
 import AvwxApi from './gql/datasources/avwx';
@@ -6,7 +7,7 @@ import AvwxApi from './gql/datasources/avwx';
 const resolvers = require('./gql/resolvers');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -19,9 +20,11 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app });
 
-app.get('/', (_, res) => {
-  res.send('Hello World');
-});
+app.use(express.static(path.join(__dirname, '../client')));
+
+// app.get('/', (_, res) => {
+//   res.send('Hello World');
+// });
 
 app.listen(port, () => {
   console.log(`Express listening on ${port} with gql on ${server.graphqlPath}`);
