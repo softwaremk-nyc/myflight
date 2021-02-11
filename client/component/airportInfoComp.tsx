@@ -124,8 +124,6 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
 
     if (loading) {
       p = <p className='text-warning'>Loading {icaoId} ...</p>;
-    } else if (error) {
-      p = <p className='text-danger'>No info for {icaoId}</p>;
     } else if (data) {
       p = <p className='text-success'>Loaded {icaoId}</p>;
       const mins = (
@@ -143,6 +141,8 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
           Update METAR
         </button>
       );
+    } else if (error) {
+      p = <p className='text-danger'>No info for {icaoId}</p>;
     }
   }
 
