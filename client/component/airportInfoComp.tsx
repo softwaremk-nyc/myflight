@@ -127,17 +127,21 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
       p = <p className='text-warning'>Loading {icaoId} ...</p>;
     } else if (data) {
       p = <p className='text-success'>Loaded {icaoId}</p>;
-      const mins = (
-        (new Date().valueOf() - new Date(props.airportInfo.info.updated).valueOf())
-        / 1000
-        / 60
-      );
-
       b = (
         <button
           type='button'
           className='btn btn-outline-secondary btn-sm'
-          onClick={() => (mins > 55 ? refetch() : 0)}
+          onClick={() => {
+            const mins = (
+              (new Date().valueOf() - new Date(props.airportInfo.info.updated).valueOf())
+              / 1000
+              / 60
+            );
+            if (mins > 55) {
+              refetch()
+            };
+          }
+          }
         >
           Update METAR
         </button>
@@ -216,7 +220,7 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
             const input = c.allowEdit === false
               ? c.value
               : <DebounceInput
-                { ...numberDebounce(
+                {...numberDebounce(
                   `${c.prop}_${id}`,
                   c.value,
                   c.label,

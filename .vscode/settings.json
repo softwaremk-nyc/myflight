@@ -3,5 +3,7 @@
     "node_modules{,/**}",
     "dist{,/**}",
     ".vscode{,/**}"
-  ]
+  ],
+  "appService.defaultWebAppToDeploy": "/subscriptions/31822acd-c247-4063-8e1a-b500b1d3e078/resourceGroups/mkflight/providers/Microsoft.Web/sites/myflightperf",
+  "appService.deploySubpath": "."
 }
