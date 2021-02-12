@@ -138,8 +138,8 @@ export const AirportInfoComp = (props: AirportInfoCompProp) => {
               / 60
             );
             if (mins > 55) {
-              refetch()
-            };
+              refetch();
+            }
           }
           }
         >

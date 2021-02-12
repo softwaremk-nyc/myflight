@@ -1,11 +1,11 @@
 import React from 'react';
-import { CgComp } from '../../../client/component/cgComp';
 import {
   render,
   screen,
   cleanup,
   fireEvent,
 } from '@testing-library/react';
+import { CgComp } from '../../../client/component/cgComp';
 
 afterEach(cleanup);
 
@@ -21,7 +21,7 @@ beforeEach(() => {
     ],
     cgCalc: [
       { weight: 6, arm: 7, moment: 8 },
-      ,
+      [],
       [],
     ],
     changeWeight: fn,
@@ -38,14 +38,14 @@ it('should fire a weight update on input change', async () => {
   render(<CgComp {...testProps} />);
 
   fireEvent.change(screen.getByPlaceholderText(/Weight/), {
-    target: { value: 12 }
+    target: { value: 12 },
   });
 
   //  debounced - initially no call
   expect(fn.mock.calls.length).toEqual(0);
 
   //  then a call
-  await new Promise(r => setTimeout(r, 550));
+  await new Promise((r) => setTimeout(r, 550));
   expect(fn.mock.calls.length).toEqual(1);
   expect(fn.mock.calls[0][0]).toEqual({ id: 1 /* index */, weight: 12 });
 });

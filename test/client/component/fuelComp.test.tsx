@@ -1,11 +1,11 @@
 import React from 'react';
-import { FuelComp } from '../../../client/component/fuelComp';
 import {
   render,
   screen,
   fireEvent,
   cleanup,
 } from '@testing-library/react';
+import { FuelComp } from '../../../client/component/fuelComp';
 
 afterEach(cleanup);
 

@@ -25,7 +25,7 @@ it('should fire a bhp change', async () => {
   const w = screen.getByPlaceholderText(/BHP/);
   fireEvent.change(w, {
     target: { value: 15 },
-  })
+  });
   //  debounced
   expect(fn.mock.calls.length).toEqual(0);
 

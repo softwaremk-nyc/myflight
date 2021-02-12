@@ -33,12 +33,12 @@ const mocks = [
           elevation: 200,
           runways: [
             {
-              'length_ft': 4553,
-              'width_ft': 80,
-              'ident1': '04',
-              'ident2': '22'
+              length_ft: 4553,
+              width_ft: 80,
+              ident1: '04',
+              ident2: '22',
             },
-          ]
+          ],
         },
         metar: {
           icaoId: 'my_aiport',
@@ -49,12 +49,12 @@ const mocks = [
           wind: {
             direction: 50,
             speed: 13,
-            gust: 22
-          }
-        }
+            gust: 22,
+          },
+        },
       },
     },
-  }
+  },
 ];
 
 //  responds with decimal temp missing
@@ -74,12 +74,12 @@ const mocks2 = [
           elevation: 200,
           runways: [
             {
-              'length_ft': 4553,
-              'width_ft': 80,
-              'ident1': '04',
-              'ident2': '22'
+              length_ft: 4553,
+              width_ft: 80,
+              ident1: '04',
+              ident2: '22',
             },
-          ]
+          ],
         },
         metar: {
           icaoId: 'my_aiport',
@@ -90,12 +90,12 @@ const mocks2 = [
           wind: {
             direction: 50,
             speed: 13,
-            gust: 22
-          }
-        }
-      }
-    }
-  }
+            gust: 22,
+          },
+        },
+      },
+    },
+  },
 ];
 
 //  responds with error
@@ -108,19 +108,18 @@ const mocks3 = [
       },
     },
     errors: new Error('barf'),
-  }
+  },
 ];
 
 let testProp: any;
-let
-  fn2: jest.Mock<any, any>,
-  fn3: jest.Mock<any, any>,
-  fn4: jest.Mock<any, any>,
-  fn5: jest.Mock<any, any>,
-  fn6: jest.Mock<any, any>,
-  fn7: jest.Mock<any, any>,
-  fn8: jest.Mock<any, any>,
-  fn9: jest.Mock<any, any>;
+let fn2: jest.Mock<any, any>;
+let fn3: jest.Mock<any, any>;
+let fn4: jest.Mock<any, any>;
+let fn5: jest.Mock<any, any>;
+let fn6: jest.Mock<any, any>;
+let fn7: jest.Mock<any, any>;
+let fn8: jest.Mock<any, any>;
+let fn9: jest.Mock<any, any>;
 
 beforeEach(() => {
   fn2 = jest.fn();
@@ -153,7 +152,7 @@ it('should display loading status with requested airport name', () => {
   render(
     <MockedProvider mocks={mocks} addTypename={false}>
       <AirportInfoComp {...testProp} />
-    </MockedProvider>
+    </MockedProvider>,
   );
   expect(screen.getByText(/Loading my_airport .../)).toBeTruthy();
 });
@@ -162,7 +161,7 @@ it('should display load complete status with requested airport name and update s
   render(
     <MockedProvider mocks={mocks} addTypename={false}>
       <AirportInfoComp {...testProp} id={5} />
-    </MockedProvider>
+    </MockedProvider>,
   );
 
   await waitFor(() => {
@@ -180,14 +179,15 @@ it('should display load complete status with requested airport name and update s
 
     expect(fn5.mock.calls.length).toEqual(1);
     expect(fn5.mock.calls[0][0]).toEqual({
-      id: 5, runways: [
+      id: 5,
+      runways: [
         {
-          'length_ft': 4553,
-          'width_ft': 80,
-          'ident1': '04',
-          'ident2': '22'
+          length_ft: 4553,
+          width_ft: 80,
+          ident1: '04',
+          ident2: '22',
         },
-      ]
+      ],
     });
 
     expect(fn6.mock.calls.length).toEqual(1);
@@ -198,7 +198,7 @@ it('should display load complete status with requested airport name and update s
 
     expect(fn8.mock.calls.length).toEqual(1);
     expect(fn8.mock.calls[0][0]).toEqual({ id: 5, windGust: 22 });
-    
+
     expect(fn9.mock.calls.length).toEqual(1);
     expect(fn9.mock.calls[0][0]).toEqual({ id: 5, updated: '2021-02-01T16:20:00Z' });
   });
@@ -208,7 +208,7 @@ it('should fall back to whole number temperature if decimal is not available', a
   render(
     <MockedProvider mocks={mocks2} addTypename={false}>
       <AirportInfoComp {...testProp} id={5} />
-    </MockedProvider>
+    </MockedProvider>,
   );
 
   await waitFor(() => {
@@ -223,7 +223,7 @@ it('should display load failed on error with airport name', async () => {
   render(
     <MockedProvider mocks={mocks3} addTypename={false}>
       <AirportInfoComp {...testProp} id={5} />
-    </MockedProvider>
+    </MockedProvider>,
   );
 
   await waitFor(() => {

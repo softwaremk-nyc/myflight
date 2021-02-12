@@ -3,10 +3,10 @@
   "include": [
     "**.js",
     "client/**/*",
-    "src/**/*.ts",
-    "server/**/*.ts",
-    "perf/**/*.ts",
-    "module/**/*.ts",
-    "test/**/*.test.ts"
+    "src/**/*",
+    "server/**/*",
+    "perf/**/*",
+    "module/**/*",
+    "test/**/*.test.*"
   ]
 }

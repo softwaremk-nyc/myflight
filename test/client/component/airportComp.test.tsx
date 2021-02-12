@@ -19,13 +19,13 @@ it('invokes cb if input text is changed - returns uppercase', async () => {
       { icaoId: '', label: '2', info: null },
     ],
     changeIcaoId,
-  }
+  };
 
   //  provider for any nested components not under test
   render(
     <Provider store={store}>
       <AirportComp {...testProp} />
-    </Provider>
+    </Provider>,
   );
 
   const inputs = screen.getAllByPlaceholderText(/Airport/i);
@@ -33,13 +33,13 @@ it('invokes cb if input text is changed - returns uppercase', async () => {
 
   fireEvent.change(inputs[0], {
     target: { id: 0, value: 'myAirport' },
-  })
+  });
 
   //  debounced - initially no call
   expect(changeIcaoId.mock.calls.length).toEqual(0);
 
   //  then a call
-  await new Promise(r => setTimeout(r, 2001));
+  await new Promise((r) => setTimeout(r, 2001));
   expect(changeIcaoId.mock.calls.length).toEqual(1);
   expect(changeIcaoId.mock.calls[0][0]).toEqual({ id: 0, icaoId: 'MYAIRPORT' });
 });
