@@ -24,7 +24,7 @@ function stationReducer(station: any) {
   };
 }
 
-const headers = { headers: { authorization: '6YmlPMkVB6QG7tRus879TCJTbkgKq_edlH6U3vwUi0s' } };
+const headers = { headers: { authorization: process.env.avwx_key ?? 'no_key' } };
 
 export default class AvwxApi extends RESTDataSource {
   constructor() {
