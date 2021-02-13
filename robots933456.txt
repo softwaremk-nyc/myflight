@@ -1,0 +1,7 @@
+User-agent: *
+
+Disallow: /*.js/
+Disallow: /*.js$
+Disallow: *.js$
+Disallow: /*.map/
+Disallow: *.map$

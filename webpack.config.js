@@ -48,6 +48,22 @@ module.exports = {
           from: 'assets/',
           to: 'assets/',
         },
+        {
+          from: 'icons/**.*',
+          to: '[name].[ext]',
+        },
+        {
+          from: 'robots933456.txt',
+          to: 'robots933456.txt',
+        },
+        {
+          from: 'robots933456.txt',
+          to: 'robots433456.txt',
+        },
+        {
+          from: 'robots933456.txt',
+          to: 'robots.txt',
+        },
       ],
     }),
     new HtmlWebpackPlugin({
