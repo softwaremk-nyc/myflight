@@ -15,6 +15,7 @@ import PerfComp from './component/perfComp';
 import Chart from './component/cgChart';
 import InputComp from './component/inputComp';
 import LicenseComp from './component/licenseComp';
+import FeedbackComp from './component/feedbackComp';
 import store from './redux/rootReducer';
 
 const client = new ApolloClient({
@@ -83,4 +84,9 @@ ReactDOM.render(
 ReactDOM.render(
   <LicenseComp />,
   document.getElementById('rootAbout'),
+);
+
+ReactDOM.render(
+  <FeedbackComp />,
+  document.getElementById('rootFeedback'),
 );
