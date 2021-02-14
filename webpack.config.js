@@ -64,6 +64,10 @@ module.exports = {
           from: 'robots933456.txt',
           to: 'robots.txt',
         },
+        {
+          from: 'license.txt',
+          to: 'license.txt',
+        },
       ],
     }),
     new HtmlWebpackPlugin({

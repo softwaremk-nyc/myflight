@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
+  <meta name="description" content="A simple general aviation performance calculator for a cessna c172sp and piper pa-30 twin comanche">
   <title>myflightperf</title>
 
   <!-- Bootstrap core CSS -->
@@ -76,11 +76,19 @@
                 Performance
               </a>
             </li>
+            <li class="nav-item" id="about">
+              <a class="nav-link" href="#about" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <span data-feather="About"></span>
+                About
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
 
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div id="rootAbout"></div>
+
         <div id="flight"
           class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">Flight</h1>

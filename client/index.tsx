@@ -14,6 +14,7 @@ import FuelComp from './component/fuelComp';
 import PerfComp from './component/perfComp';
 import Chart from './component/cgChart';
 import InputComp from './component/inputComp';
+import LicenseComp from './component/licenseComp';
 import store from './redux/rootReducer';
 
 const client = new ApolloClient({
@@ -77,4 +78,9 @@ ReactDOM.render(
     </div>
   </Provider>,
   document.getElementById('root3'),
+);
+
+ReactDOM.render(
+  <LicenseComp />,
+  document.getElementById('rootAbout'),
 );
