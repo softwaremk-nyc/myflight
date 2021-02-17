@@ -21,7 +21,7 @@
     "url": "git+https://softwaremk@bitbucket.org/softwaremk/myflight.git"
   },
   "author": "softwaremk@outlook.com",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://bitbucket.org/softwaremk/myflight#readme",
   "devDependencies": {
     "@testing-library/react": "^11.2.3",

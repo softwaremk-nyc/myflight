@@ -29,6 +29,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.txt$/,
+        type: 'asset/source',
+      },
+      {
         test: /\.tsx?$/,
         loader: 'eslint-loader',
         exclude: /node_modules/,
