@@ -6,7 +6,8 @@ A simple general aviation performance calculator for a Cessna C172SP and Piper P
 
 View the [demo](http://myflightperf.azurewebsites.net). On idle timeout, this server may take several seconds to re-initialize. Please be patient.
 
-![](images/home.png){width=500 height=500}
+<!-- ![](images/home.png){width=500 height=500} -->
+<img src="images/home.png" width="500" height="500">
 
 ### Built with
 
@@ -58,7 +59,8 @@ To get a local copy up and running follow these simple steps.
 
 1. Select the type (C172SP or PA30) and registration (for CG moment information), cruise time, fuel available, desired power setting, and cruise altitude
 
-![](images/param.png){width=300 height=200}
+<!-- ![](images/param.png){width=300 height=200} -->
+<img src="images/param.png" width="300" height="200">
 
 2. Enter a ICAO ID in FROM and TO section (e.g. - KJFK or KSFO) to download the current METAR (otherwise zero wind, standard temperature/pressure will be used for performance calculations)
 
@@ -66,7 +68,8 @@ To get a local copy up and running follow these simple steps.
 
 4. Review CG calc for flight and performance numbers
 
-![](images/cg.png){width=300 height=300}
+<!-- ![](images/cg.png){width=300 height=300} -->
+<img src="images/cg.png" width="300" height="300">
 
 ## License
 
@@ -77,8 +80,6 @@ Distributed under the MIT License. See [`LICENSE`][license-url] for more informa
 [twitter](https://twitter.com/softwaremk_nyc)
 
 [emsg](softwaremk@outlook.com)
-
-[repo](https://bitbucket.org/softwaremk/myflight)
 
 ### Acknowledgements
 
