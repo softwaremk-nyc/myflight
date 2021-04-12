@@ -63,6 +63,100 @@ const cgGraph = {
       },
     },
   },
+  C182Q: {
+    datasets: [
+      {
+        label: 'C182Q - Normal',
+        data: [
+          { x: 33, y: 1800 },
+          { x: 33, y: 2250 },
+          { x: 39.5, y: 2950 },
+          { x: 48.5, y: 2950 },
+          { x: 48.5, y: 1800 },
+          { x: 33, y: 1800 },
+        ],
+        showLine: true,
+        lineTension: 0,
+        backgroundColor: 'Azure',
+      },
+    ],
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            suggestedMin: 1600,
+            suggestedMax: 3100,
+          },
+        }],
+        xAxes: [{
+          ticks: {
+            suggestedMin: 32,
+            suggestedMax: 50,
+          },
+        }],
+      },
+    },
+  },
+  C182T: {
+    datasets: [
+      {
+        label: 'C182T - NO AUTOPILOT',
+        data: [
+          { x: 33, y: 1800 },
+          { x: 33, y: 2230 },
+          { x: 34, y: 2400 },
+          { x: 34, y: 1800 },
+          { x: 33, y: 1800 },
+        ],
+        showLine: true,
+        lineTension: 0,
+        backgroundColor: 'White',
+      },
+      {
+        label: 'C182T - Normal Max Landing',
+        data: [
+          { x: 34, y: 2400 },
+          { x: 35.8, y: 2710 },
+          { x: 39, y: 2950 },
+          { x: 46, y: 2950 },
+          { x: 46, y: 1800 },
+          { x: 34, y: 1800 },
+        ],
+        showLine: true,
+        lineTension: 0,
+        backgroundColor: 'Azure',
+      },
+      {
+        label: 'C182T - Normal Takeoff',
+        data: [
+          { x: 39, y: 2950 },
+          { x: 40.8, y: 3100 },
+          { x: 46, y: 3100 },
+          { x: 46, y: 2950 },
+          { x: 39, y: 2950 },
+        ],
+        showLine: true,
+        lineTension: 0,
+        backgroundColor: 'Ivory',
+      },
+    ],
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            suggestedMin: 1600,
+            suggestedMax: 3200,
+          },
+        }],
+        xAxes: [{
+          ticks: {
+            suggestedMin: 32,
+            suggestedMax: 48,
+          },
+        }],
+      },
+    },
+  },
   PA30: {
     datasets: [
       {

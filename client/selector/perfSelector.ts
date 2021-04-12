@@ -18,6 +18,8 @@ import {
 } from '../../src/flightcalc';
 import {
   C172SP,
+  C182Q,
+  C182T,
   PA30,
   powerSettings,
   PlaneSelectionState,
@@ -190,7 +192,9 @@ export const perfSelector = (planes: CgDataEntriesList) => createSelector(
     if (state.plane.planeType === C172SP) {
       return perfFixed(planes)(state);
     }
-    if (state.plane.planeType === PA30) {
+    if (state.plane.planeType === PA30
+      || state.plane.planeType === C182Q
+      || state.plane.planeType === C182T) {
       return perfVariable(planes)(state);
     }
     throw Error(`Unknown type ${state.plane.planeType} for performance calculation`);

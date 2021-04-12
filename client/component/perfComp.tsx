@@ -6,6 +6,8 @@ import PerfVariableComp from './perfVariableComp';
 import {
   PA30,
   C172SP,
+  C182Q,
+  C182T,
 } from '../redux/planeSlice';
 
 const mapState = (state: RootState) => ({
@@ -19,8 +21,10 @@ export const PerfComp = (props: PerfCompProp) => {
   if (props.type === C172SP) {
     return <PerfFixedComp />;
   }
-  if (props.type === PA30) {
-    return <PerfVariableComp/>;
+  if (props.type === PA30
+    || props.type === C182Q
+    || props.type === C182T) {
+    return <PerfVariableComp />;
   }
 
   return <p>Unknown type: {props.type}</p>;
