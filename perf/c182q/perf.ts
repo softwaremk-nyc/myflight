@@ -32,7 +32,7 @@ import {
   stdTemp,
   ktsToMph,
 } from '../../src/flightcalc';
-import { cruise } from './cruise';
+import cruise from './cruise';
 
 /**
  *  Perf calculation for pa30 - twin comanche
