@@ -2,8 +2,8 @@ import {
   round,
   linterpol,
   ndimLinterpol,
-  LinterpolRes,
-  NestedObject,
+  // LinterpolRes,
+  // NestedObject,
 } from '../../src/util';
 import {
   AirportInfo,
@@ -11,22 +11,14 @@ import {
   nightAndIfrReserve,
 } from '../perfCommon';
 import { bhpSeaLevel, bhpAtAlt, fuel } from './fuel';
-import {
-  todistA,
-  todistB,
-  todist,
-  todist50A,
-  todist50B,
-  todist50,
-} from './todist';
-import {
-  ldgdistA,
-  ldgdistB,
-  ldgdist,
-  ldgdist50A,
-  ldgdist50B,
-  ldgdist50,
-} from './ldgdist';
+// import {
+//   todist,
+//   todist50,
+// } from './todist';
+// import {
+//   ldgdist,
+//   ldgdist50,
+// } from './ldgdist';
 import {
   c2f,
   stdTemp,
@@ -55,22 +47,22 @@ export default function perfPa30(
   cruiseHours: number,
   bestEconomy: boolean,
 ): PerfResult {
-  const calcDist = (
-    objA: NestedObject,
-    objB: NestedObject,
-    obj: NestedObject,
-    weight: number,
-    airport: AirportInfo,
-  ): LinterpolRes => {
-    const distA = ndimLinterpol(0, [airport.pAlt, `temp|refa|${airport.temp}`], objA);
-    const distB = ndimLinterpol(0, [distA.val, `lbs|refb|${weight}`], objB);
-    const dist = ndimLinterpol(0, [distB.val, `wind|dist|${airport.headWind}`], obj);
-    dist.extrapolation = dist.extrapolation
-      || distA.extrapolation
-      || distB.extrapolation;
+  // const calcDist = (
+  //   objA: NestedObject,
+  //   objB: NestedObject,
+  //   obj: NestedObject,
+  //   weight: number,
+  //   airport: AirportInfo,
+  // ): LinterpolRes => {
+  //   const distA = ndimLinterpol(0, [airport.pAlt, `temp|refa|${airport.temp}`], objA);
+  //   const distB = ndimLinterpol(0, [distA.val, `lbs|refb|${weight}`], objB);
+  //   const dist = ndimLinterpol(0, [distB.val, `wind|dist|${airport.headWind}`], obj);
+  //   dist.extrapolation = dist.extrapolation
+  //     || distA.extrapolation
+  //     || distB.extrapolation;
 
-    return dist;
-  };
+  //   return dist;
+  // };
 
   /* eslint-disable no-param-reassign */
   start.temp = c2f(start.temp);
@@ -137,11 +129,11 @@ export default function perfPa30(
     cruiseKtas,
     cruiseGph,
     //  at actual takeoff weight
-    toDist: calcDist(todistA, todistB, todist, toWeight, start),
-    toDist50: calcDist(todist50A, todist50B, todist50, toWeight, start),
-    //  TODO: should offset takeoff weight with fuel burn?? Or leave in as factor of safety
-    ldgDist: calcDist(ldgdistA, ldgdistB, ldgdist, toWeight, dest),
-    ldgDist50: calcDist(ldgdist50A, ldgdist50B, ldgdist50, toWeight, dest),
+    toDist: null,
+    toDist50: null,
+    //  at max weight only per POH
+    ldgDist: null,
+    ldgDist50: null,
     totalFuel,
     accelStop: null,
     bhp,
