@@ -3,8 +3,7 @@ import { NestedObject } from '../../src/util';
 export const climbNotes = [
   'Table 5.8 - At 3100 lbs (Normal Climb - 90 KIAS)',
   'Flaps Up, 2400 RPM, Full Throttle, Standard Temp, Cowl Flaps Open',
-  'Add 1.4 gals for start, taxi, takeoff allowance (*)',
-  'Mixture leaned above 3000ft for max RPM',
+  'Add 1.7 gals for start, taxi, takeoff allowance (*)',
   'Increase time, fuel, distance by 10% for each 10c above standard (*)',
   '(*) applied to this calculation',
 ];
