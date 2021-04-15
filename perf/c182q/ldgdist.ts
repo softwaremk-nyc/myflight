@@ -1,166 +1,93 @@
 import { NestedObject } from '../../src/util';
 
-export const toNotes = [
-  'Table 5-15',
-  'Flaps 27',
-  'Approach at 90mph',
+export const ldgNotes = [
+  'Table 5.10 - At 2950 lbs',
+  'Flaps 40, Power off, Max braking',
+  'Paved, level, dry runway',
+  'Speed at 50 FT 60',
+  'Decrease distance 10% for each 9kts head wind. Increase distance 10% for each 2kts tail wind (*)',
+  'For dry grass runway, increase ground roll distance by 40% (*)',
+  '(*) applied to this calculation',
 ];
 
-//  landing triple interpolation
-//  pAlt
-//  temp is F
-export const ldgdistA: NestedObject = {
-  0: {
-    temp: [0, 100],
-    refa: [620, 750],
-  },
-  2000: {
-    temp: [0, 100],
-    refa: [680, 805],
-  },
-  4000: {
-    temp: [0, 100],
-    refa: [720, 860],
-  },
-  6000: {
-    temp: [0, 100],
-    refa: [770, 930],
-  },
-  8000: {
-    temp: [0, 100],
-    refa: [830, 1010],
-  },
-};
-
-export const ldgdistB: NestedObject = {
-  680: {
-    lbs: [3600, 2600],
-    refb: [680, 490],
-  },
-  750: {
-    lbs: [3600, 2600],
-    refb: [750, 540],
-  },
-  805: {
-    lbs: [3600, 2600],
-    refb: [805, 580],
-  },
-  860: {
-    lbs: [3600, 2600],
-    refb: [860, 630],
-  },
-  930: {
-    lbs: [3600, 2600],
-    refb: [930, 680],
-  },
-  1010: {
-    lbs: [3600, 2600],
-    refb: [1010, 730],
-  },
-};
-
-//  wind is MPH
+//  pressure altitude
+//  temp|dist
 export const ldgdist: NestedObject = {
-  540: {
-    wind: [0, 30],
-    dist: [540, 200],
-  },
-  630: {
-    wind: [0, 30],
-    dist: [630, 250],
-  },
-  730: {
-    wind: [0, 30],
-    dist: [730, 290],
-  },
-  850: {
-    wind: [0, 30],
-    dist: [850, 370],
+  0: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [560, 580, 600, 620, 640],
   },
   1000: {
-    wind: [0, 30],
-    dist: [1000, 450],
-  },
-};
-
-//  landing 50ft obstacle triple interpolation
-export const ldgdist50A: NestedObject = {
-  0: {
-    temp: [0, 100],
-    refa: [1960, 2200],
+    temp: [0, 10, 20, 30, 40],
+    dist: [580, 600, 620, 645, 665],
   },
   2000: {
-    temp: [0, 100],
-    refa: [2040, 2320],
+    temp: [0, 10, 20, 30, 40],
+    dist: [600, 625, 645, 670, 690],
+  },
+  3000: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [625, 645, 670, 695, 715],
   },
   4000: {
-    temp: [0, 100],
-    refa: [2160, 2460],
+    temp: [0, 10, 20, 30, 40],
+    dist: [650, 670, 695, 720, 740],
+  },
+  5000: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [670, 695, 720, 745, 770],
   },
   6000: {
-    temp: [0, 100],
-    refa: [2280, 2600],
+    temp: [0, 10, 20, 30, 40],
+    dist: [700, 725, 750, 775, 800],
+  },
+  7000: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [725, 750, 780, 805, 830],
   },
   8000: {
-    temp: [0, 100],
-    refa: [2380, 2760],
+    temp: [0, 10, 20, 30, 40],
+    dist: [755, 780, 810, 835, 865],
   },
 };
 
-export const ldgdist50B: NestedObject = {
-  1960: {
-    lbs: [3600, 2600],
-    refb: [1960, 1620],
-  },
-  2090: {
-    lbs: [3600, 2600],
-    refb: [2090, 1700],
-  },
-  2200: {
-    lbs: [3600, 2600],
-    refb: [2200, 1800],
-  },
-  2320: {
-    lbs: [3600, 2600],
-    refb: [2320, 1890],
-  },
-  2460: {
-    lbs: [3600, 2600],
-    refb: [2460, 2000],
-  },
-  2600: {
-    lbs: [3600, 2600],
-    refb: [2600, 2100],
-  },
-  2760: {
-    lbs: [3600, 2600],
-    refb: [2760, 2200],
-  },
-};
-
+//  pressure altitude
+//  temp|dist
 export const ldgdist50: NestedObject = {
-  1700: {
-    wind: [0, 30],
-    dist: [1700, 740],
+  0: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [1300, 1335, 1365, 1400, 1435],
   },
-  1890: {
-    wind: [0, 30],
-    dist: [1890, 880],
+  1000: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [1335, 1365, 1400, 1440, 1475],
   },
-  2100: {
-    wind: [0, 30],
-    dist: [2100, 1040],
+  2000: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [1370, 1405, 1440, 1480, 1515],
   },
-  2280: {
-    wind: [0, 30],
-    dist: [2280, 1240],
+  3000: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [1410, 1445, 1485, 1525, 1560],
   },
-  2480: {
-    wind: [0, 30],
-    dist: [2480, 1400],
+  4000: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [1450, 1485, 1525, 1565, 1600],
   },
-  2720: {
-    wind: [0, 30],
-    dist: [2720, 1600],
+  5000: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [1485, 1525, 1565, 1610, 1650],
+  },
+  6000: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [1530, 1575, 1615, 1660, 1700],
+  },
+  7000: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [1575, 1615, 1665, 1710, 1750],
+  },
+  8000: {
+    temp: [0, 10, 20, 30, 40],
+    dist: [1625, 1665, 1715, 1760, 1805],
   },
 };
