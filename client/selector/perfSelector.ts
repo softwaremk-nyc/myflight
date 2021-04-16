@@ -6,6 +6,8 @@ import {
 import { cgCalcSelector } from './planeCgSelector';
 import perf172 from '../../perf/c172sp/perf';
 import perfPa30 from '../../perf/pa30/perf';
+import perf182q from '../../perf/c182q/perf';
+import perf182t from '../../perf/c182t/perf';
 import {
   AirportInfoState,
   RwyInfo,
@@ -162,8 +164,16 @@ export const perfVariable = (planes: CgDataEntriesList) => createSelector(
       airportInfo,
       planeState.flightAltitude ?? 0,
     );
+    let perfFn: any = null;
+    if (planeState.planeType === PA30) {
+      perfFn = perfPa30;
+    } else if (planeState.planeType === C182Q) {
+      perfFn = perf182q;
+    } else if (planeState.planeType === C182T) {
+      perfFn = perf182t;
+    }
     return {
-      perfResult: perfPa30(
+      perfResult: perfFn(
         planeState.mp ?? 0,
         planeState.rpm ?? 0,
         cgData.weight,
