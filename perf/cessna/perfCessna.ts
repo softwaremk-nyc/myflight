@@ -188,7 +188,7 @@ export function perfCessnaGeneral(
     ldgCalcW: maxWeight,
     totalFuel,
     accelStop: null,
-    bhp: cruiseBhp,
-    bhppct: null,
+    bhp: null,
+    bhppct: cruiseBhp,
   };
 }

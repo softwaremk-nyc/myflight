@@ -41,6 +41,6 @@ test('sample c182q calc from POH', () => {
   expect(res.ldgDist50?.val).toEqual(1480);
   expect(res.totalFuel?.val).toEqual(51);
   expect(res.accelStop?.val).not.toBeDefined();
-  expect(res.bhp?.val).toEqual(65.4);
-  expect(res.bhppct?.val).not.toBeDefined();
+  expect(res.bhp?.val).not.toBeDefined();
+  expect(res.bhppct?.val).toEqual(65.4);
 });
