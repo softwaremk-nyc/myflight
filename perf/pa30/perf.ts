@@ -140,9 +140,11 @@ export default function perfPa30(
     //  at actual takeoff weight
     toDist: calcDist(todistA, todistB, todist, toWeight, start),
     toDist50: calcDist(todist50A, todist50B, todist50, toWeight, start),
+    toCalcW: toWeight,
     //  TODO: should offset takeoff weight with fuel burn?? Or leave in as factor of safety
     ldgDist: calcDist(ldgdistA, ldgdistB, ldgdist, toWeight, dest),
     ldgDist50: calcDist(ldgdist50A, ldgdist50B, ldgdist50, toWeight, dest),
+    ldgCalcW: toWeight,
     totalFuel,
     accelStop: calcDist(accelstopdistA, accelstopdistB, accelstopdist, toWeight, start),
     bhp,

@@ -9,7 +9,7 @@ import { climb } from './climb';
 import cruise from './cruise';
 import { todist, todist50 } from './todist';
 import { ldgdist, ldgdist50 } from './ldgdist';
-
+import c172sp from './cg';
 /**
  *  Perf calculation for C172sp
  *  @param {number} bhp - %bhp
@@ -32,6 +32,8 @@ export default function perf172(
     -1,
     bhp,
     toWeight,
+    //  all N numbers have the same maxW
+    c172sp.N6189Q[0].maxW ?? -1,
     start,
     dest,
     pAltCruise,

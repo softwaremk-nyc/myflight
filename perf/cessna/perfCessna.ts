@@ -57,6 +57,7 @@ export function anyAdjustmentForTemp(
  *  @param {number} rpm - set to -1 unused - otherwise rpm for constant speed prop
  *  @param {number} bhp - set to -1 unused - otherwise %bhp for fixed pitch prop
  *  @param {number} toWeight - takeoff weight
+ *  @param {number} maxWeight - max weight reference
  *  @param {AirportInfo} start - departure airport info
  *  @param {AirportInfo} dest - destination airport info
  *  @param {number} pAltCruise - pressure altitude for cruise
@@ -75,6 +76,7 @@ export function perfCessnaGeneral(
   rpm: number,
   bhp: number,
   toWeight: number,
+  maxWeight: number,
   start: AirportInfo,
   dest: AirportInfo,
   pAltCruise: number,
@@ -179,9 +181,11 @@ export function perfCessnaGeneral(
     //  at actual takeoff weight
     toDist: calcTakeOffDist(todist),
     toDist50: calcTakeOffDist(todist50),
+    toCalcW: toWeight,
     //  at max weight only per POH
     ldgDist: calcLandingDist(ldgdist),
     ldgDist50: calcLandingDist(ldgdist50),
+    ldgCalcW: maxWeight,
     totalFuel,
     accelStop: null,
     bhp: cruiseBhp,

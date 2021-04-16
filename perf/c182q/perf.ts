@@ -9,6 +9,7 @@ import { climb } from './climb';
 import cruise from './cruise';
 import { todist, todist50 } from './todist';
 import { ldgdist, ldgdist50 } from './ldgdist';
+import c182q from './cg';
 
 /**
  *  Perf calculation for C182Q
@@ -34,6 +35,8 @@ export default function perf182q(
     rpm,
     -1,
     toWeight,
+    //  all N numbers have the same maxW
+    c182q.N4468N[0].maxW ?? -1,
     start,
     dest,
     pAltCruise,
