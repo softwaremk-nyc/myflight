@@ -129,9 +129,9 @@ export function perfCessnaGeneral(
   } else if (
     mp !== -1 && rpm !== -1
   ) {
-    cruiseBhp = ndimLinterpol(0, [pAltCruise, start.stdTempCorrection, `mp|bhp|${mp}`], cruise);
-    cruiseKtas = ndimLinterpol(0, [pAltCruise, start.stdTempCorrection, `mp|ktas|${mp}`], cruise);
-    cruiseGph = ndimLinterpol(0, [pAltCruise, start.stdTempCorrection, `mp|gph|${mp}`], cruise);
+    cruiseBhp = ndimLinterpol(0, [pAltCruise, rpm, start.stdTempCorrection, `mp|bhp|${mp}`], cruise);
+    cruiseKtas = ndimLinterpol(0, [pAltCruise, rpm, start.stdTempCorrection, `mp|ktas|${mp}`], cruise);
+    cruiseGph = ndimLinterpol(0, [pAltCruise, rpm, start.stdTempCorrection, `mp|gph|${mp}`], cruise);
   }
 
   const calcTakeOffDist = (obj: NestedObject): LinterpolRes => {

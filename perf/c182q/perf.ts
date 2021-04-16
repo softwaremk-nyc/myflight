@@ -44,6 +44,6 @@ export default function perf182q(
     todist50,
     ldgdist,
     ldgdist50,
-    1.4,
+    1.7,
   );
 }
