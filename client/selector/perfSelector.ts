@@ -4,7 +4,7 @@ import {
   CgDataEntriesList,
 } from '../../src/cg';
 import { cgCalcSelector } from './planeCgSelector';
-import { perf172 } from '../../perf/c172sp/perf';
+import perf172 from '../../perf/c172sp/perf';
 import perfPa30 from '../../perf/pa30/perf';
 import {
   AirportInfoState,

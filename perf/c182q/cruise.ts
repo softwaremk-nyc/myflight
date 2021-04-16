@@ -7,8 +7,8 @@ export const cruiseNotes = [
 ];
 
 //  pressure altitude
-//  -20, 0, +20 difference from std
 //  rpm
+//  -20, 0, +20 difference from std
 //  mp|bhp|ktas|gph
 const cruise: NestedObject = {
   2000: {
