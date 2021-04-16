@@ -107,7 +107,18 @@ const n5491j: CgDataEntry[] = [
   },
 ];
 
+const n6189q: CgDataEntry[] = [
+  {
+    name: 'N6189Q',
+    cgData: { weight: 1733.7, arm: 41.476, moment: 0 },
+    maxW: maxBase127spW,
+    comps: base172sp,
+    notes: null,
+  },
+];
+
 const c172sp: CgDataEntries = {
+  [n6189q[0].name]: n6189q,
   [n5255r[0].name]: n5255r,
   [n2461p[0].name]: n2461p,
   [n316as[0].name]: n316as,

@@ -2,6 +2,8 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 import c172sp from '../../perf/c172sp/cg';
+import c182q from '../../perf/c182q/cg';
+import c182t from '../../perf/c182t/cg';
 import pa30 from '../../perf/pa30/cg';
 import {
   CgDataEntriesList,
@@ -9,10 +11,14 @@ import {
 
 export const planes: CgDataEntriesList = {
   C172SP: c172sp,
+  C182Q: c182q,
+  C182T: c182t,
   PA30: pa30,
 };
 
 export const C172SP = 'C172SP';
+export const C182Q = 'C182Q';
+export const C182T = 'C182T';
 export const PA30 = 'PA30';
 
 export const powerSettings: string[] = [

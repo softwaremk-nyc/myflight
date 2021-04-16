@@ -4,8 +4,10 @@ import {
   CgDataEntriesList,
 } from '../../src/cg';
 import { cgCalcSelector } from './planeCgSelector';
-import { perf172 } from '../../perf/c172sp/perf';
+import perf172 from '../../perf/c172sp/perf';
 import perfPa30 from '../../perf/pa30/perf';
+import perf182q from '../../perf/c182q/perf';
+import perf182t from '../../perf/c182t/perf';
 import {
   AirportInfoState,
   RwyInfo,
@@ -18,6 +20,8 @@ import {
 } from '../../src/flightcalc';
 import {
   C172SP,
+  C182Q,
+  C182T,
   PA30,
   powerSettings,
   PlaneSelectionState,
@@ -160,8 +164,16 @@ export const perfVariable = (planes: CgDataEntriesList) => createSelector(
       airportInfo,
       planeState.flightAltitude ?? 0,
     );
+    let perfFn: any = null;
+    if (planeState.planeType === PA30) {
+      perfFn = perfPa30;
+    } else if (planeState.planeType === C182Q) {
+      perfFn = perf182q;
+    } else if (planeState.planeType === C182T) {
+      perfFn = perf182t;
+    }
     return {
-      perfResult: perfPa30(
+      perfResult: perfFn(
         planeState.mp ?? 0,
         planeState.rpm ?? 0,
         cgData.weight,
@@ -190,7 +202,9 @@ export const perfSelector = (planes: CgDataEntriesList) => createSelector(
     if (state.plane.planeType === C172SP) {
       return perfFixed(planes)(state);
     }
-    if (state.plane.planeType === PA30) {
+    if (state.plane.planeType === PA30
+      || state.plane.planeType === C182Q
+      || state.plane.planeType === C182T) {
       return perfVariable(planes)(state);
     }
     throw Error(`Unknown type ${state.plane.planeType} for performance calculation`);

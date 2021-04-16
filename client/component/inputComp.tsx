@@ -6,6 +6,8 @@ import InputVariableComp from './inputVariableComp';
 import {
   PA30,
   C172SP,
+  C182Q,
+  C182T,
   powerSettings,
 } from '../redux/planeSlice';
 
@@ -20,7 +22,9 @@ export const InputComp = (props: InputCompProp) => {
   if (props.type === C172SP) {
     return <InputFixedComp />;
   }
-  if (props.type === PA30) {
+  if (props.type === PA30
+    || props.type === C182Q
+    || props.type === C182T) {
     return <InputVariableComp powerSettings={powerSettings} />;
   }
 
