@@ -1,7 +1,12 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
-import { planes } from '../redux/planeSlice';
+import {
+  planes,
+  changeMp,
+  changeRpm,
+  changePowerSetting,
+} from '../redux/planeSlice';
 import { perfSelector } from '../selector/perfSelector';
 import {
   ConfigPerf,
@@ -13,10 +18,10 @@ const mapState = (state: RootState) => ({
   perf: perfSelector(planes)(state),
 });
 
-const connector = connect(mapState);
-type PerfFixedCompProp = ConnectedProps<typeof connector>;
+const connector = connect(mapState, { changeMp, changeRpm, changePowerSetting });
+type PerfDataCompProp = ConnectedProps<typeof connector>;
 
-export const PerfFixedComp = (props: PerfFixedCompProp) => {
+export const PerfDataComp = (props: PerfDataCompProp) => {
   const warningClass = 'text-warning';
   const configPerf: ConfigPerf[] = [
     {
@@ -66,6 +71,24 @@ export const PerfFixedComp = (props: PerfFixedCompProp) => {
       class: props.perf.perfResult.totalFuel?.extrapolation
         ? warningClass : '',
     },
+    {
+      label: 'Accelerate Stop (ft)',
+      value: props.perf.perfResult.accelStop?.val,
+      class: props.perf.perfResult.accelStop?.extrapolation
+        ? warningClass : '',
+    },
+    {
+      label: 'BHP',
+      value: props.perf.perfResult.bhp?.val,
+      class: props.perf.perfResult.bhp?.extrapolation
+        ? warningClass : '',
+    },
+    {
+      label: 'BHP %',
+      value: props.perf.perfResult.bhppct?.val,
+      class: props.perf.perfResult.bhppct?.extrapolation
+        ? warningClass : '',
+    },
   ];
 
   const configRwy: ConfigRwy[] = [
@@ -113,4 +136,4 @@ export const PerfFixedComp = (props: PerfFixedCompProp) => {
   />;
 };
 
-export default connector(PerfFixedComp);
+export default connector(PerfDataComp);
